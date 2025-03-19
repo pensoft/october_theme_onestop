@@ -1,0 +1,59 @@
+url = "/contact"
+layout = "default"
+title = "Contact"
+is_hidden = 0
+robot_index = "index"
+robot_follow = "follow"
+
+[siteSearchInclude]
+
+[jumbotron]
+jumbotron = "contact"
+background = "#ffffff"
+templates = "template2"
+description_limit = 0
+==
+<?php
+use Pensoft\Cardprofiles\Models\Profiles;
+
+function onStart(){
+	$this['profiles'] =  Profiles::where('category_id', 1)->get();
+}
+?>
+==
+{% component 'siteSearchInclude' %}
+<h1 class="underline">Contact</h1>
+
+<div class="container">
+	<div class="row width100">
+		{% for profile in profiles %}
+			<div class="col-xs-12 col-md-6 profile-item">
+				<div class="row contact_info">
+					<div class="col-md-5 col-xs-12 start-md center-xs coordinator_image">
+						<img src="{{profile.avatar.thumb(190, 190, {'mode' : 'crop' })}}" class="fr-fic fr-dii">
+					</div>
+					<div class="col-md-7 col-xs-12 coordinator_info">
+                        <div>
+						<h3>{{profile.names}}</h3>
+						{% if profile.position %}<div class="card_title">{{profile.position}}</div>{% endif %}
+                        </div>
+                        <div>
+                        {% if profile.email %}
+                            <div class="button_su mail">
+                                <span class="su_button_circle">
+                                </span>
+                                <a href="mailto:{{profile.email}}" class="button_su_inner">
+                                  <span class="button_text_container">
+                                    {{profile.email}}
+                                  </span>
+                                </a>
+                            </div>
+                        {% endif %}
+                        </div>
+					</div>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+
+</div>

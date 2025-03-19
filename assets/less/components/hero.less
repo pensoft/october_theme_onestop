@@ -1,0 +1,281 @@
+.outer-circle-container {
+    .breakpoint-large-down({
+        display: none;
+    });
+}
+
+.hero {
+    background-image: url('/themes/pensoft-onestop/assets/images/background.png');
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+    
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-color: rgba(0, 39, 18, 0.8);
+        mix-blend-mode: screen;
+        z-index: -1;
+    }
+    
+    &:not(.home) {
+        height: 300px;
+    }
+
+}
+
+// Ellipse decorations
+.ellipse-top-decoration {
+    position: absolute;
+    top: -50px;
+    right: 50%;
+    width: 215px;
+    height: 215px;
+    transform: rotate(270deg);
+    background-image: url('/themes/pensoft-onestop/assets/images/Ellipse_28.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    z-index: 0;
+    opacity: 0.7;
+    pointer-events: none;
+    .breakpoint-large-down({
+        display: none;
+    });
+}
+
+.ellipse-bottom-decoration {
+    bottom: 0;
+    right: 0;
+    width: 80px;
+    height: 275px;
+    background-image: url('/themes/pensoft-onestop/assets/images/Ellipse_28.svg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    z-index: 10;
+    opacity: 0.7;
+    pointer-events: none;
+    .breakpoint-large-down({
+        display: none;
+    });
+}
+
+// Special styling for video background pages
+.header-image.detection.hero,
+.header-image.prioritisation.hero,
+.header-image.dissemination.hero,
+.header-image.socio-political-action.hero,
+.header-image.resources.hero {
+    background-image: none; // Remove background image when video is present
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+    padding-top: 110px;
+    padding-bottom: 0;
+
+    .header-image-bar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .video-background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: -2;
+    }
+    
+    &::before {
+        background-image: url('/themes/pensoft-onestop/assets/images/video-gradient.png');
+        background-size: cover;
+        background-position: center;
+        mix-blend-mode: normal;
+        opacity: 0.87;
+    }
+}
+
+.coming-soon-container{
+    p, h3{
+        line-height: 1.4em;
+        text-align: center;
+        color: white;
+    }
+
+    h3{
+        margin-top: 40px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+.header-image:not(.home) {
+    min-height: 300px !important;
+
+    .header-image-bar {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: end;
+        padding-bottom: 40px;
+        .breakpoint-large-down({
+            padding-bottom: 10px;
+        });
+    }
+
+    .hero {
+        height: 300px;
+    }
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    .hero-title {
+        font-size: 53px;
+        line-height: 1.2;
+        .breakpoint-large-down({
+            font-size: 32px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        });
+    }
+    .hero-description {
+        color: #ACACAC;
+        font-size: 17px;
+        font-weight: 400;
+        line-height: 1.4;
+        .breakpoint-large-down({
+            font-size: 16px;
+            margin-bottom: 30px;
+        });
+    }
+    .hero-cta {
+        font-size: 14px !important;
+    }
+}
+
+.outer-cicle {
+    position: relative;
+    width: 100%;
+    height: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.outer-circle-border {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border: 2px dashed rgba(255, 255, 255, 0.19);
+    border-radius: 50%;
+    animation: spin 30s linear infinite;
+}
+
+.leaf-circle {
+    position: absolute;
+    width: 550px;
+    height: 550px;
+    padding: 10px;
+    border-radius: 50%;
+    background: url('/themes/pensoft-onestop/assets/images/leaf-img.png') no-repeat center center;
+    background-size: cover;
+    z-index: 1;
+    opacity: 0.8;
+}
+
+.image-placeholder {
+    position: relative;
+    width: 400px;
+    height: 400px;
+    overflow: hidden;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+    
+    img {
+        border-radius: 50%;
+        width: 69%;
+        height: 69%;
+        object-fit: contain;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        transition: opacity 0.5s ease;
+        opacity: 0;
+        
+        &:first-child {
+            opacity: 1;
+        }
+    }
+}
+
+.hero-title, .hero-subtitle, .hero-description {
+    color: white;
+}
+
+.hero-title {
+    line-height: 1.3;
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.hero-subtitle {
+    font-size: 1.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.hero-description {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    max-width: 80%;
+}
+
+.header-image.hero {
+    min-height: 500px;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes spin-reverse {
+    0% {
+        transform: rotate(360deg);
+    }
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
+// Add hover effect to change spin direction
+.outer-circle-container:hover {
+    .outer-circle-border {
+        animation-name: spin-reverse;
+    }
+}

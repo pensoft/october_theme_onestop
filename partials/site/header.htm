@@ -1,0 +1,138 @@
+[menu]
+start = "id-1"
+activeNode = 0
+listItemClasses = "nav-item"
+primaryClasses = "navbar-nav"
+secondaryClasses = "dropdown-menu"
+numberOfLevels = 2
+
+[jumbotron hero-text]
+jumbotron = "hero-text"
+templates = "template2" 
+description_limit = 0
+
+[jumbotron resources-intro]
+jumbotron = "resources-intro"
+templates = "resources-intro" 
+description_limit = 0
+
+[jumbotron detection-intro]
+jumbotron = "detection-intro"
+templates = "detection-intro" 
+description_limit = 0
+
+[jumbotron prioritisation-intro]
+jumbotron = "prioritisation-intro"
+templates = "prioritisation-intro" 
+description_limit = 0
+
+
+[jumbotron dissemination-intro]
+jumbotron = "dissemination-intro"
+templates = "dissemination-intro" 
+description_limit = 0
+
+[jumbotron socio-political-intro]
+jumbotron = "socio-political-intro"
+templates = "socio-political-intro" 
+description_limit = 0
+
+==
+<nav class="navbar fixed" id="headernavbar" {% if user %} style="margin-top:69px;"{% endif %}>
+    <div class="container">
+        <a href="{{'home'|page}}" class="navbar-brand">
+            <img src="{{ this.theme.site_logo.getPath() }}" alt="{{ this.theme.site_name }}">
+        </a>
+
+        <button id="desktopMenuToggle" aria-label="Toggle navigation">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </div>
+    
+    <div class="navbar-collapse" id="headerNavbarNav">
+        <button id="closeMenuBtn" aria-label="Close navigation">
+            <span>&times;</span>
+        </button>
+
+        {% component 'menu' %}
+        
+        <div class="navbar-bottom-elements">
+            
+            <div class="social-icons">
+                {% if enable_linkedin and linkedin_url %}
+                <a href="{{ linkedin_url }}" class="social-icon linkedin" aria-label="LinkedIn"></a>
+                {% endif %}
+                {% if enable_bluesky and bluesky_url %}
+                <a href="{{ bluesky_url }}" class="social-icon bluesky" aria-label="BlueSky"></a>
+                {% endif %}
+            </div>
+            
+            <div class="bottom-row">
+                <div id="google_translate_element"></div>
+                <div class="search-container">
+                    <a class="btn btn-primary search-btn" id="searchToggle">
+                        <span class="search-icon"></span> Search
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div id="search" class="search" style="display: none;">
+            <div class="container">
+                <form class="input-group align-items-start" action="{{ url('search')}}" method="get">
+                    <input class="form-control search_input" style="color: #000;" name="q" type="text" autocomplete="on" placeholder="Search here...">
+                    <button class="btn btn-link pr p-search big text-grey-search-btn" type="submit"></button>
+                    <div class="close-search" onclick="hideSearchForm();">&#10006;</div>
+                </form>
+            </div>
+        </div>
+    </div>
+</nav>
+
+{% if this.theme.header_image %}
+<div class="header-image {{page_id}} hero">
+    {% if page_id == 'detection' or page_id == 'prioritisation' or page_id == 'dissemination' or page_id == 'socio-political-action' or page_id == 'resources' %}
+        <video autoplay loop muted playsinline class="video-background">
+            <source src="{{ 'uploaded-files/bg-video-2.mp4'|media }}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="header-image-bar row" {% if user %} style="margin-top: 154px!important;" {% endif %}>
+            <div class="container-fluid coming-soon-container">
+                <h1 class="underline white">{%if page_title%} {{page_title}} {%else%} {{site_name}} {%endif%}</h1>
+                {% partial 'site/page-content' %}
+            </div>
+        </div>
+    {% elseif page_id == 'home' %}
+    <div class="container hero-container">
+        <div class="row">
+            <div class="col-md-7 col-xs-12">
+                <div class="hero-content">
+                    {% component 'hero-text' %}
+                </div>
+            </div>
+            <div class="col-md-5 col-xs-12 outer-circle-container">
+                <div class="outer-cicle">
+                    <div class="outer-circle-border"></div>
+                    <div class="leaf-circle"></div>
+                    <div class="image-placeholder">
+                        <img src="{{ 'assets/images/home-image-1.png'|theme }}" alt="{{ this.theme.site_name }}">
+                        <img src="{{ 'assets/images/home-image-2.png'|theme }}" alt="{{ this.theme.site_name }}">
+                        <img src="{{ 'assets/images/home-image-3.png'|theme }}" alt="{{ this.theme.site_name }}">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+        <div class="header-image-bar" {% if user and this.page.id != 'home' %} style="margin-top: 154px!important;" {% endif %}>
+            <h1 class="underline white">{%if page_title%} {{page_title}} {%else%} {{site_name}} {%endif%}</h1>
+        </div>
+    {%endif%}
+    
+    {% if page_id == 'home' %}
+    <div class="ellipse-top-decoration"></div>
+    <div class="ellipse-bottom-decoration"></div>
+    {% endif %}
+</div>
+{% endif %}

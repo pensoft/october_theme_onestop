@@ -1,0 +1,99 @@
+url = "/media-center"
+layout = "default"
+title = "Media center"
+is_hidden = 0
+robot_index = "index"
+robot_follow = "follow"
+==
+<?php
+use Pensoft\Media\Models\MediaLogos;
+use Pensoft\Media\Models\Flyers;
+use Pensoft\Media\Models\Newsletters;
+use Pensoft\Media\Models\Presentations;
+use Pensoft\Media\Models\Pressreleases;
+use Pensoft\Media\Models\Videos;
+
+function onStart(){
+	$this['logos'] =  MediaLogos::get();
+	$this['flyers'] =  Flyers::get();
+	$this['newsletters'] =  Newsletters::get();
+	$this['presentations'] =  Presentations::get();
+	$this['pressreleases'] =  Pressreleases::get();
+	$this['videos'] =  Videos::get();
+}
+?>
+==
+<h1 class="underline">Media center</h1>
+<div class="container">
+    <div class="row around-md around-xs">
+        {% if logos.count() %}
+        <div class="col-sm-2 col-xs-12 media_item">
+            <div class="card-container text-center">
+                <a href="{{url('media-center')}}/brand-kit" title="Brand kit">
+                    <div class="card_image_container" title="Brand kit">
+                        <div class="card_bg">
+                            <span class="card_icon"></span>
+                        </div>
+                    </div>
+                    <span class="media_label">Brand kit</span>
+                </a>
+            </div>
+        </div>
+        {% endif %}
+        {% if flyers.count() %}
+        <div class="col-sm-2 col-xs-12 media_item">
+            <div class="card-container text-center">
+                <a href="{{url('media-center')}}/promotional-materials" title="Promotional materials">
+                    <div class="card_image_container" title="Promotional materials"><div class="card_bg"><span class="card_icon"></span></div></div>
+                    <span class="media_label">Promotional materials</span>
+                </a>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if pressreleases.count() %}
+        <div class="col-sm-2 col-xs-12 media_item">
+            <div class="card-container text-center">
+                <a href="{{url('media-center')}}/press-releases" title="Press releases">
+                    <div class="card_image_container" title="Press releases">
+                        <div class="card_bg">
+                            <span class="card_icon"></span>
+                        </div>
+                    </div>
+                    <span class="media_label">Press releases</span>
+                </a>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if newsletters.count() %}
+        <div class="col-sm-2 col-xs-12 media_item">
+            <div class="card-container text-center">
+                <a href="{{url('media-center')}}/newsletters" title="Newsletters">
+                    <div class="card_image_container" title="Newsletters">
+                        <div class="card_bg"><span class="card_icon"></span>
+                        </div>
+                    </div>
+                    <span class="media_label">Newsletters</span>
+                </a>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if videos.count() %}
+        <div class="col-sm-2 col-xs-12 media_item">
+            <div class="card-container text-center">
+                <a href="{{url('media-center')}}/videos" title="Videos">
+                    <div class="card_image_container" title="Videos">
+                        <div class="card_bg"><span class="card_icon"></span>
+                        </div>
+                    </div>
+                    <span class="media_label">Videos</span>
+                </a>
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+    <p>&nbsp;</p>
+</div>

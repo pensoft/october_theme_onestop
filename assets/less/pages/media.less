@@ -1,0 +1,289 @@
+.content_flyer,
+.content_press,
+.content_video,
+.content_newsletter,
+.content_logo{
+    display: flex;
+    .breakpoint-large-down({
+        justify-content: center;
+    });
+
+}
+
+.flyer,
+.videos,
+.newsletters,
+.logo{
+
+
+    p{
+        font-size: 19px;
+        font-weight: bold;
+        color: @dark-color;
+    }
+
+    .button_su{
+        &.download{
+            .button_su_inner{
+                width: unset;
+                height: unset;
+            }
+        }
+    }
+}
+
+
+.card-container{
+    position: relative;
+    .media_label{
+        font-size: 19px;
+        font-weight: 500;
+        color: #ffffff;
+        position: absolute;
+        bottom: 10px;
+        left: 20px;
+        .breakpoint-large-down({
+            left: 20%;
+        });
+    }
+}
+
+.media-center{
+
+
+    .card_image_container{
+        border-radius: 7px;
+        margin: 0 auto;
+        width: 227px;
+        height: 164px;
+        max-width: 100%;
+        transition: all ease-in-out 0.3s;
+        overflow: hidden;
+
+        .card_icon{
+            display: flex;
+            height: 196px;
+            border-radius: 7px;
+            background-size: 40%!important;
+            transition: all ease-in-out 0.3s;
+        }
+
+    }
+
+
+    .media_item{
+        .card_bg{
+            border-radius: 7px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all ease-in-out 0.3s;
+
+
+            background: url("../../assets/images/Logo-Media centre.png") center no-repeat;
+            background-size: cover;
+            &:hover{
+                transform: scale(1.15);
+                & > .card_icon{
+                    transform: scale(0.85);
+                }
+            }
+        }
+
+    }
+
+
+}
+
+.flyer-container,
+.logo-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 357px;
+    max-width: 100%;
+    height: 253px;
+    //background-color: @secondary-color;
+    margin: 0 auto 20px auto;
+    border-radius: 7px;
+    &.white{
+        background-color: @blue-color;
+    }
+
+    img {
+        width: 100%;
+        height: auto;
+        max-height: 100%;
+        object-fit: cover;
+        border-radius: 7px;
+
+    }
+
+    .button_su{
+        &.download{
+            .button_su_inner{
+                width: unset;
+                height: unset;
+            }
+        }
+    }
+}
+
+.links{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .breakpoint-large-down({
+        justify-content: space-evenly;
+        margin-bottom: 50px;
+    });
+    form{
+        width: fit-content;
+    }
+    button{
+        //padding: 10px 30px 10px 30px;
+        border-radius: 7px;
+        font-size: 18px;
+        background: @yellow-color;
+        border: none;
+
+
+    }
+    .button_su{
+        margin: 0 3px;
+        i{
+            background: url("../../assets/images/download.svg") center no-repeat;
+            background-size: contain;
+            width: 15px;
+            height: 14px;
+            margin-right: 6px;
+        }
+    }
+}
+
+
+
+.press-relies-item{
+    width: 90%;
+    background-color: @white-color;
+    border: 1px solid #B9D7DB;
+    margin: 0 auto 20px auto;
+    border-radius: 7px;
+    padding: 30px;
+    position: relative;
+
+    .breakpoint-large-down({
+        width: auto;
+    });
+
+    .card-title{
+        font-size: 25px;
+    }
+
+    .date{
+        width: 133px;
+        height: 33px;
+        white-space: nowrap;
+        font-size: 14px;
+        background: transparent linear-gradient(254deg, #25BDD2 0%, #2D7252 100%) 0% 0% no-repeat padding-box;
+        border-radius: 20px;
+        opacity: 0.86;
+        color: white;
+        text-align: center;
+        padding: 3px 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+
+    body{
+        font-size: 16px;
+        p{
+            font-size: 16px;
+        }
+    }
+
+    .button_su{
+        margin-right: 10px;
+    }
+}
+
+
+
+.flyer_image_container{
+    width: auto;
+    height: auto;
+    text-align: left;
+    img{
+        border: 1px solid #c1c1c1;
+    }
+}
+
+
+
+.video-title{
+    color: @dark-color;
+
+    font-weight: bold;
+    font-size: 20px;
+    margin-top: 20px!important;
+    margin-bottom: 20px!important;
+}
+
+.videos{
+
+    iframe, video{
+        width: 357px;
+        max-width: 100%;
+        height: 253px;
+        background-color: black;
+        margin: 0 auto 20px auto;
+        box-shadow: 0px 0px 20px #1B869426;
+        border-radius: 7px;
+        display: flex;
+        align-self: center;
+    }
+
+    .card_title{
+        text-align: center;
+    }
+
+}
+
+.go-back{
+    display: flex;
+    justify-content: start;
+    width: fit-content;
+    margin-bottom: 20px;
+    margin-left: 10px;
+    a {
+        width: fit-content;
+        font-size: 17px;
+        font-weight: 500;
+        color: @link-color;
+        position: relative;
+        display: flex;
+        align-items: center;
+        padding-left: 15px;
+        transition: all 0.3s ease-in-out;
+        &::before{
+            display: flex;
+            align-items: center;
+            position: absolute;
+            content: "";
+            background: url("../../assets/images/arrow-media.svg") center center no-repeat;
+            background-size: 10px !important;
+            width: 10px !important;
+            height: 8px !important;
+            left: 0;
+            transform: rotate(90deg);
+        }
+        &:hover{
+            &::before{
+                left: -2px;
+            }
+        }
+    }
+}

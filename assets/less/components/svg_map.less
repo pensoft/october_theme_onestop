@@ -1,0 +1,51 @@
+/**
+	SVG map
+*/
+
+g#location-icon,
+g#location-icon-2,
+g#location-icon-3,
+g#location-icon-4,
+g#location-icon-5,
+g#location-icon-6,
+g#location-icon-7
+{
+    &:hover{
+        cursor: pointer;
+    }
+}
+
+//.pilots_svg_map_container{
+//    position: relative;
+//}
+
+.tooltiptext {
+  display: none;
+  width: fit-content;
+  background-color: #FFF;
+  color: #000000;
+  text-align: center;
+  border-radius: 10px;
+  position: absolute;
+  z-index: 1;
+  padding: 5px 15px;
+  font-size: 14px;
+  -webkit-box-shadow: 0px 0px 20px #1B869426;
+  -moz-box-shadow: 0px 0px 20px #1B869426;
+    box-shadow: 0px 0px 20px #1B869426;
+  font-weight: normal;
+}
+
+.tooltiptext.active {
+    display: initial;
+}
+
+.active_path{
+    animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+    50% {
+        opacity: 0;
+    }
+}

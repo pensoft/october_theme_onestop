@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="594" height="35" viewBox="0 0 594 35">
+  <defs>
+    <linearGradient id="linear-gradient" x1="1.013" y1="-0.146" x2="-0.008" y2="0.919" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#9bc622"/>
+      <stop offset="0.996" stop-color="#01bdd6"/>
+      <stop offset="1" stop-color="#015f6b"/>
+    </linearGradient>
+  </defs>
+  <path id="background-_email_contact" data-name="background- email contact" d="M0,0H594a0,0,0,0,1,0,0V25a10,10,0,0,1-10,10H10A10,10,0,0,1,0,25V0A0,0,0,0,1,0,0Z" fill="url(#linear-gradient)"/>
+</svg>

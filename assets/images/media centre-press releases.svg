@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="286" height="256" viewBox="0 0 286 256">
+  <defs>
+    <linearGradient id="linear-gradient" x1="1.177" y1="-0.254" x2="0.041" y2="1.078" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#9bc622"/>
+      <stop offset="1" stop-color="#01bdd6"/>
+    </linearGradient>
+    <filter id="Rectangle_3929" x="0" y="0" width="286" height="256" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="10" result="blur"/>
+      <feFlood flood-color="#14493e" flood-opacity="0.122"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="media_centre-press_releases" data-name="media centre-press releases" transform="translate(4 27)">
+    <g transform="matrix(1, 0, 0, 1, -4, -27)" filter="url(#Rectangle_3929)">
+      <rect id="Rectangle_3929-2" data-name="Rectangle 3929" width="226" height="196" rx="10" transform="translate(30 27)" fill="url(#linear-gradient)"/>
+    </g>
+    <circle id="Ellipse_212" data-name="Ellipse 212" cx="20.5" cy="20.5" r="20.5" transform="translate(0 64)" fill="rgba(255,255,255,0.32)"/>
+    <circle id="Ellipse_213" data-name="Ellipse 213" cx="20.5" cy="20.5" r="20.5" transform="translate(231 64)" fill="rgba(255,255,255,0.32)"/>
+    <circle id="Ellipse_214" data-name="Ellipse 214" cx="20.5" cy="20.5" r="20.5" transform="translate(79 176)" fill="rgba(255,255,255,0.32)"/>
+    <circle id="Ellipse_215" data-name="Ellipse 215" cx="11.5" cy="11.5" r="11.5" transform="translate(215 18)" fill="rgba(255,255,255,0.32)"/>
+  </g>
+</svg>

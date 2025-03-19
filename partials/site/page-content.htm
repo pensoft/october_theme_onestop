@@ -1,0 +1,40 @@
+[jumbotron resources-intro]
+jumbotron = "resources-intro"
+templates = "template2" 
+description_limit = 0
+
+[jumbotron detection-intro]
+jumbotron = "detection-intro"
+templates = "template2" 
+description_limit = 0
+
+[jumbotron prioritisation-intro]
+jumbotron = "prioritisation-intro"
+templates = "template2" 
+description_limit = 0
+
+
+[jumbotron dissemination-intro]
+jumbotron = "dissemination-intro"
+templates = "template2" 
+description_limit = 0
+
+
+[jumbotron socio-political-intro]
+jumbotron = "socio-political-intro"
+templates = "template2" 
+description_limit = 0
+
+==
+
+{% if page_id == 'detection' %}
+    {% component 'detection-intro' %}
+{% elseif page_id == 'prioritisation' %}
+    {% component 'prioritisation-intro' %}
+{% elseif page_id == 'dissemination' %}
+    {% component 'dissemination-intro' %}
+{% elseif page_id == 'socio-political-action' %}
+    {% component 'socio-political-intro' %}
+{% elseif page_id == 'resources' %}
+    {% component 'resources-intro' %}
+{% endif %} 

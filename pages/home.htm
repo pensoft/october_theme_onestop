@@ -1,0 +1,131 @@
+url = "/"
+layout = "default"
+title = "OneStop"
+is_hidden = 0
+meta_description = "The OneStop project"
+robot_index = "index"
+robot_follow = "follow"
+
+[jumbotron hero-menu]
+jumbotron = "hero-menu"
+title = 0
+background = "transperant"
+templates = "template3"
+description_limit = 0
+
+[jumbotron guarding-european-waters]
+jumbotron = "guarding-european-waters"
+title = 0
+templates = "template3"
+description_limit = 0
+
+[jumbotron subscriber]
+jumbotron = "subscriber"
+title = 0
+background = "transperant"
+templates = "template3"
+description_limit = 0
+
+[jumbotron easin]
+jumbotron = "easin"
+title = 0
+background = "transperant"
+templates = "template3"
+description_limit = 0
+
+==
+<?php
+use Pensoft\Articles\Models\Article;
+use Carbon\Carbon;
+use Pensoft\Partners\Models\Partners as Partner;
+
+function onStart(){
+
+    $this['highlights'] = Article::news()->where('published', 'true')->orderBy('published_at', 'desc')->take(10)->get()->map(function($item){
+        $item->content = str_limit(strip_tags($item->content), 90);
+        $item->href = $item->slug;
+        return $item;
+    });
+
+    $this['consortium_partners'] = Partner::where('type', 3)->get();
+}
+?>
+==
+<!-- Hero Into -->
+<div class="container-fluid intro-section">
+    {% component 'hero-menu' %}
+</div>
+
+<!-- News -->
+{% if highlights.count %}
+<div class="container-fluid highlights-news">
+    <div class="container news-header">
+        <h2 class="display-1">Latest news</h2>
+        <div class="news-arrows">
+            <div class="trigger_prev_arrow"></div>
+            <div class="trigger_next_arrow"></div>
+        </div>
+    </div>
+
+    <div class="news-carousel">
+        {% for highlight in highlights %}
+        <div class="home-news-highlights">
+            <div class="row news-item">
+                <div class="col-md-12 col-xs-12 home-news-cover">
+                    <a href="/news/{{highlight.slug}}">
+                        <img src="{{ highlight.cover.path}}" alt="{{ highlight.title }}">
+                        <div class="btn read-more-btn btn-primary">Read more</div>
+                    </a>
+                </div>
+                <div class="col-md-12 col-xs-12 news-content">
+                    <div class="news-date">{{ highlight.published_at|date('d.m.Y') }}</div>
+                    <a href="/news/{{highlight.slug}}">
+                        <div class="news-title">{{ highlight.title|length > 100 ? highlight.title|slice(0, 100)|replace({"&nbsp;": " ", ".": ". "}) ~ '...' : highlight.title|replace({"&nbsp;": " ", ".": ". "})  }}</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="col-xs-12 center-xs mt-1">
+        <a href="/news" class="btn btn-primary">View All</a>
+    </div>
+</div>
+{% endif %}
+
+<!-- Guarding European Waters -->
+<div class="container-fluid guarding-european-waters">
+    {% component 'guarding-european-waters' %}
+</div>
+
+<!-- Consortium Partners -->
+{% if consortium_partners.count %}
+<div class="container-fluid">
+    <div class="row middle-xs between-xs">
+        <div class="col-xs-12 center-xs mb-1 mt-2">
+            <h2 class="display-1">Consortium</h2>
+        </div>
+        <div class="col-xs-12 center-xs consortium_partners">
+            <div id="slick">
+                {% for c in consortium_partners %}
+                <div class="slide">
+                    <div class="partner_logo"><a href="{{c.instituion_url}}" target="_blank">
+                        <img alt="{{ c.instituion }}" src="{{c.cover.thumb(auto,80,{'mode':'crop'})}}"></a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Visit EASIN Section -->
+<div class="container-fluid easin">
+    {% component 'easin' %}
+</div>
+
+<!-- Subscribe Section -->
+<div class="container-fluid subscriber-section">
+    {% component 'subscriber' %}
+</div>

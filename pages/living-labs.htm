@@ -1,0 +1,44 @@
+url = "/living-labs"
+layout = "default"
+title = "Living Labs"
+is_hidden = 0
+meta_description = "living labs page"
+seo_keywords = "keywords"
+robot_index = "index"
+robot_follow = "follow"
+
+[jumbotron living-labs-intro]
+jumbotron = "living-labs-intro"
+templates = "template2" 
+description_limit = 0
+
+[siteSearchInclude]
+==
+<?php
+use Pensoft\Partners\Models\Partners as Partner;
+function onStart(){
+    $this['living_labs'] = Partner::where('type', 2)->get();
+}
+?>
+==
+{% component 'siteSearchInclude' %}
+
+<div class="container-fluid living-labs-container">
+    <div class="container pb-0">
+        {% component 'living-labs-intro' %}
+        <div class="row living-labs-row">
+            {% for partner in living_labs %}
+            <div class="col-md-2 col-xs-12 living-lab">
+                <a href="{{partner.instituion_url}}" class="living-lab-item">
+                    <div class="col-xs-12 flag">
+                        <span class="flag-icon flag-icon-{{ partner.country_code[0]|lower }}"></span>
+                    </div>
+                    <div class="col-xs-12 cover">
+                        <img alt="{{ partner.instituion }}" src="{{partner.cover.thumb(auto,80,{'mode':'crop'})}}">
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>

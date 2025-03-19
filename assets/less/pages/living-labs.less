@@ -1,0 +1,56 @@
+.living-labs-container{
+    .intro-text{
+        display: flex;
+        justify-content: center;
+        text-align: center;
+        align-items: center;
+        font-size: 18px;
+        color: #1E513D;
+        margin-bottom: 40px;
+    }
+
+    .living-labs-row{
+        .living-lab{
+            .living-lab-item{
+                width: 176px;
+                height: 124px;
+                margin-bottom: 24px;
+                border-radius: 10px;
+                background: #F2F6F3;
+                position: relative;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                .flag{
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    z-index: 1;
+                    padding: 8px;
+                    .flag-icon {
+                        width: 30px;
+                        height: 20px;
+                        border-radius: 4px;
+                        overflow: hidden;
+                    }
+                }
+                .cover{
+                    width: 80%;
+                    height: 80%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    img{
+                        width: 80%;
+                        height: 80%;
+                        object-fit: contain;
+                    }
+                }
+            }
+            .breakpoint-large-down({
+                display: flex;
+                justify-content: center;
+            });
+        }
+    }
+}

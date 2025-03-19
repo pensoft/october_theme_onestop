@@ -1,0 +1,66 @@
+.work-package-box{
+  position: relative;
+  border-radius: 10px;
+  background: #F2F6F3;
+  padding: 80px 20px 20px 20px;
+  margin-bottom: 20px;
+  
+  h3{
+      color: #003C3C;
+      font-size: 20px;
+  }
+  
+  .wp-header{
+      position: absolute;
+      top: 0;
+      left: 0;
+      font-size: 23px;
+      padding: 20px;
+      font-family: 'Satoshi Bold';
+      border-radius: 10px 0px;
+      color: @white-color;
+      background: linear-gradient(248deg, #3CBB54 -0.2%, #1E513D 106.13%);
+  }
+
+  .wp-content {
+      margin-bottom: 15px;
+      p {
+        color: #1E513D;
+        font-size: 17px;
+        line-height: 1.5;
+      }
+  }
+
+  .read-more-wp{
+        color: #3CBB54;
+        font-size: 17px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease, transform 0.3s ease;
+        padding-right: 20px;
+        position: relative;
+      
+        &:hover {
+            text-decoration: underline;
+        }
+
+        &:after{
+            content: "";
+            background-image: url('/themes/pensoft-onestop/assets/images/arrow-down.svg');
+            background-size: 12px;
+            position: absolute;
+            background-repeat: no-repeat;
+            background-position: center;
+            width: 12px;
+            height: 12px;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: transform 0.3s ease;
+        }
+
+        &.arrow-up:after {
+            transform: translateY(-50%) rotate(180deg);
+        }
+    }
+}

@@ -1,0 +1,63 @@
+url = "/internal-repository/forms"
+layout = "default"
+title = "Reporting forms"
+
+[session]
+security = "user"
+allowedUserGroups[] = "internal-users"
+allowedUserGroups[] = "registered"
+allowedUserGroups[] = "guest"
+redirect = "home"
+==
+{% component 'session' %}
+<div class="container">
+
+	<div class="row middle-xs between-xs">
+		<div class="col-xs-12 col-md-5 mt-1 mb-1">
+
+		</div>
+
+		<div class="col-xs-12 col-md-3 end-xs">
+			<a href="{{url('internal-repository')}}" class="back"> <div class="arrow-left end-xs"></div> &nbsp;Back to documents</a>
+		</div>
+
+
+		<div class="col-xs-12 mt-2 mission">
+
+		<div class="accordion-border">
+				<div class="row middle-xs">
+
+					<div class="col-xs start-xs"><a href="https://forms.gle/TNYZ8iNH3b45oV1s7" target="_blank"> Communication Activities Form</a></div>
+
+				</div>
+			</div>
+
+			<div class="accordion-border">
+				<div class="row middle-xs">
+
+					<div class="col-xs start-xs"><a href="https://forms.gle/aL5jDmABUU8Tp9j69" target="_blank"> Dissemination Activities Form</a></div>
+
+				</div>
+			</div>
+			<div class="accordion-border">
+				<div class="row middle-xs">
+
+					<div class="col-xs start-xs"><a href="https://forms.gle/XCm7ndRGi1PRPEpF8" target="_blank"> Datasets Form</a></div>
+
+				</div>
+			</div>
+			
+			<div class="accordion-border">
+				<div class="row middle-xs">
+
+					<div class="col-xs start-xs"><a href="https://forms.gle/9gEFkGZyWfG1fd7U9" target="_blank"> Publications Form</a></div>
+
+				</div>
+			</div>
+
+        </div>
+
+
+	</div>
+
+</div>

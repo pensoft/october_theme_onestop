@@ -1,0 +1,24 @@
+title = "Login"
+url = "/login"
+layout = "default"
+is_hidden = 0
+robot_index = "index"
+robot_follow = "follow"
+
+[account]
+redirect = "internal-documents"
+paramCode = "code"
+forceSecure = 0
+requirePassword = 0
+==
+    {% if not user %}
+    <h1 class="underline">Login</h1>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6 col-xs-12 center-xs login_form_container">
+                <p class="mb-2">This is an internal password protected environment for consortium members only.</p>
+                {% partial 'components/account/signin' %}
+			</div>
+		</div>
+	</div>
+    {% endif %}
