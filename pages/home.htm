@@ -16,7 +16,7 @@ description_limit = 0
 [jumbotron guarding-european-waters]
 jumbotron = "guarding-european-waters"
 title = 0
-templates = "template3"
+templates = "template2"
 description_limit = 0
 
 [jumbotron subscriber]
@@ -95,7 +95,9 @@ function onStart(){
 
 <!-- Guarding European Waters -->
 <div class="container-fluid guarding-european-waters">
-    {% component 'guarding-european-waters' %}
+    <div class="container">
+        {% component 'guarding-european-waters' %}
+    </div>
 </div>
 
 <!-- Consortium Partners -->
@@ -105,15 +107,24 @@ function onStart(){
         <div class="col-xs-12 center-xs mb-1 mt-2">
             <h2 class="display-1">Consortium</h2>
         </div>
-        <div class="col-xs-12 center-xs consortium_partners">
-            <div id="slick">
-                {% for c in consortium_partners %}
-                <div class="slide">
-                    <div class="partner_logo"><a href="{{c.instituion_url}}" target="_blank">
-                        <img alt="{{ c.instituion }}" src="{{c.cover.thumb(auto,80,{'mode':'crop'})}}"></a>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 center-xs consortium_partners">
+                <div id="slick">
+                    {% for c in consortium_partners %}
+                    {% if c.cover %}
+                    <div class="slide">
+                        <div class="partner_logo"><a href="{{c.website|default(c.institution_url)|default('#')}}" target="_blank">
+                            <img alt="{{ c.name|default(c.institution)|default('Partner logo') }}" 
+                                 src="{{c.cover.path}}" 
+                                 width="auto" 
+                                 height="60"></a>
+                        </div>
                     </div>
+                    {% endif %}
+                    {% endfor %}
                 </div>
-                {% endfor %}
             </div>
         </div>
     </div>

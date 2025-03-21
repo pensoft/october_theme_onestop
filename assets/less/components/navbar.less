@@ -145,6 +145,37 @@
         }
     }
 }
+
+// Media query for small laptop heights
+@media (max-height: 800px) {
+    #google_translate_element {
+        .language-dropdown {
+            &.open {
+                // Position dropdown above the button for small heights
+                .language-options {
+                    top: auto;
+                    bottom: 100%;
+                    border-radius: 6px 6px 0 0;
+                    border-bottom: none;
+                    border-top: 1px solid #444;
+                    max-height: 150px;
+                }
+                
+                .selected-language {
+                    border-radius: 0 0 6px 6px;
+                    border-top: none;
+                    border-bottom: 1px solid #444;
+                }
+                
+                .selected-language .dropdown-arrow {
+                    transform: rotate(45deg);
+                    margin-top: -2px;
+                }
+            }
+        }
+    }
+}
+
 #headernavbar {
     position: fixed;
     top: 0;
@@ -152,7 +183,7 @@
     right: 0;
     z-index: 1000;
     background-color: @dark-color;
-    padding: 28px 0;
+    padding: 23px 0;
     transition: all 0.3s ease;
     
     .container {
@@ -441,6 +472,10 @@
                     &.bluesky {
                         background-image: url('/themes/pensoft-onestop/assets/images/blue_sky.svg');
                     }
+                    
+                    &.p-youtube {
+                        color: #fff !important;
+                    }
                 }
             }
             
@@ -697,14 +732,13 @@ body.menu-open {
                             .language-options {
                                 width: 100%;
                                 max-width: 100%;
-                                position: static; /* Change to static on mobile for better positioning */
+                                position: static;
                                 top: 0;
                                 margin-top: 5px;
-                                max-height: 150px; /* Control height on mobile */
-                                border-radius: 4px; /* Restore all corners */
-                                border-top: 1px solid #444; /* Add top border */
+                                max-height: 150px;
+                                border-radius: 4px;
+                                border-top: 1px solid #444;
                                 
-                                /* Ensure scrollbar is usable on touch devices */
                                 -webkit-overflow-scrolling: touch;
                             }
                         }

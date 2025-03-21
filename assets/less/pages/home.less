@@ -95,7 +95,7 @@
 		
 		a {
 			color: #fff;
-			font-size: 20px;
+			font-size: 17px;
 			font-weight: 500;
 			text-decoration: none;
 			transition: transform 0.2s ease;
@@ -164,9 +164,181 @@
 }
 
 .consortium_partners{
+	padding: 0;
+	max-width: 100%;
+	overflow: hidden;
+	margin: 0 auto;
+	position: relative;
+	
+	/* Edge blur effects */
+	&::before, &::after {
+	    content: '';
+	    position: absolute;
+	    top: 0;
+	    height: 100%;
+	    width: 80px;
+	    z-index: 10;
+	    pointer-events: none;
+	    transition: opacity 0.3s ease;
+	}
+	
+	&::before {
+	    left: 0;
+	    background: linear-gradient(to right, #fff 0%, rgba(255, 255, 255, 0) 100%);
+        .breakpoint-large-down({
+            display: none;
+        });
+	}
+	
+	&::after {
+	    right: 0;
+	    background: linear-gradient(to left, #fff 0%, rgba(255, 255, 255, 0) 100%);
+        .breakpoint-large-down({
+            display: none;
+        });
+	}
+	
+	#slick {
+	    max-width: 100%;
+	    box-sizing: border-box;
+	    margin: 0 auto;
+        
+        .breakpoint-large-down({
+            padding: 0;
+            width: 100%;
+        });
+	}
+	
+	.slick-track {
+	    display: flex;
+	    align-items: center;
+        
+        .breakpoint-large-down({
+            display: flex;
+            justify-content: center;
+            margin-left: auto;
+            margin-right: auto;
+            width: 100% !important;
+        });
+	}
+	
+	.slick-list {
+	    overflow: hidden;
+	    margin: 0 -10px;
+        
+        .breakpoint-large-down({
+            margin: 0;
+            width: 100%;
+        });
+	}
+	
+	/* Arrow styling */
+	.slick-arrow {
+	    z-index: 3; /* Ensure arrows are above the blur effect */
+	}
+	
 	.slick-slide{
 		background: transparent !important;
+        margin: 0 10px;
+        min-height: 100px;
+        
+        .breakpoint-large-down({
+            margin: 0 auto;
+            float: none;
+            text-align: center;
+            width: 100% !important;
+        });
+        
+        &:before {
+            content: '';
+            display: block;
+        }
 	}
+    
+    .partner_logo {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100px;
+        
+        .breakpoint-large-down({
+            width: 100%;
+        });
+        
+        a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            width: 100%;
+        }
+        
+        img {
+            /* Force dimensions to prevent 0x0 rendering */
+            min-width: 100px !important;
+            min-height: 40px !important;
+            height: 60px !important;
+            width: auto !important;
+            max-width: 100% !important;
+            max-height: 70px !important;
+            margin: 0 auto !important;
+            object-fit: contain !important;
+            filter: grayscale(0);
+            transition: all 0.3s ease;
+            
+            &:hover {
+                transform: scale(1.05);
+            }
+        }
+    }
+
+    /* Mobile-specific dot styling */
+    .slick-dots {
+        bottom: -30px;
+        
+        li {
+            margin: 0 5px;
+            
+            button:before {
+                font-size: 12px;
+                color: #3CBB54;
+                opacity: 0.3;
+            }
+            
+            &.slick-active button:before {
+                opacity: 1;
+                color: #3CBB54;
+            }
+        }
+    }
+}
+
+/* Arrow styling for the consortium carousel */
+#slick .slick-prev, 
+#slick .slick-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    width: 30px;
+    height: 30px;
+    
+    &:before {
+        font-size: 20px;
+        opacity: 0.75;
+    }
+    
+    &:hover:before {
+        opacity: 1;
+    }
+}
+
+#slick .slick-prev {
+    left: 10px;
+}
+
+#slick .slick-next {
+    right: 10px;
 }
 
 .guarding-european-waters{
@@ -182,8 +354,17 @@
 		object-fit: cover;
 		margin-bottom: 20px;
 	}
-    
-    .btn-bluesky{
+
+    .btn-row{
+        a {
+            margin-right: 20px;
+        }
+        .breakpoint-large-down({
+            margin-right: 0;
+        });
+    }
+
+    .btn-social{
         position: relative;
         padding-left: 48px;
         display: inline-flex;
@@ -191,7 +372,6 @@
         font-size: 14px;
         &::before{
             content: "";
-            background-image: url('/themes/pensoft-onestop/assets/images/blue_sky.svg');
             background-size: 18px;
             background-repeat: no-repeat;
             background-position: center;
@@ -204,12 +384,25 @@
             transform: translateY(-50%);
         }
         .breakpoint-large-down({
-            margin-top: 30px;
 			margin-bottom: 30px;
             width: 100%;
             display: flex;
             justify-content: center;
         });
+    }
+
+    .btn-bluesky{
+        &:extend(.guarding-european-waters .btn-social all);
+        &::before{
+            background-image: url('/themes/pensoft-onestop/assets/images/blue_sky.svg');
+        }
+    }
+
+    .btn-linkedin{
+        &:extend(.guarding-european-waters .btn-social all);
+        &::before{
+            background-image: url('/themes/pensoft-onestop/assets/images/linkedin.svg');
+        }
     }
 }
 

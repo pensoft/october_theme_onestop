@@ -86,6 +86,9 @@ function createLanguageSwitcher() {
                     $optionsContainer.scrollTop($selectedOption.position().top - $optionsContainer.height()/2 + $selectedOption.height()/2);
                 }, 50);
             }
+            
+            // Check if we need to adjust position based on screen height
+            adjustDropdownPosition($dropdown);
         }
     });
     
@@ -133,23 +136,42 @@ function createLanguageSwitcher() {
     
     // Prevent scrolling issues when dropdown is open and near the bottom of the screen
     $(window).on('resize', function() {
-        var windowHeight = $(window).height();
         var $dropdown = $('#language-switcher');
         
-        if ($dropdown.length) {
-            var dropdownBottom = $dropdown.offset().top + $dropdown.outerHeight() + 180; // 180px for max dropdown height
-            
-            if (dropdownBottom > windowHeight) {
-                // If dropdown would go off screen, adjust its max-height
-                var newMaxHeight = windowHeight - $dropdown.offset().top - $dropdown.outerHeight() - 20; // 20px buffer
-                if (newMaxHeight < 100) newMaxHeight = 100; // Minimum height
-                $dropdown.find('.language-options').css('max-height', newMaxHeight + 'px');
-            } else {
-                // Reset to default max-height from CSS
-                $dropdown.find('.language-options').css('max-height', '');
-            }
+        if ($dropdown.length && $dropdown.hasClass('open')) {
+            adjustDropdownPosition($dropdown);
         }
     });
+}
+
+// New function to adjust dropdown position based on available space
+function adjustDropdownPosition($dropdown) {
+    var windowHeight = $(window).height();
+    var dropdownTop = $dropdown.offset().top;
+    var dropdownHeight = $dropdown.outerHeight();
+    var optionsHeight = 180; // Default maximum height
+    
+    // If we're in a small height environment
+    if (windowHeight < 800) {
+        var $options = $dropdown.find('.language-options');
+        
+        // Calculate available space below
+        var spaceBelow = windowHeight - dropdownTop - dropdownHeight;
+        // Calculate available space above
+        var spaceAbove = dropdownTop;
+        
+        if (spaceBelow < 150 && spaceAbove > spaceBelow) {
+            // Force the dropdown to open upward if there's more space above
+            $options.css({
+                'max-height': Math.min(spaceAbove - 20, 150) + 'px'
+            });
+        } else {
+            // Open downward with adjusted height
+            $options.css({
+                'max-height': Math.min(spaceBelow - 20, 150) + 'px'
+            });
+        }
+    }
 }
 
 // Function to get the current language from the Google Translate cookie

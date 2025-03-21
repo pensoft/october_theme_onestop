@@ -383,22 +383,42 @@ $(document).ready(function() {
     if($('#slick').length){
         $('#slick').slick({
             autoplay: true,
-            autoplaySpeed: 1000,
-            centerMode: true,
-            // centerPadding: '50px',
-            slidesToShow: 6,
+            autoplaySpeed: 4000,
+            centerMode: false,
+            slidesToShow: 4,
+            slidesToScroll: 1,
             focusOnSelect: false,
             dots: false,
+            arrows: true,
             infinite: true,
+            adaptiveHeight: false,
+            variableWidth: false,
+            mobileFirst: false,
             responsive: [
                 {
-                    breakpoint: 768,
+                    breakpoint: 1200,
+                    settings: {
+                        slidesToShow: 3
+                    }
+                },
+                {
+                    breakpoint: 992,
+                    settings: {
+                        slidesToShow: 1,
+                        centerMode: true,
+                        centerPadding: '0',
+                        arrows: false,
+                        dots: false
+                    }
+                },
+                {
+                    breakpoint: 768, 
                     settings: {
                         arrows: false,
-                        dots: true,
+                        dots: false,
+                        slidesToShow: 1,
                         centerMode: true,
-                        centerPadding: '2%',
-                        slidesToShow: 1
+                        centerPadding: '0'
                     }
                 }
             ]
