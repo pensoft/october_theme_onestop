@@ -170,6 +170,12 @@
 	margin: 0 auto;
 	position: relative;
 	
+    .display-1{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
 	/* Edge blur effects */
 	&::before, &::after {
 	    content: '';
@@ -198,16 +204,75 @@
         });
 	}
 	
-	#slick {
-	    max-width: 100%;
-	    box-sizing: border-box;
-	    margin: 0 auto;
+	.carousel-container {
+        position: relative;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        padding: 0 60px;
+        box-sizing: border-box;
+    }
+    
+    /* Custom navigation arrows */
+    .trigger_prev_consortium, .trigger_next_consortium {
+        width: 40px;
+        height: 40px;
+        background-color: white;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 20;
+        outline: none;
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        
+        .arrow-icon {
+            display: block;
+            width: 26px;
+            height: 26px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        
+        .breakpoint-large-down({
+            width: 35px;
+            height: 35px;
+        });
+    }
+    
+    .trigger_prev_consortium {
+        left: 0;
+        
+        .arrow-icon {
+            background-image: url('/themes/pensoft-onestop/assets/images/arrow-left.svg');
+        }
+    }
+    
+    .trigger_next_consortium {
+        right: 0;
+        
+        .arrow-icon {
+            background-image: url('/themes/pensoft-onestop/assets/images/arrow-left.svg');
+            transform: rotate(180deg);
+        }
+        
+    }
+    
+    #slick {
+        flex: 1;
+        max-width: 100%;
+        box-sizing: border-box;
+        margin: 0 auto;
         
         .breakpoint-large-down({
             padding: 0;
             width: 100%;
         });
-	}
+    }
 	
 	.slick-track {
 	    display: flex;
@@ -232,11 +297,6 @@
         });
 	}
 	
-	/* Arrow styling */
-	.slick-arrow {
-	    z-index: 3; /* Ensure arrows are above the blur effect */
-	}
-	
 	.slick-slide{
 		background: transparent !important;
         margin: 0 10px;
@@ -247,6 +307,7 @@
             float: none;
             text-align: center;
             width: 100% !important;
+            min-width: 276px;
         });
         
         &:before {
@@ -275,41 +336,34 @@
         
         img {
             /* Force dimensions to prevent 0x0 rendering */
-            min-width: 100px !important;
-            min-height: 40px !important;
-            height: 60px !important;
+            min-width: 200px !important;
+            min-height: 100px !important;
+            height: 100px !important;
             width: auto !important;
-            max-width: 100% !important;
-            max-height: 70px !important;
+            max-width: 200px !important;
+            max-height: 100px !important;
             margin: 0 auto !important;
             object-fit: contain !important;
             filter: grayscale(0);
             transition: all 0.3s ease;
-            
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
             &:hover {
                 transform: scale(1.05);
             }
+
+            .breakpoint-large-down({
+                width: 100%;
+                height: 100%;
+            });
         }
     }
 
     /* Mobile-specific dot styling */
     .slick-dots {
-        bottom: -30px;
-        
-        li {
-            margin: 0 5px;
-            
-            button:before {
-                font-size: 12px;
-                color: #3CBB54;
-                opacity: 0.3;
-            }
-            
-            &.slick-active button:before {
-                opacity: 1;
-                color: #3CBB54;
-            }
-        }
+        display: none;
     }
 }
 
@@ -424,6 +478,13 @@
         backdrop-filter: blur(7.5px);
         -webkit-backdrop-filter: blur(7.5px);
         z-index: 1;
+        transition: opacity 0.3s ease;
+    }
+    
+    &:hover {
+        &:before {
+            opacity: 0;
+        }
     }
     
     .container {

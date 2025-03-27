@@ -2,16 +2,54 @@
     font-family: Arial, sans-serif;
     
     .container {
-        // width: 100%;
         padding-top: 20px;
         padding-bottom: 20px;
     }
 
     .top-side{
-        margin-bottom: 60px;
+        margin-bottom: 30px;
         .breakpoint-large-down({
             margin-bottom: 20px;
         });
+    }
+    
+    .coordinator-row {
+        font-family: 'Satoshi Regular';
+        margin-top: 40px;
+
+        .coordinator-name {
+            padding-left: 20px;
+            .breakpoint-large-down({
+                padding-left: 0;
+            });
+        }
+        .breakpoint-large-down({
+            margin-bottom: 20px;
+        });
+        
+        .project-coordinator {
+            text-align: left;
+            
+            span {
+                font-size: 14px;
+                color: #B9B9B9;
+                margin-right: 5px;
+                
+                &.coordinator-label {
+                    font-family: 'Satoshi Bold';
+                    font-weight: 600;
+                    color: #fff;
+                }
+            }
+            .breakpoint-large-down({
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                span {
+                    margin: 4px 0;
+                }
+            });
+        }
     }
     
     .footer-main {

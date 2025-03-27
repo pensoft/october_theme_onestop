@@ -384,45 +384,80 @@ $(document).ready(function() {
         $('#slick').slick({
             autoplay: true,
             autoplaySpeed: 4000,
-            centerMode: false,
-            slidesToShow: 4,
-            slidesToScroll: 1,
-            focusOnSelect: false,
+            draggable: true,
+            pauseOnHover: true,
+            infinite: true,
             dots: false,
             arrows: true,
-            infinite: true,
-            adaptiveHeight: false,
-            variableWidth: false,
-            mobileFirst: false,
+            speed: 1000,
+
+            mobileFirst: true,
+    
+            // Default settings for mobile
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            variableWidth: true,
+            
             responsive: [
                 {
-                    breakpoint: 1200,
+                    breakpoint: 992, // Large devices
                     settings: {
-                        slidesToShow: 3
+                        slidesToShow: 1,
+                        slidesToScroll: 1,
+                        variableWidth: true
                     }
                 },
                 {
-                    breakpoint: 992,
+                    breakpoint: 1200, // Extra large devices
                     settings: {
-                        slidesToShow: 1,
-                        centerMode: true,
-                        centerPadding: '0',
-                        arrows: false,
-                        dots: false
-                    }
-                },
-                {
-                    breakpoint: 768, 
-                    settings: {
-                        arrows: false,
-                        dots: false,
-                        slidesToShow: 1,
-                        centerMode: true,
-                        centerPadding: '0'
+                        slidesToShow: 4,
+                        slidesToScroll: 1,
+                        variableWidth: true
                     }
                 }
             ]
         });
+        
+        // Add initial state check for carousel buttons
+        setTimeout(function() {
+            // Custom arrow handlers for consortium carousel
+            $(".trigger_prev_consortium").off('click').on('click', function(e) {
+                e.preventDefault();
+                $('#slick').slick('slickPrev');
+            });
+            
+            $(".trigger_next_consortium").off('click').on('click', function(e) {
+                e.preventDefault();
+                $('#slick').slick('slickNext');
+            });
+            
+            // Handle button state based on slide position
+            var slick = $('#slick').slick('getSlick');
+            
+            $('#slick').on('beforeChange', function(event, slick, currentSlide, nextSlide) {
+                // Toggle button visibility based on slide position
+                if (nextSlide === 0) {
+                    $('.trigger_prev_consortium').css('opacity', '0.5');
+                } else {
+                    $('.trigger_prev_consortium').css('opacity', '1');
+                }
+                
+                if (nextSlide >= slick.slideCount - slick.options.slidesToShow) {
+                    $('.trigger_next_consortium').css('opacity', '0.5');
+                } else {
+                    $('.trigger_next_consortium').css('opacity', '1');
+                }
+            });
+            
+            // Initialize button states
+            if (slick.currentSlide === 0) {
+                $('.trigger_prev_consortium').css('opacity', '0.5');
+            }
+            
+            if (slick.currentSlide >= slick.slideCount - slick.options.slidesToShow) {
+                $('.trigger_next_consortium').css('opacity', '0.5');
+            }
+        }, 100);
     }
 
     if($('.news-carousel').length) {
@@ -507,68 +542,69 @@ $(document).ready(function() {
     }
     
     // Read more button that follows cursor for all news items
-    $('.home-news-cover a, .related-news .home-news-cover a').on('mouseenter', function(e) {
-        // Show the button immediately at the current mouse position
-        var parentOffset = $(this).offset();
-        var relX = e.pageX - parentOffset.left;
-        var relY = e.pageY - parentOffset.top;
-        
-        $(this).find('.read-more-btn').css({
-            display: 'block',
-            opacity: 1,
-            left: relX + 'px',
-            top: relY + 'px'
+    if(screen.width > 1024){
+        $('.home-news-cover a, .related-news .home-news-cover a').on('mouseenter', function(e) {
+            // Show the button immediately at the current mouse position
+            var parentOffset = $(this).offset();
+            var relX = e.pageX - parentOffset.left;
+            var relY = e.pageY - parentOffset.top;
+            
+            $(this).find('.read-more-btn').css({
+                display: 'block',
+                opacity: 1,
+                left: relX + 'px',
+                top: relY + 'px'
+            });
+        }).on('mouseleave', function() {
+            // Hide the button immediately
+            $(this).find('.read-more-btn').css({
+                display: 'none'
+            });
+        }).on('mousemove', function(e) {
+            var parentOffset = $(this).offset();
+            var relX = e.pageX - parentOffset.left;
+            var relY = e.pageY - parentOffset.top;
+            var $btn = $(this).find('.read-more-btn');
+            var btnWidth = $btn.outerWidth();
+            var btnHeight = $btn.outerHeight();
+            var containerWidth = $(this).width();
+            var containerHeight = $(this).height();
+            
+            // Remove all edge classes
+            $btn.removeClass('edge-right edge-left edge-top edge-bottom');
+            
+            // Handle edge cases
+            var edgeThreshold = 50; // pixels from edge
+            
+            // Check if near right edge
+            if (relX > containerWidth - edgeThreshold) {
+                $btn.addClass('edge-right');
+                relX = containerWidth - 20;
+            } 
+            // Check if near left edge
+            else if (relX < edgeThreshold) {
+                $btn.addClass('edge-left');
+                relX = 20;
+            }
+            
+            // Check if near bottom edge
+            if (relY > containerHeight - edgeThreshold) {
+                $btn.addClass('edge-bottom');
+                relY = containerHeight - 20;
+            } 
+            // Check if near top edge
+            else if (relY < edgeThreshold) {
+                $btn.addClass('edge-top');
+                relY = 20;
+            }
+            
+            // Position the button immediately for precise cursor replacement
+            $btn.css({
+                left: relX + 'px',
+                top: relY + 'px'
+            });
         });
-    }).on('mouseleave', function() {
-        // Hide the button immediately
-        $(this).find('.read-more-btn').css({
-            display: 'none'
-        });
-    }).on('mousemove', function(e) {
-        var parentOffset = $(this).offset();
-        var relX = e.pageX - parentOffset.left;
-        var relY = e.pageY - parentOffset.top;
-        var $btn = $(this).find('.read-more-btn');
-        var btnWidth = $btn.outerWidth();
-        var btnHeight = $btn.outerHeight();
-        var containerWidth = $(this).width();
-        var containerHeight = $(this).height();
-        
-        // Remove all edge classes
-        $btn.removeClass('edge-right edge-left edge-top edge-bottom');
-        
-        // Handle edge cases
-        var edgeThreshold = 50; // pixels from edge
-        
-        // Check if near right edge
-        if (relX > containerWidth - edgeThreshold) {
-            $btn.addClass('edge-right');
-            relX = containerWidth - 20;
-        } 
-        // Check if near left edge
-        else if (relX < edgeThreshold) {
-            $btn.addClass('edge-left');
-            relX = 20;
-        }
-        
-        // Check if near bottom edge
-        if (relY > containerHeight - edgeThreshold) {
-            $btn.addClass('edge-bottom');
-            relY = containerHeight - 20;
-        } 
-        // Check if near top edge
-        else if (relY < edgeThreshold) {
-            $btn.addClass('edge-top');
-            relY = 20;
-        }
-        
-        // Position the button immediately for precise cursor replacement
-        $btn.css({
-            left: relX + 'px',
-            top: relY + 'px'
-        });
-    });
-
+    }
 });
 
 function type(i, t, ie, oe) {

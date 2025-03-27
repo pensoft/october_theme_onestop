@@ -35,7 +35,9 @@ function createLanguageSwitcher() {
         { code: 'es', name: 'Spanish' },
         { code: 'it', name: 'Italian' },
         { code: 'pt', name: 'Portuguese' },
-        { code: 'ru', name: 'Russian' },
+        { code: 'ro', name: 'Romanian' },
+        { code: 'fi', name: 'Finnish' },
+        { code: 'nl', name: 'Dutch' },
         { code: 'zh-CN', name: 'Chinese' }
     ];
     

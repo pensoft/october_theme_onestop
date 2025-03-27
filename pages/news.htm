@@ -115,7 +115,7 @@ $c++;
 $orWhere .= ')';
 $related = $related
 ->whereRaw($orWhere)
-->limit(2)
+->limit(3)
 ->get();
 
 $this['related'] = $related;
@@ -131,33 +131,56 @@ $this['related'] = $related;
     <div class="news-back-button">
         <a href="/news" class="back-to-news"> Back </a>
     </div>
-	<div class="single-news-item">
+    <div class="news-detail-container">
+        <div class="news-main-content">
+            <div class="single-news-item">
+                <div class="news-cover">
+                    <div class="news-img-container">
+                        <img src="{{ article.cover.thumb(800, auto, { mode: 'crop' }) }}" alt="{{ article.title }}" />
+                        {% if article.caption %}
+                            <div class="caption">{{ article.caption | raw }}</div>
+                        {% endif %}
+                        <div class="news-date">{{article.published_at|date('d.m.Y')}}</div>
+                        <h2 class="news-title">{{article.title}}</h2>
+                    </div>
+                    <div class="news-content">
+                        {{article.content|raw}}
+                    </div>
+                </div>
 
-		<div class="row news-cover">
-			<div class="col-xs-12 news-img-container">
-				<img src="{{ article.cover.thumb(800, auto, { mode: 'crop' }) }}" alt="{{ article.title }}" />
-                {% if article.caption %}
-                    <div class="caption">{{ article.caption | raw }}</div>
+                {% if allow_share %}
+                <div class="share-section">
+                    <div class="share_container">
+                        <span class="share_label">Share</span>
+                        <a href="https://www.bluesky.com/sharer/sharer.php?u={{page_url}}&amp;src=sdkpreparse" target="_blank" class="pr p-bluesky small"><i class="fa fa-bluesky"></i></a>
+                        <a href="https://www.linkedin.com/sharing/share-offsite/?url={{page_url}}" target="_blank" class="pr p-linkedin small"><i class="fa fa-linkedin"></i></a>
+                    </div>
+                </div>
                 {% endif %}
-                <div class="news-date">{{article.published_at|date('d.m.Y')}}</div>
-                <h2 class="news-title">{{article.title}}</h2>
-			</div>
-			<div class="col-xs-12 news-content">
-				{{article.content|raw}}
-			</div>
-		</div>
+            </div>
+        </div>
 
-		{% if allow_share %}
-		<div class="share-section">
-			<div class="share_container">
-				<span class="share_label">Share</span>
-				<a href="https://www.bluesky.com/sharer/sharer.php?u={{page_url}}&amp;src=sdkpreparse" target="_blank" class="pr p-bluesky small"><i class="fa fa-bluesky"></i></a>
-				<a href="https://www.linkedin.com/sharing/share-offsite/?url={{page_url}}" target="_blank" class="pr p-linkedin small"><i class="fa fa-linkedin"></i></a>
-			</div>
-		</div>
-		{% endif %}
-
-	</div>
+        {% if related.count() > 0 %}
+        <div class="news-sidebar">
+            <h3>Related News</h3>
+            <div class="related-news-list">
+                {% for item in related %}
+                <div class="related-news-item">
+                    <a href="/news/{{item.slug}}">
+                        <div class="related-news-image">
+                            <img src="{{ item.cover.thumb(386, 203, { mode: 'crop' }) }}" alt="{{ item.title }}">
+                        </div>
+                        <div class="related-news-content">
+                            <div class="news-date">{{ item.published_at|date('d.m.Y') }}</div>
+                            <div class="news-title">{{ item.title|length > 100 ? item.title|slice(0, 100)|replace({"&nbsp;": " ", ".": ". "}) ~ '...' : item.title|replace({"&nbsp;": " ", ".": ". "}) }}</div>
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
 
 	{% else %}
 

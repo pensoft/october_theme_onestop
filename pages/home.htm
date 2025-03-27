@@ -66,7 +66,6 @@ function onStart(){
             <div class="trigger_next_arrow"></div>
         </div>
     </div>
-
     <div class="news-carousel">
         {% for highlight in highlights %}
         <div class="home-news-highlights">
@@ -93,47 +92,50 @@ function onStart(){
 </div>
 {% endif %}
 
-<!-- Guarding European Waters -->
-<div class="container-fluid guarding-european-waters">
+<!-- Consortium -->
+<div class="container-fluid consortium_partners">
     <div class="container">
-        {% component 'guarding-european-waters' %}
-    </div>
-</div>
-
-<!-- Consortium Partners -->
-{% if consortium_partners.count %}
-<div class="container-fluid">
-    <div class="row middle-xs between-xs">
-        <div class="col-xs-12 center-xs mb-1 mt-2">
-            <h2 class="display-1">Consortium</h2>
+        <div class="row between-xs middle-xs">
+            <div class="col-xs">
+                <h2 class="display-1">Consortium</h2>
+            </div>
         </div>
-    </div>
-    <div class="container">
-        <div class="row">
+        <div class="row middle-xs between-xs">
             <div class="col-xs-12 center-xs consortium_partners">
-                <div id="slick">
-                    {% for c in consortium_partners %}
-                    {% if c.cover %}
-                    <div class="slide">
-                        <div class="partner_logo"><a href="{{c.website|default(c.institution_url)|default('#')}}" target="_blank">
-                            <img alt="{{ c.name|default(c.institution)|default('Partner logo') }}" 
-                                 src="{{c.cover.path}}" 
-                                 width="auto" 
-                                 height="60"></a>
-                        </div>
+                <div class="carousel-container">
+                    <div class="trigger_prev_consortium">
+                        <span class="arrow-icon"></span>
                     </div>
-                    {% endif %}
-                    {% endfor %}
+                    <div id="slick">
+                        {% for c in consortium_partners %}
+                        <div class="slide">
+                            <div class="partner_logo">
+                                <a href="{{ c.instituion_url }}" class="consortium-link" target="_blank">
+                                    <img alt="{{ c.instituion }}" src="{{c.cover.thumb(auto,90,{'mode':'crop'})}}">
+                                </a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="trigger_next_consortium">
+                        <span class="arrow-icon"></span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-{% endif %}
 
 <!-- Visit EASIN Section -->
 <div class="container-fluid easin">
     {% component 'easin' %}
+</div>
+
+<!-- Guarding European Waters -->
+<div class="container-fluid guarding-european-waters">
+    <div class="container">
+        {% component 'guarding-european-waters' %}
+    </div>
 </div>
 
 <!-- Subscribe Section -->

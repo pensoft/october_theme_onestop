@@ -103,11 +103,13 @@ description_limit = 0
         <div class="header-image-bar row" {% if user %} style="margin-top: 154px!important;" {% endif %}>
             <div class="container-fluid coming-soon-container">
                 <h1 class="underline white">{%if page_title%} {{page_title}} {%else%} {{site_name}} {%endif%}</h1>
-                {% partial 'site/page-content' %}
+                <div class="content-wrapper">
+                    {% partial 'site/page-content' %}
+                </div>
             </div>
         </div>
     {% elseif page_id == 'home' %}
-    <div class="container hero-container">
+    <div class="container hero-container" {% if user %} style="margin-top: 20px;" {% endif %}>
         <div class="row">
             <div class="col-md-7 col-xs-12">
                 <div class="hero-content">
