@@ -10,10 +10,6 @@ includePageMeta = 1
 escape = 1
 
 [googleTracker]
-
-[cookieBanner]
-include_css = 1
-update_selector = "#gdpr-reload"
 ==
 <!DOCTYPE html>
 <html>
@@ -133,7 +129,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   (function() {
     var u="//matomo.pensoft.net/";
     _paq.push(['setTrackerUrl', u+'matomo.php']);
-    _paq.push(['setSiteId', '45']);
+    _paq.push(['setSiteId', '52']);
     var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
     g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
   })();
@@ -210,6 +206,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </script>
 
 </body>
-{% component 'cookieBanner' %}
+
 
 </html>
