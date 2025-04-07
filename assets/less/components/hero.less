@@ -132,12 +132,22 @@
         align-items: center;
     }
     
-    // Add styling for content wrapper
+    // Update content wrapper to improve visibility
     .content-wrapper {
         width: 100%;
-        overflow-y: auto;
-        max-height: calc(100vh - 200px);
         padding: 0 15px 30px;
+        
+        // Use max-height only for medium screens
+        @media (min-height: 650px) and (max-height: 800px) {
+            max-height: calc(100vh - 200px);
+            overflow-y: auto;
+        }
+        
+        // For larger screens, don't limit height
+        @media (min-height: 901px) {
+            max-height: none;
+            overflow: visible;
+        }
         
         .breakpoint-large-down({
             max-height: none;

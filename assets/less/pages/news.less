@@ -10,7 +10,7 @@ nav:not(.navbar){
 }
 
 .news-back-button {
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     
     .back-to-news {
         display: inline-flex;
@@ -650,12 +650,40 @@ nav:not(.navbar){
 }
 
 .news-detail-container {
-    display: flex;
-    gap: 40px;
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
+    display: flex;
+    flex-direction: column;
 
+    .breakpoint-large-down({
+        flex-direction: column;
+    });
+}
+
+.news-header {
+    margin-bottom: 30px;
+    
+    .news-date {
+        color: #8C99A0;
+        text-transform: uppercase;
+        font-size: 14px;
+        margin-bottom: 8px;
+    }
+    
+    .news-title {
+        font-weight: 600;
+        line-height: 1.2em;
+        color: #283841;
+        font-size: 24px;
+        margin: 0;
+    }
+}
+
+.news-content-wrapper {
+    display: flex;
+    gap: 40px;
+    
     .breakpoint-large-down({
         flex-direction: column;
     });
@@ -663,25 +691,71 @@ nav:not(.navbar){
 
 .news-main-content {
     flex: 1;
-    max-width: 800px;
+    max-width: 65%;
 
     .breakpoint-large-down({
         max-width: 100%;
     });
+    
+    .single-news-item {
+        position: relative;
+        margin: 0;
+        font-size: 18px;
+        
+        .news-content {
+            line-height: 1.4em;
+            color: #40454A;
+            font-size: 16px;
+            margin-bottom: 40px;
+            
+            p {
+                line-height: 1.4em;
+                margin-bottom: 20px;
+            }
+            
+            // ... existing content styling ...
+        }
+    }
 }
 
 .news-sidebar {
-    width: 320px;
+    width: 35%;
     
     .breakpoint-large-down({
         width: 100%;
+        margin-top: 30px;
     });
-
-    h3 {
-        font-size: 20px;
-        font-weight: 600;
-        color: #283841;
-        margin-bottom: 20px;
+    
+    .news-img-container {
+        margin-bottom: 30px;
+        
+        img {
+            width: 100%;
+            border-radius: 7px;
+            max-width: 100%;
+        }
+        
+        .caption {
+            text-align: center;
+            font-size: 16px;
+            font-style: italic;
+            color: #8C99A0;
+            margin-top: 10px;
+            
+            p {
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+        }
+    }
+    
+    .related-news-section {
+        h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #283841;
+            margin-bottom: 20px;
+        }
     }
 }
 
