@@ -3,7 +3,7 @@
 @medium-green: #1E513D;
 @light-green-bg: #E4EEE6;
 @white-color: #FFFFFF;
-@border-radius: 6px;
+@border-radius: 30px;
 
 .flex-center() {
     display: flex;
@@ -42,7 +42,6 @@
             border-radius: @border-radius;
             border: 1px solid #EFEFEF;
             position: relative;
-            transition: all 0.3s ease;
             
             &.active, &:hover {
                 background-color: @green-color;
@@ -55,12 +54,9 @@
 
 .tab-content {
     display: none;
-    opacity: 0;
-    transition: opacity 0.3s ease;
     
     &.active {
         display: block;
-        opacity: 1;
     }
 }
 
@@ -86,7 +82,6 @@
             color: @white-color;
             font-weight: 500;
             position: relative;
-            transition: all 0.3s ease;
             min-height: 60px;
             border-radius: @border-radius;
             box-shadow: 0px 1px 2px 0px rgba(198, 228, 246, 0.05);
@@ -282,7 +277,6 @@
         height: 410px;
         border: 2px dashed rgba(60, 187, 84, 0.3);
         border-radius: 50%;
-        animation: spin-about 30s linear infinite;
         .breakpoint-large-down ({
             width: 280px;
             height: 280px;
@@ -330,6 +324,137 @@
         height: 245px;
         transform: rotate(320deg);
     }
+}
+
+.partners-container{
+    .partner-record{
+        border-radius: 10px;
+        background: #F2F6F3;
+        padding: 25px;
+        margin-bottom: 20px;
+        min-height: 216px;
+        position: relative;
+
+        .header-row{
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+
+            .img-container{
+                width: 120px;
+                height: 60px;
+                margin-right: 20px;
+                flex-shrink: 0;
+                .flex-center();
+                
+                img{
+                    width: 100%;
+                    height: 100%;
+                    object-fit: contain;
+                }
+            }
+
+            .col-xs-8{
+                flex: 1;
+                font-family: 'Satoshi Medium', sans-serif;
+                font-size: 20px;
+                color: #003c3c;
+                line-height: 1.2;
+                letter-spacing: -0.4px;
+                font-weight: 500;
+            }
+        }
+    }
+
+    .partner-content{
+        position: relative;
+
+        .partner-description-truncated,
+        .partner-description-full{
+            font-family: 'Satoshi Regular', sans-serif;
+            font-size: 17px;
+            color: #1e513d;
+            line-height: 1.4em;
+            position: relative;
+        }
+
+        .partner-description-truncated{
+            &::after{
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                height: 40px;
+                background: linear-gradient(to bottom, rgba(242, 246, 243, 0) 0%, #F2F6F3 100%);
+                pointer-events: none;
+            }
+        }
+
+        .read-more-partner{
+            display: inline-flex;
+            align-items: center;
+            font-family: 'Satoshi Bold', sans-serif;
+            font-size: 17px;
+            color: #3CBB54;
+            text-decoration: none;
+            margin-top: 10px;
+            font-weight: 700;
+
+            &:hover{
+                opacity: 0.8;
+            }
+
+            &::after{
+                content: '';
+                width: 9px;
+                height: 5px;
+                margin-left: 8px;
+                background-image: url("data:image/svg+xml,%3Csvg width='9' height='5' viewBox='0 0 9 5' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4.5 5C4.39238 5 4.28825 4.98092 4.18762 4.94275C4.08646 4.90458 4.00224 4.85369 3.93498 4.79008L0.221973 1.27863C0.0739907 1.13868 0 0.960559 0 0.744274C0 0.527989 0.0739907 0.349872 0.221973 0.209923C0.369955 0.0699743 0.558296 0 0.786995 0C1.01569 0 1.20404 0.0699743 1.35202 0.209923L4.5 3.18702L7.64798 0.209923C7.79596 0.0699743 7.9843 0 8.213 0C8.4417 0 8.63004 0.0699743 8.77803 0.209923C8.92601 0.349872 9 0.527989 9 0.744274C9 0.960559 8.92601 1.13868 8.77803 1.27863L5.06502 4.79008C4.9843 4.86641 4.89686 4.92036 4.80269 4.95191C4.70852 4.98397 4.60762 5 4.5 5Z' fill='%233CBB54'/%3E%3C/svg%3E");
+                background-repeat: no-repeat;
+                background-position: center;
+            }
+
+            &.expanded::after{
+                transform: rotate(180deg);
+            }
+        }
+    }
+
+    // Responsive styling
+    .breakpoint-large-down({
+        .partner-record{
+            padding: 20px;
+
+            .header-row{
+                flex-direction: column;
+                text-align: center;
+
+                .img-container{
+                    margin-right: 0;
+                    margin-bottom: 15px;
+                    width: 100px;
+                    height: 50px;
+                }
+
+                .col-xs-8{
+                    font-size: 18px;
+                }
+            }
+        }
+
+        .partner-content{
+            .partner-description-truncated,
+            .partner-description-full{
+                line-height: 1.6em;
+                font-size: 17px;
+            }
+
+            .read-more-partner{
+                font-size: 17px;
+            }
+        }
+    });
 }
 
 @keyframes spin-about {

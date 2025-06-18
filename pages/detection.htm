@@ -8,11 +8,40 @@ robot_index = "index"
 robot_follow = "follow"
 
 [siteSearchInclude]
+
+[jumbotron detection-intro]
+jumbotron = "detection-intro"
+templates = "template2" 
+description_limit = 0
+
+[jumbotron detection-content]
+jumbotron = "detection-content"
+templates = "template2" 
+description_limit = 0
 ==
 
 ==
 {% component 'siteSearchInclude' %}
 
-<div class="container-fluid">
-  
+<div class="container-fluid page-intro">
+    <div class="container">
+        {% component 'detection-intro' %}
+    </div>
+</div>
+
+<div class="container-fuild page-tabs">
+    <div class="container mb-0 pb-0">
+        <div class="tabs-navigation row">
+            <a href="javascript:void(0)" class="tab-link active" data-tab="air-dna">Air-DNA</a>
+            <a href="javascript:void(0)" class="tab-link" data-tab="iecology">iEcology</a>
+            <a href="javascript:void(0)" class="tab-link" data-tab="computer-vision">Computer vision</a>
+            <a href="javascript:void(0)" class="tab-link" data-tab="sentinel-gardens">Sentinel gardens</a>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid page-content">
+    <div class="container">
+        {% component 'detection-content' %}
+    </div>
 </div>

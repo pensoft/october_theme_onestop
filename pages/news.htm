@@ -190,6 +190,16 @@ $this['related'] = $related;
 
 	{% else %}
 
+    <!-- Category Tabs -->
+    <div class="news-category-tabs">
+        <div class="tabs-navigation">
+            <a href="/news" class="tab-link{% if categoryId == 'all' %} active{% endif %}" data-category="all">All News</a>
+            {% for category in categories %}
+                <a href="/news?categoryId={{category.id}}" class="tab-link{% if categoryId == category.id %} active{% endif %}" data-category="{{category.id}}">{{category.name}}</a>
+            {% endfor %}
+        </div>
+    </div>
+
     <div class="news-list">
         {% for record in records %}
         {% spaceless %}

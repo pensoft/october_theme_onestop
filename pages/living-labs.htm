@@ -12,72 +12,55 @@ jumbotron = "living-labs-intro"
 templates = "template2" 
 description_limit = 0
 
+[jumbotron living-labs-outro]
+jumbotron = "living-labs-outro"
+templates = "template2" 
+description_limit = 0
+
 [siteSearchInclude]
 ==
 <?php
 use Pensoft\Partners\Models\Partners as Partner;
 function onStart(){
     $this['living_labs'] = Partner::where('type', 2)->get();
+    
+    // Prepare partner data for JavaScript
+    $partnersData = [];
+    foreach ($this['living_labs'] as $partner) {
+        $countryCodes = is_array($partner->country_code) ? $partner->country_code : (json_decode($partner->country_code, true) ?: []);
+        foreach ($countryCodes as $countryCode) {
+            if (!isset($partnersData[$countryCode])) {
+                $partnersData[$countryCode] = [];
+            }
+            $partnersData[$countryCode][] = [
+                'institution' => $partner->instituion,
+                'logo' => $partner->cover ? $partner->cover->getThumb(100, 60, 'auto') : null,
+                'url' => $partner->instituion_url
+            ];
+        }
+    }
+    $this['partnersData'] = $partnersData;
 }
 ?>
 ==
 {% component 'siteSearchInclude' %}
 
-<div class="container-fluid living-labs-container">
-    <div class="container pb-0">
-        {% component 'living-labs-intro' %}
+<script>
+// Make partner data available to JavaScript
+window.livingLabsPartners = {{ partnersData|json_encode|raw }};
+</script>
 
-        <div class="row living-labs-row">
-            <div class="col-md-2 col-xs-12 living-lab">
-                <div class="living-lab-item">
-                    <div class="col-xs-12 flag">
-                        <span class="flag-icon flag-icon-be"></span>
-                    </div>
-                    <div class="col-xs-12 cover">
-                        <img src='/themes/pensoft-onestop/assets/images/duologo.svg' alt="Living Lab Image" class="fr-fic fr-dii" data-result="success">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-2 col-xs-12 living-lab">
-                <div class="living-lab-item">
-                    <div class="col-xs-12 flag">
-                        <span class="flag-icon flag-icon-fi"></span>
-                    </div>
-                    <div class="col-xs-12 cover">
-                        <img src='/themes/pensoft-onestop/assets/images/luke-logo.svg' alt="Living Lab Image" class="fr-fic fr-dii" data-result="success">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-2 col-xs-12 living-lab">
-                <div class="living-lab-item">
-                    <div class="col-xs-12 flag">
-                        <span class="flag-icon flag-icon-pt"></span>
-                    </div>
-                    <div class="col-xs-12 cover">
-                        <img src='/themes/pensoft-onestop/assets/images/cibio-logo.svg' alt="Living Lab Image" class="fr-fic fr-dii" data-result="success">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-2 col-xs-12 living-lab">
-                <div class="living-lab-item">
-                    <div class="col-xs-12 flag">
-                        <span class="flag-icon flag-icon-ro"></span>
-                    </div>
-                    <div class="col-xs-12 cover">
-                        <img src='/themes/pensoft-onestop/assets/images/ovidius-logo.svg' alt="Living Lab Image" class="fr-fic fr-dii" data-result="success">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-2 col-xs-12 living-lab">
-                <div class="living-lab-item">
-                    <div class="col-xs-12 flag">
-                        <span class="flag-icon flag-icon-gb"></span>
-                    </div>
-                    <div class="col-xs-12 cover">
-                        <img src='/themes/pensoft-onestop/assets/images/coventry-logo.svg' alt="Living Lab Image" class="fr-fic fr-dii" data-result="success">
-                    </div>
-                </div>
-            </div>
-        </div>
+<div class="container-fluid living-labs-page">
+    <div class="container">
+        {% component 'living-labs-intro' %}
+    </div>
+
+    <div class="container map">
+        {% partial 'components/living-labs-map' %}
+    </div>
+
+    <div class="container">
+        {% component 'living-labs-outro' %}
     </div>
 </div>
+

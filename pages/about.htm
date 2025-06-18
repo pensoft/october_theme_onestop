@@ -35,9 +35,11 @@ description_limit = 0
 function onStart(){
     use Pensoft\Accordions\Models\Item;
     use Pensoft\Accordions\Models\Category;
+    use Pensoft\Partners\Models\Partners as Partner;
 
     $this['work_packages_title'] = Category::where('id', 1)->first();
     $this['work_packages_records'] = Item::where('category_id', 1)->get();
+    $this['partners'] = Partner::where('type', 3)->get();
 }
 ?>
 ==
@@ -48,7 +50,7 @@ function onStart(){
         <div class="tabs-navigation row">
             <a href="javascript:void(0)" class="tab-link active" data-tab="about">About</a>
             <a href="javascript:void(0)" class="tab-link" data-tab="work-packages">Work packages</a>
-            <!-- <a href="javascript:void(0)" class="tab-link" data-tab="partners">Partners</a> -->
+            <a href="javascript:void(0)" class="tab-link" data-tab="partners">Partners</a>
         </div>
     </div>
 </div>
@@ -87,18 +89,43 @@ function onStart(){
                     </div>
                 </div>
             </div>
-            {%endfor%}
+            {% endfor %}
         </div>
     </div>
 </div>
 
 <div id="partners" class="tab-content">
-    <div class="container">
+    <div class="container partners-container">
         <div class="row">
-            <div class="col-xs-12">
-                <h2>Partners</h2>
-                <p>No partners available yet</p>
+            {% for partner in partners %}
+            <div class="col-xs-12 key_{{ loop.index0 }}">
+                <div class="partner-record">
+                    <div class="row header-row">
+                        <div class="col-xs-4 img-container">
+                            <img src="{{ partner.cover.path }}" alt="{{ partner.title }}">
+                        </div>
+                        <div class="col-xs-8">
+                            {% if partner.instituion_url %}
+                                <a href="{{ partner.instituion_url }}" target="_blank">{{ partner.instituion }}</a>
+                            {% else %}
+                                {{ partner.instituion }}
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="partner-content">
+                        <div class="partner-description-truncated">
+                            <!-- Truncated content will be set by JavaScript -->
+                        </div>
+                        <div class="partner-description-full" style="display: none;" data-full-content="{{ partner.content|raw|e }}">
+                            {{ partner.content|raw }}
+                        </div>
+                        <a href="javascript:void(0)" class="read-more-partner">
+                            Read more
+                        </a>
+                    </div>
+                </div>
             </div>
+            {% endfor %}
         </div>
     </div>
 </div>

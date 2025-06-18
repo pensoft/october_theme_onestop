@@ -1,65 +1,73 @@
-.living-labs{
-    min-height: 600px;
-
-}
-
-.living-labs-container{
-    .intro-text{
+.living-labs-page{
+    p{
         display: flex;
         justify-content: center;
+        align-items: center;
         text-align: center;
-        align-items: center;
-        font-size: 18px;
         color: #1E513D;
-        margin-bottom: 40px;
+        font-family: Satoshi;
+        font-size: 16px;
+        font-weight: 400;
     }
-
-    .living-labs-row{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        .living-lab{
-            .living-lab-item{
-                width: 176px;
-                height: 124px;
-                margin-bottom: 24px;
-                border-radius: 10px;
-                background: #F2F6F3;
-                position: relative;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                cursor: default;
-                .flag{
-                    position: absolute;
-                    left: 0;
-                    top: 0;
-                    z-index: 1;
-                    padding: 8px;
-                    .flag-icon {
-                        width: 30px;
-                        height: 20px;
-                        border-radius: 4px;
-                        overflow: hidden;
-                    }
-                }
-                .cover{
-                    width: 80%;
-                    height: 80%;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    img{
-                        width: 80%;
-                        height: 80%;
-                        object-fit: contain;
-                    }
-                }
+}
+.living-labs-map {
+    position: relative;
+    
+    svg {
+        display: block;
+        width: 100%;
+        height: auto;
+        
+        circle {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            
+            &:hover {
+                opacity: 0.8;
+                stroke-width: 2;
+                stroke: #007bff;
             }
-            .breakpoint-large-down({
-                display: flex;
-                justify-content: center;
-            });
+        }
+    }
+    
+    .map-tooltip {
+        position: absolute;
+        border-radius: 10px;
+        background: #F2F6F3;
+        box-shadow: 0px 0px 17px 0px rgba(25, 25, 25, 0.21);
+        padding: 16px;
+        pointer-events: none;
+        opacity: 0;
+        transform: translate(-50%, -100%);
+        transition: opacity 0.3s ease;
+        z-index: 1000;
+        
+        // Logo styling
+        img {
+            display: block;
+            max-height: 60px;
+            max-width: 120px;
+            object-fit: contain;
+            margin: 0 auto;
+        }
+        
+        // Arrow pointing down to the circle
+        &::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 8px solid #F2F6F3;
+            filter: drop-shadow(0px 3px 6px rgba(25, 25, 25, 0.15));
+        }
+        
+        &.show {
+            opacity: 1;
         }
     }
 }

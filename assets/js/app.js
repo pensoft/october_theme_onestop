@@ -132,6 +132,21 @@ $(document).ready(function() {
     // Initialize accordion functionality
     initAccordion();
     
+    // Initialize partner content truncation
+    initPartnerContentTruncation();
+    
+    // Initialize partner layout wrapping for larger screens
+    if(width >= 1024 && $('#partners .key_0').length){
+        // First column: items 0, 2, 4, 6, etc. (even numbers)
+        $('#partners .key_0, #partners .key_2, #partners .key_4, #partners .key_6, #partners .key_8, #partners .key_10, #partners .key_12, #partners .key_14, #partners .key_16, #partners .key_18').wrapAll('<div class="col-md-6 col-xs-12" />');
+        
+        // Second column: items 1, 3, 5, 7, etc. (odd numbers)
+        $('#partners .key_1, #partners .key_3, #partners .key_5, #partners .key_7, #partners .key_9, #partners .key_11, #partners .key_13, #partners .key_15, #partners .key_17, #partners .key_19').wrapAll('<div class="col-md-6 col-xs-12" />');
+    }
+    
+    // Initialize news category tabs
+    initNewsCategoryTabs();
+    
     // Language toggle functionality
     $('.language-btn').on('click', function(e) {
         e.preventDefault();
@@ -727,6 +742,16 @@ function initCircleAnimation(circleBorderSelector, containerSelector) {
  * This function initializes tab functionality for the about page
  */
 function initTabs() {
+    // Check if there's already an active tab content
+    if ($('.tab-content.active').length === 0) {
+        // No active tab found, activate the first tab
+        var $activeTabLink = $('.tab-link.active');
+        if ($activeTabLink.length > 0) {
+            var firstTabId = $activeTabLink.data('tab');
+            $('#' + firstTabId).addClass('active');
+        }
+    }
+    
     // Hide all tab content except the active one on page load
     $('.tab-content').not('.active').css({
         'display': 'none',
@@ -750,41 +775,39 @@ function initTabs() {
         $('.tab-link').removeClass('active');
         $(this).addClass('active');
         
-        // Hide all tab content
-        $('.tab-content').removeClass('active').css('opacity', '0');
+        // Hide all tab content immediately
+        $('.tab-content').removeClass('active').css({
+            'display': 'none',
+            'opacity': '1'
+        });
         
-        // After a short delay, hide the inactive tabs and show the active one
-        setTimeout(function() {
-            $('.tab-content').not('#' + tabId).css('display', 'none');
-            $('#' + tabId).css({
-                'display': 'block'
-            });
+        // Show the active tab immediately
+        $('#' + tabId).css('display', 'block').addClass('active');
+        
+        // If switching to work-packages tab, make sure accordion functionality is initialized
+        if (tabId === 'work-packages') {
+            // Reinitialize accordion if needed
+            initAccordion();
+            // Reinitialize work packages toggle
+            initWorkPackagesToggle();
             
-            // After ensuring the display is set, fade in the content
-            setTimeout(function() {
-                $('#' + tabId).addClass('active').css('opacity', '1');
+            // Re-wrap work package items if needed
+            if (width >= 1024 && !$('#work-packages .key_0').parent().hasClass('col-md-4')) {
+                // First column: items 0, 3, 6, 9, etc.
+                $('#work-packages .key_0, #work-packages .key_3, #work-packages .key_6, #work-packages .key_9, #work-packages .key_12, #work-packages .key_15').wrapAll('<div class="col-md-4 col-xs-12" />');
                 
-                // If switching to work-packages tab, make sure accordion functionality is initialized
-                if (tabId === 'work-packages') {
-                    // Reinitialize accordion if needed
-                    initAccordion();
-                    // Reinitialize work packages toggle
-                    initWorkPackagesToggle();
-                    
-                    // Re-wrap work package items if needed
-                    if (width >= 1024 && !$('#work-packages .key_0').parent().hasClass('col-md-4')) {
-                        // First column: items 0, 3, 6, 9, etc.
-                        $('#work-packages .key_0, #work-packages .key_3, #work-packages .key_6, #work-packages .key_9, #work-packages .key_12, #work-packages .key_15').wrapAll('<div class="col-md-4 col-xs-12" />');
-                        
-                        // Second column: items 1, 4, 7, 10, etc.
-                        $('#work-packages .key_1, #work-packages .key_4, #work-packages .key_7, #work-packages .key_10, #work-packages .key_13, #work-packages .key_16').wrapAll('<div class="col-md-4 col-xs-12" />');
-                        
-                        // Third column: items 2, 5, 8, 11, etc.
-                        $('#work-packages .key_2, #work-packages .key_5, #work-packages .key_8, #work-packages .key_11, #work-packages .key_14, #work-packages .key_17').wrapAll('<div class="col-md-4 col-xs-12" />');
-                    }
-                }
-            }, 50);
-        }, 300);
+                // Second column: items 1, 4, 7, 10, etc.
+                $('#work-packages .key_1, #work-packages .key_4, #work-packages .key_7, #work-packages .key_10, #work-packages .key_13, #work-packages .key_16').wrapAll('<div class="col-md-4 col-xs-12" />');
+                
+                // Third column: items 2, 5, 8, 11, etc.
+                $('#work-packages .key_2, #work-packages .key_5, #work-packages .key_8, #work-packages .key_11, #work-packages .key_14, #work-packages .key_17').wrapAll('<div class="col-md-4 col-xs-12" />');
+            }
+        }
+        
+        // If switching to partners tab, initialize content truncation
+        if (tabId === 'partners') {
+            initPartnerContentTruncation();
+        }
         
         if (history.pushState) {
             history.pushState(null, null, '#' + tabId);
@@ -808,12 +831,12 @@ function initAccordion() {
     
     $('.work_packages .accordion-toggle, .mission .accordion-toggle').on('click', function () {
         if ($(this).next(".accordion-content").is(':visible')) {
-            $(this).next(".accordion-content").slideUp(300);
+            $(this).next(".accordion-content").hide();
             $(this).children().find(".plusminus").text('+');
             $(this).children(".plusminus").html('<span class="plus"></span>');
             $(this).children(".green_bullet").removeClass('toggled');
         } else {
-            $(this).next(".accordion-content").slideDown(300);
+            $(this).next(".accordion-content").show();
             $(this).children().find(".plusminus").text('-');
             $(this).children(".plusminus").html('<span class="minus"></span>');
             $(this).children(".green_bullet").addClass('toggled');
@@ -844,13 +867,212 @@ function toggleWorkPackage(element) {
     
     if ($content.is(':visible')) {
         $button.removeClass('arrow-up');
-        $content.slideUp(300, function() {
-            $button.text('Read more');
-        });
+        $content.hide();
+        $button.text('Read more');
     } else {
         $button.addClass('arrow-up');
-        $content.slideDown(300, function() {
-            $button.text('Read less');
-        });
+        $content.show();
+        $button.text('Read less');
     }
+}
+
+/**
+ * Initialize partner content truncation
+ * Truncates partner descriptions to 255 characters without breaking words
+ */
+function initPartnerContentTruncation() {
+    $('.partner-content').each(function() {
+        var $partnerContent = $(this);
+        var $fullContent = $partnerContent.find('.partner-description-full');
+        var $truncatedContent = $partnerContent.find('.partner-description-truncated');
+        var $button = $partnerContent.find('.read-more-partner');
+        
+        var fullText = $fullContent.data('full-content');
+        var maxLength = 255;
+        
+        if (fullText && fullText.length > maxLength) {
+            // Find the last space before the 255 character limit to avoid breaking words
+            var truncatedText = fullText.substring(0, maxLength);
+            var lastSpaceIndex = truncatedText.lastIndexOf(' ');
+            
+            if (lastSpaceIndex > 0) {
+                truncatedText = truncatedText.substring(0, lastSpaceIndex);
+            }
+            
+            // Add ellipsis to indicate there's more content
+            truncatedText += '...';
+            
+            // Set the truncated content
+            $truncatedContent.html(truncatedText);
+            
+            // Show truncated content initially and show button
+            $truncatedContent.show();
+            $fullContent.hide();
+            $button.show();
+        } else {
+            // Content is short enough, show full content and hide button
+            $truncatedContent.html(fullText);
+            $truncatedContent.show();
+            $fullContent.hide();
+            $button.hide();
+        }
+    });
+    
+    // Handle read more/less toggle with smooth animation
+    $('.read-more-partner').off('click').on('click', function(e) {
+        e.preventDefault();
+        
+        var $button = $(this);
+        var $partnerContent = $button.closest('.partner-content');
+        var $truncatedContent = $partnerContent.find('.partner-description-truncated');
+        var $fullContent = $partnerContent.find('.partner-description-full');
+        
+        if ($fullContent.is(':visible')) {
+            // Currently showing full content, switch to truncated
+            $fullContent.hide();
+            $truncatedContent.show();
+            $button.text('Read more').removeClass('expanded');
+        } else {
+            // Currently showing truncated content, switch to full
+            $truncatedContent.hide();
+            $fullContent.show();
+            $button.text('Read less').addClass('expanded');
+        }
+    });
+}
+
+function initLivingLabsMapTooltips() {
+    const mapContainer = document.querySelector('.living-labs-map');
+    if (!mapContainer) return;
+
+    const svg = mapContainer.querySelector('svg');
+    if (!svg) return;
+
+    // Country code mapping based on cx coordinates
+    const countryCodeMap = {
+        '578.5': 'RO', // Romania
+        '560.5': 'FI', // Finland 
+        '357.5': 'BE', // Belgium
+        '179.5': 'PT', // Portugal
+        '299.5': 'GB'  // UK
+    };
+
+    // Get partner data from global variable
+    const partnersData = window.livingLabsPartners || {};
+
+    // Create tooltip element
+    const tooltip = document.createElement('div');
+    tooltip.className = 'map-tooltip';
+    mapContainer.appendChild(tooltip);
+
+    // Get all circles in the SVG
+    const circles = svg.querySelectorAll('circle');
+
+    circles.forEach(circle => {
+        const cx = circle.getAttribute('cx');
+        const countryCode = countryCodeMap[cx];
+
+        if (countryCode && partnersData[countryCode]) {
+            const partners = partnersData[countryCode];
+            
+            // Add country code as data attribute
+            circle.setAttribute('data-country-code', countryCode);
+
+            // Add hover events
+            circle.addEventListener('mouseenter', function(e) {
+                // Clear previous content
+                tooltip.innerHTML = '';
+                
+                // Find the first partner with a logo
+                const partnerWithLogo = partners.find(partner => partner.logo);
+                
+                if (partnerWithLogo) {
+                    const logoImg = document.createElement('img');
+                    logoImg.src = partnerWithLogo.logo;
+                    logoImg.alt = partnerWithLogo.institution || '';
+                    
+                    tooltip.appendChild(logoImg);
+                }
+                
+                tooltip.classList.add('show');
+                updateTooltipPosition(e, tooltip, mapContainer);
+            });
+
+            circle.addEventListener('mousemove', function(e) {
+                updateTooltipPosition(e, tooltip, mapContainer);
+            });
+
+            circle.addEventListener('mouseleave', function() {
+                tooltip.classList.remove('show');
+            });
+
+            // Add click event to open partner URL
+            circle.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Find the first partner with a URL
+                const partnerWithUrl = partners.find(partner => partner.url);
+                
+                if (partnerWithUrl && partnerWithUrl.url) {
+                    window.open(partnerWithUrl.url, '_blank');
+                }
+            });
+        }
+    });
+}
+
+function updateTooltipPosition(event, tooltip, container) {
+    const rect = container.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+    
+    tooltip.style.left = x + 'px';
+    tooltip.style.top = (y - 10) + 'px';
+}
+
+// Initialize living labs map tooltips when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+    initLivingLabsMapTooltips();
+});
+
+/**
+ * Initialize news category tabs functionality
+ * Handles smooth navigation between news categories
+ */
+function initNewsCategoryTabs() {
+    // Only initialize if we're on the news page and tabs exist
+    if (!$('.news-category-tabs').length) {
+        return;
+    }
+    
+    // Handle tab click events
+    $('.news-category-tabs .tab-link').on('click', function(e) {
+        e.preventDefault();
+        
+        // Remove active class from all tabs
+        $('.news-category-tabs .tab-link').removeClass('active');
+        
+        // Add active class to clicked tab
+        $(this).addClass('active');
+        
+        // Get the category ID from data attribute
+        var categoryId = $(this).data('category');
+        
+        // Build the URL
+        var url = '/news';
+        if (categoryId !== 'all') {
+            url += '?categoryId=' + categoryId;
+        }
+        
+        // Navigate to the URL (this will reload the page with filtered content)
+        window.location.href = url;
+    });
+    
+    // Update active state based on current URL parameters
+    var urlParams = new URLSearchParams(window.location.search);
+    var currentCategoryId = urlParams.get('categoryId') || 'all';
+    
+    // Set the correct active tab based on URL
+    $('.news-category-tabs .tab-link').removeClass('active');
+    $('.news-category-tabs .tab-link[data-category="' + currentCategoryId + '"]').addClass('active');
 }

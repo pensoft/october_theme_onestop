@@ -8,7 +8,39 @@ robot_index = "index"
 robot_follow = "follow"
 
 [siteSearchInclude]
+
+[jumbotron dissemination-intro]
+jumbotron = "dissemination-intro"
+templates = "template2" 
+description_limit = 0
+
+[jumbotron dissemination-content]
+jumbotron = "dissemination-content"
+templates = "template2" 
+description_limit = 0
+
 ==
 
 ==
-{% component 'siteSearchInclude' %}
+<div class="container-fluid page-intro">
+    <div class="container">
+        {% component 'dissemination-intro' %}
+    </div>
+</div>
+
+<div class="container-fuild page-tabs">
+    <div class="container mb-0 pb-0">
+        <div class="tabs-navigation row">
+            <a href="javascript:void(0)" class="tab-link active" data-tab="data-publishing">Data publishing</a>
+            <a href="javascript:void(0)" class="tab-link" data-tab="griis-checklists">GRIIS checklists</a>
+            <a href="javascript:void(0)" class="tab-link" data-tab="early-morning-system">Early morning system</a>
+            <a href="javascript:void(0)" class="tab-link" data-tab="awareness-raising">Awareness raising</a>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid page-content">
+    <div class="container">
+        {% component 'dissemination-content' %}
+    </div>
+</div>

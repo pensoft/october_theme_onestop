@@ -8,7 +8,42 @@ robot_index = "index"
 robot_follow = "follow"
 
 [siteSearchInclude]
+
+[jumbotron prioritisation-intro]
+jumbotron = "prioritisation-intro"
+templates = "template2" 
+description_limit = 0
+
+[jumbotron prioritisation-content]
+jumbotron = "prioritisation-content"
+templates = "template2" 
+description_limit = 0
+
 ==
 
 ==
 {% component 'siteSearchInclude' %}
+
+<div class="container-fluid page-intro">
+    <div class="container">
+        {% component 'prioritisation-intro' %}
+    </div>
+</div>
+
+<div class="container-fuild page-tabs">
+    <div class="container mb-0 pb-0">
+        <div class="tabs-navigation row">
+            <a href="javascript:void(0)" class="tab-link active" data-tab="distribution-models">Distribution models</a>
+            <a href="javascript:void(0)" class="tab-link" data-tab="ecological-models">Ecological models</a>
+            <a href="javascript:void(0)" class="tab-link" data-tab="prioritisation-maps">Prioritisation maps</a>
+            <a href="javascript:void(0)" class="tab-link" data-tab="prioritisation-framework">Prioritisation framework</a>
+            <a href="javascript:void(0)" class="tab-link" data-tab="integrating-insights">Integrating insights</a>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid page-content">
+    <div class="container">
+        {% component 'prioritisation-content' %}
+    </div>
+</div>

@@ -1,0 +1,62 @@
+.page-intro{
+    .page-content, .page-intro{
+        p{
+            color: #1E513D;
+            font-family: Satoshi;
+            font-size: 17px;
+        }
+        h2{
+            color: #0B2712;
+            font-family: Satoshi;
+            font-size: 35px;
+        }
+    }
+
+    .text-container, .img-container{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+
+        p{
+            margin-bottom: 20px;
+        }
+    }
+
+    img{
+        position: relative;
+        object-fit: contain;
+        &:after{
+            content: '';
+            background: url("/themes/pensoft-onestop/assets/images/pages-image-after.svg");
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            width: 215px;
+            height: 215px;
+            position: absolute;
+            left: 0;
+        }
+    }
+}
+
+.page-tabs{
+    .tab-link{
+        border-radius: 30px;
+        border: 1px solid #fff;
+        background: #F6F6F6;
+        padding: 16px 20px;
+        color: #90A494;
+        margin-right: 10px;
+        margin-bottom: 10px;
+        &:hover, &.active {
+            border: 1px solid #3CBB54;
+            background: #3CBB54;
+            color: #fff;
+        }
+    }
+}
+
+.page-content{
+    // Stylings >?
+}

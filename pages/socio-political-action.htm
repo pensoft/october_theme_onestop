@@ -8,7 +8,40 @@ robot_index = "index"
 robot_follow = "follow"
 
 [siteSearchInclude]
+
+[jumbotron socio-political-intro]
+jumbotron = "socio-political-intro"
+templates = "template2" 
+description_limit = 0
+
+[jumbotron socio-political-content]
+jumbotron = "socio-political-content"
+templates = "template2" 
+description_limit = 0
+
 ==
 
 ==
 {% component 'siteSearchInclude' %}
+
+<div class="container-fluid page-intro">
+    <div class="container">
+        {% component 'socio-political-intro' %}
+    </div>
+</div>
+
+<div class="container-fuild page-tabs">
+    <div class="container mb-0 pb-0">
+        <div class="tabs-navigation row">
+            <a href="javascript:void(0)" class="tab-link active" data-tab="public-perceptions">Public perceptions</a>
+            <a href="javascript:void(0)" class="tab-link" data-tab="refining-ias-regulation">Refining IAS Regulation</a>
+            <a href="javascript:void(0)" class="tab-link" data-tab="global-biodiversity-framework">Global Biodiversity Framework</a>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid page-content">
+    <div class="container">
+        {% component 'socio-political-content' %}
+    </div>
+</div>
