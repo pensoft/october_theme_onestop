@@ -1,4 +1,4 @@
-url = "/media-center/newsletters"
+url = "/newsletters"
 layout = "default"
 title = "Newsletters"
 is_hidden = 0
@@ -21,52 +21,11 @@ use System\Models\File;
 
 function onStart(){
 	$this['mediaNewslettersList'] =  Newsletters::get();
-	if(get('download')){
-		$file = File::find((int)get('download'));
-		$file_name = $file->getLocalPath();
-$recordName = get('file_name') ? get('file_name') : 'OBSGESSION_newsletter';
-$ext= $file->getExtension();
-
-if (file_exists($file_name)) {
-header('Content-Description: File Transfer');
-header('Content-Type: application/octet-stream');
-header("Content-Type: application/force-download");
-header('Content-Disposition: attachment; filename='.$recordName .'.'. $ext);
-header('Content-Transfer-Encoding: binary');
-header('Expires: 0');
-header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-header('Pragma: public');
-header('Content-Length: ' . filesize($file_name));
-ob_clean();
-flush();
-readfile($file_name);
-exit();
-}
-return Redirect::to('/newsletters');
-}
-}
-
-function onDownloadFile(){
-$file = File::find(post('id'));
-$pathToFile = $file->getLocalPath();
-$fileName = $file->file_name;
-$fileType = $file->content_type;
-$headers = [
-'HTTP/1.1 200 OK',
-'Pragma: public',
-'Content-Type: '.$fileType,
-'Content-Type: application/force-download'
-];
-
-return Response::download($pathToFile, $fileName, $headers);
 }
 ?>
 ==
 <div class="container">
-    <div class="col-xs-12 go-back">
-        <a href="{{'media-center'|page}}" class="col-xs-12">Back to Media</a>
-    </div>
-
+    
 		{% set records = mediaNewslettersList %}
 		{% set displayColumn = mediaNewslettersList.displayColumn %}
 		{% set noRecordsMessage = mediaNewslettersList.noRecordsMessage %}
@@ -79,32 +38,13 @@ return Response::download($pathToFile, $fileName, $headers);
             {% for record in records %}
             {% spaceless %}
 
-            <div class="col-md-4 col-xs-12 mb-4">
-                <div class="flyer-container {{record.name}}">
-                    <img src="{{record.newsletter_image.path}}" title="{{record.name}}">
+            <div class="col-md-4 col-xs-12 mb-4 newsletters">
+                <div class="newsletter-container">
+                    {% partial 'download-dropdown' item=record imageField='newsletter_image' itemType='newsletter' %}
                 </div>
-                <p align="center">{{record.name}}</p>
-
-                <div class="links">
-                    {% if record.url %}
-                    <div class="button_su">
-                        <span class="su_button_circle desplode-circle"></span>
-                        <a class="button_su_inner" href="{{record.url}}" target="_blank"><span class="button_text_container">Read the nesletter</span></a>
-                    </div>
-                    {% endif %}
-
-                    &nbsp;
-
-                    {% if record.file %}
-                    <div class="button_su download">
-                        {{form_open({ request: 'onDownloadFile' }) }}
-                        <input type="hidden" value="{{record.file.id}}" name="id">
-                        <span class="su_button_circle desplode-circle"></span>
-                        <button type="submit" data-attach-loading class="btn button_su_inner"><span class="button_text_container">Download</span></button>
-                        {{ form_close() }}
-                    </div>
-                    {% endif %}
-                </div>
+                
+                <div class="date">{{record.date|date('d.m.Y')}}</div>
+                <div class="title">{{record.name}}</div>
             </div>
 
 

@@ -922,3 +922,140 @@ nav:not(.navbar){
         width: 100%;
     });
 }
+
+// ============================================
+// CENTRALIZED READ-MORE BUTTON STYLES
+// Used across news, newsletters, flyers, etc.
+// ============================================
+
+.home-news-cover,
+.flyer-container,
+.logo-container {
+    a {
+        position: relative;
+        overflow: hidden;
+        
+        &:hover {
+            cursor: none;
+            
+            img {
+                filter: blur(3px);
+            }
+            
+            &::after {
+                opacity: 1;
+            }
+            
+            .read-more-btn {
+                display: block !important;
+            }
+        }
+        
+        &::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, rgba(30, 81, 61, 0.14) 0%, rgba(30, 81, 61, 0.70) 100%);
+            border-radius: 7px;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .read-more-btn {
+            position: absolute;
+            display: none;
+            font-size: 12px !important;
+            font-weight: 600 !important;
+            cursor: none !important;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 100;
+            width: auto !important;
+            white-space: nowrap !important;
+            height: auto !important;
+            text-align: center !important;
+            opacity: 1 !important;
+            
+            &.edge-right {
+                transform: translate(-100%, -50%);
+                animation: subtle-pulse-right 1.5s infinite alternate;
+            }
+            
+            &.edge-left {
+                transform: translate(0%, -50%);
+                animation: subtle-pulse-left 1.5s infinite alternate;
+            }
+            
+            &.edge-top {
+                transform: translate(-50%, 0%);
+                animation: subtle-pulse-top 1.5s infinite alternate;
+            }
+            
+            &.edge-bottom {
+                transform: translate(-50%, -100%);
+                animation: subtle-pulse-bottom 1.5s infinite alternate;
+            }
+        }
+    }
+}
+
+// Keyframe animations for read-more button pulse effects
+@keyframes subtle-pulse {
+    0% {
+        box-shadow: 0 3px 7px rgba(0,0,0,0.3);
+        transform: translate(-50%, -50%) scale(1);
+    }
+    100% {
+        box-shadow: 0 5px 10px rgba(0,0,0,0.4);
+        transform: translate(-50%, -50%) scale(1.08);
+    }
+}
+
+@keyframes subtle-pulse-right {
+    0% {
+        box-shadow: 0 3px 7px rgba(0,0,0,0.3);
+        transform: translate(-100%, -50%) scale(1);
+    }
+    100% {
+        box-shadow: 0 5px 10px rgba(0,0,0,0.4);
+        transform: translate(-100%, -50%) scale(1.08);
+    }
+}
+
+@keyframes subtle-pulse-left {
+    0% {
+        box-shadow: 0 3px 7px rgba(0,0,0,0.3);
+        transform: translate(0%, -50%) scale(1);
+    }
+    100% {
+        box-shadow: 0 5px 10px rgba(0,0,0,0.4);
+        transform: translate(0%, -50%) scale(1.08);
+    }
+}
+
+@keyframes subtle-pulse-top {
+    0% {
+        box-shadow: 0 3px 7px rgba(0,0,0,0.3);
+        transform: translate(-50%, 0%) scale(1);
+    }
+    100% {
+        box-shadow: 0 5px 10px rgba(0,0,0,0.4);
+        transform: translate(-50%, 0%) scale(1.08);
+    }
+}
+
+@keyframes subtle-pulse-bottom {
+    0% {
+        box-shadow: 0 3px 7px rgba(0,0,0,0.3);
+        transform: translate(-50%, -100%) scale(1);
+    }
+    100% {
+        box-shadow: 0 5px 10px rgba(0,0,0,0.4);
+        transform: translate(-50%, -100%) scale(1.08);
+    }
+}

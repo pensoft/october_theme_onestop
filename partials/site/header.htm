@@ -93,22 +93,11 @@ description_limit = 0
     </div>
 </nav>
 
+
+
 {% if this.theme.header_image %}
 <div class="header-image {{page_id}} hero">
-    {% if page_id == 'resources' %}
-        <video autoplay loop muted playsinline class="video-background">
-            <source src="{{ 'uploaded-files/bg-video-2.mp4'|media }}" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-        <div class="header-image-bar row" {% if user %} style="margin-top: 154px!important;" {% endif %}>
-            <div class="container-fluid coming-soon-container">
-                <h1 class="underline white">{%if page_title%} {{page_title}} {%else%} {{site_name}} {%endif%}</h1>
-                <div class="content-wrapper">
-                    {% partial 'site/page-content' %}
-                </div>
-            </div>
-        </div>
-    {% elseif page_id == 'home' %}
+    {% if page_id == 'home' %}
     <div class="container hero-container" {% if user %} style="margin-top: 20px;" {% endif %}>
         <div class="row">
             <div class="col-md-7 col-xs-12">

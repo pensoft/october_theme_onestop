@@ -1,4 +1,4 @@
-url = "/media-center/videos"
+url = "/videos"
 layout = "default"
 title = "Videos"
 is_hidden = 0
@@ -15,12 +15,6 @@ detailsPage = "-"
 detailsUrlParameter = "id"
 pageNumber = "{{ :page }}"
 
-[jumbotron]
-jumbotron = "under-construction"
-title = 1
-background = "transperant"
-templates = "template1"
-description_limit = 0
 ==
 <?php
 use Pensoft\Media\Models\Videos;
@@ -74,15 +68,10 @@ return Response::download($pathToFile, $fileName, $headers);
 {% set records = mediaVideosList %}
 
 <div class="container">
-    <div class="col-xs-12 go-back">
-        <a href="{{'media-center'|page}}" class="col-xs-12">Back to Media</a>
-    </div>
     {% if records.count() %}
     <div class="row">
         {% for record in records %}
         <div class="col-md-4 col-xs-12">
-
-
 
             {% if record.youtube_url %}
             <iframe allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" frameborder="0" src="{{record.youtube_url}}" width="100%" height="267"></iframe>
@@ -94,15 +83,8 @@ return Response::download($pathToFile, $fileName, $headers);
             </iframe>
 
             {% endif %}
-            <p class="card_title">{{ record.name|length > 65 ? record.name|striptags|slice(0, 65)|replace({"&nbsp;": " ", ".": ". "}) ~ '...' : record.name|striptags|replace({"&nbsp;": " ", ".": ". "})  }}</p>
             {% if record.file %}
-            <div class="links">
-                <div class="button_su">
-                    <!--<video controls="" width="100%" height="267"><source src="{{record.file.path}}" type="video/mp4"></video>-->
-                    <span class="su_button_circle desplode-circle"></span>
-                    <a class="button_su_inner" href="{{ ''| page }}?{{queries}}&download={{record.file.id}}&file_name={{record.name|replace({' ': '_'})}}"><span class="button_text_container"><i class="pr normal p-download"></i>Download</span></a>
-                </div>
-            </div>
+                <video controls="" width="100%" height="267"><source src="{{record.file.path}}" type="video/mp4"></video>
             {% endif %}
         </div>
 

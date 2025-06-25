@@ -152,6 +152,18 @@ $(document).ready(function() {
         e.preventDefault();
         e.stopPropagation();
     });
+
+    // Initialize hamburger menu dropdown functionality
+    initHamburgerMenuDropdowns();
+    
+    // Initialize footer dropdown functionality
+    initFooterDropdowns();
+    
+    // Initialize project materials name display
+    initProjectMaterialsNameDisplay();
+    
+    // Initialize project materials dropdown functionality
+    initProjectMaterialsDropdowns();
     
     // Search button functionality
     $('#searchToggle').on('click', function(e) {
@@ -388,6 +400,9 @@ $(document).ready(function() {
     $('.library .form-wrapper, .library-items').wrapAll('<div class="container-fluid bg-secondary"><div class="container"></div></div>');
     $('.library .tabs').wrapAll('<div class="container"></div>');
     $('.library_content .row.center-xs.mb-1').wrapAll('<div class="container_relative"></div>');
+    
+    // Restructure library cards to match Figma design
+    restructureLibraryCards();
 
     if(width > 1024){
         $('.partners_list .key_0, .partners_list .key_2, .partners_list .key_4, .partners_list .key_6, .partners_list .key_8, .partners_list .key_10, .partners_list .key_12, .partners_list .key_14, .partners_list .key_16, .partners_list .key_18').wrapAll('<div class="col-md-6 col-xs-12"></div>');
@@ -556,7 +571,7 @@ $(document).ready(function() {
         });
     }
     
-    // Read more button that follows cursor for all news items
+    // Read more button that follows cursor for news items only (excluding newsletters)
     if(screen.width > 1024){
         $('.home-news-cover a, .related-news .home-news-cover a').on('mouseenter', function(e) {
             // Show the button immediately at the current mouse position
@@ -808,6 +823,12 @@ function initTabs() {
         if (tabId === 'partners') {
             initPartnerContentTruncation();
         }
+        
+        // Reinitialize project materials functionality for all tabs
+        setTimeout(function() {
+            initProjectMaterialsNameDisplay();
+            initProjectMaterialsDropdowns();
+        }, 100);
         
         if (history.pushState) {
             history.pushState(null, null, '#' + tabId);
@@ -1075,4 +1096,300 @@ function initNewsCategoryTabs() {
     // Set the correct active tab based on URL
     $('.news-category-tabs .tab-link').removeClass('active');
     $('.news-category-tabs .tab-link[data-category="' + currentCategoryId + '"]').addClass('active');
+}
+
+/**
+ * Restructure library cards to match Figma design
+ * Reorganizes the card layout and extracts version numbers from titles
+ */
+function restructureLibraryCards() {
+    $('.library-item').each(function() {
+        var $card = $(this);
+        var $row = $card.find('.row');
+        var $contentCol = $row.find('.col-xs-12.col-md-9');
+        var $downloadCol = $row.find('.col-xs-12.col-md-3');
+        
+        // Get elements
+        var $typeLabel = $contentCol.find('.library-type-label');
+        var $title = $contentCol.find('h3');
+        var $body = $contentCol.find('.body');
+        var $downloadBtn = $downloadCol.find('.btn');
+        
+        // Extract version number from title (e.g., "D2.2" from "D2.2 Lorem Ipsum...")
+        var titleText = $title.text();
+        var versionMatch = titleText.match(/^([A-Z]\d+\.\d+)/);
+        var versionNumber = '';
+        var cleanTitle = titleText;
+        
+        if (versionMatch) {
+            versionNumber = versionMatch[1].substring(1); // Remove the "D" prefix to get "2.2"
+            cleanTitle = titleText; // Keep full title for now
+        }
+        
+        // Get document type from existing label
+        var docType = $typeLabel.find('.doc_type').text() || 'Document';
+        
+        // Clear the row and rebuild structure
+        $row.empty();
+        
+        // Create new structure
+        var newStructure = `
+            <div class="card-header">
+                <div class="card-labels">
+                    <span class="card-type-label">${docType}</span>
+                    ${versionNumber ? `<span class="card-version-label">${versionNumber}</span>` : ''}
+                </div>
+            </div>
+            <div class="card-content">
+                <h3 class="card-title">${cleanTitle}</h3>
+                <div class="card-details"></div>
+            </div>
+            <div class="card-footer">
+                <div class="card-download-btn"></div>
+            </div>
+        `;
+        
+        $row.html(newStructure);
+        
+        // Move body content to card-details
+        $row.find('.card-details').append($body.html());
+        
+        // Style status text as green
+        $row.find('.card-details').find('div').each(function() {
+            var $div = $(this);
+            if ($div.find('.text-bold').text().toLowerCase().includes('status')) {
+                $div.find('.text-ligth').addClass('status-approved');
+            }
+        });
+        
+        // Move download button to card-footer and make it full width
+        $downloadBtn.addClass('card-download-full');
+        $row.find('.card-download-btn').append($downloadBtn);
+    });
+}
+
+/**
+ * Initialize project materials name display functionality
+ * Shows the name of the material in bottom left corner on hover
+ */
+function initProjectMaterialsNameDisplay() {
+    // Target all project material containers
+    var materialContainers = $('.logo-container, .flyer-container, .presentation-container, .newsletter-container');
+    
+    if (!materialContainers.length) {
+        return; // Exit if no containers found
+    }
+    
+    // Enhanced hover functionality for better accessibility and performance
+    materialContainers.each(function() {
+        var $container = $(this);
+        var itemName = $container.data('item-name');
+        
+        // Only proceed if the container has an item name
+        if (itemName) {
+            // Add hover events with improved animation
+            $container.on('mouseenter.projectMaterials', function() {
+                // Ensure the pseudo-element content is ready
+                $(this).addClass('name-tooltip-active');
+            });
+            
+            $container.on('mouseleave.projectMaterials', function() {
+                // Clean up on mouse leave
+                $(this).removeClass('name-tooltip-active');
+            });
+        }
+    });
+}
+
+/**
+ * Initialize project materials dropdown functionality
+ * Handles dropdown expansion on click instead of hover
+ */
+function initProjectMaterialsDropdowns() {
+    // Handle dropdown button clicks
+    $(document).off('click.projectDropdown').on('click.projectDropdown', '.download-dropdown .download-btn-main', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        var $dropdown = $(this).closest('.download-dropdown');
+        var $allDropdowns = $('.download-dropdown');
+        
+        // Close all other dropdowns
+        $allDropdowns.not($dropdown).removeClass('dropdown-open');
+        
+        // Toggle current dropdown
+        $dropdown.toggleClass('dropdown-open');
+    });
+    
+    // Close dropdowns when clicking outside
+    $(document).off('click.projectDropdownOutside').on('click.projectDropdownOutside', function(e) {
+        if (!$(e.target).closest('.download-dropdown').length) {
+            $('.download-dropdown').removeClass('dropdown-open');
+        }
+    });
+    
+    // Handle dropdown item clicks
+    $(document).off('click.projectDropdownItem').on('click.projectDropdownItem', '.download-dropdown .dropdown-item', function(e) {
+        // Close dropdown after item is clicked
+        $(this).closest('.download-dropdown').removeClass('dropdown-open');
+    });
+}
+
+/**
+ * Initialize footer dropdown functionality
+ * Handles dropdown toggles in the footer menu with simple click behavior
+ */
+function initFooterDropdowns() {
+    // Mark dropdown items that have submenus
+    $('.footer-menu .footer-menu-item').each(function() {
+        var $item = $(this);
+        var $submenu = $item.find('.dropdown-menu');
+        
+        if ($submenu.length > 0) {
+            $item.addClass('dropdown');
+        }
+    });
+    
+    // Handle dropdown clicks
+    $('.footer-menu .footer-menu-item.dropdown > a').on('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        var $parentItem = $(this).parent();
+        var $dropdownMenu = $parentItem.find('.dropdown-menu');
+        
+        if ($dropdownMenu.length) {
+            // Close all other footer dropdowns first
+            $('.footer-menu .footer-menu-item.dropdown').not($parentItem).removeClass('active');
+            $('.footer-menu .dropdown-menu').not($dropdownMenu).removeClass('show');
+            
+            // Toggle current dropdown
+            $parentItem.toggleClass('active');
+            $dropdownMenu.toggleClass('show');
+        }
+    });
+    
+    // Close dropdowns when clicking outside
+    $(document).on('click.footerDropdown', function(e) {
+        if (!$(e.target).closest('.footer-menu').length) {
+            $('.footer-menu .footer-menu-item.dropdown').removeClass('active');
+            $('.footer-menu .dropdown-menu').removeClass('show');
+        }
+    });
+    
+    // Prevent dropdown menu clicks from closing the dropdown
+    $('.footer-menu .dropdown-menu').on('click', function(e) {
+        e.stopPropagation();
+    });
+    
+    // Allow dropdown menu links to work normally
+    $('.footer-menu .dropdown-menu a').on('click', function(e) {
+        // Don't prevent default - let the link work normally
+        // Just close the dropdown after a short delay
+        setTimeout(function() {
+            $('.footer-menu .footer-menu-item.dropdown').removeClass('active');
+            $('.footer-menu .dropdown-menu').removeClass('show');
+        }, 100);
+    });
+}
+
+/**
+ * Initialize hamburger menu dropdown functionality
+ * Handles dropdown menu toggles, auto-expand, and menu state management
+ */
+function initHamburgerMenuDropdowns() {
+    // Auto-expand dropdowns that contain the current active page
+    function autoExpandActiveDropdowns() {
+        var activeSubItems = $('#headerNavbarNav .dropdown-menu .nav-item.active');
+        
+        activeSubItems.each(function() {
+            // Find the parent dropdown
+            var parentDropdown = $(this).closest('.nav-item.dropdown');
+            if (parentDropdown.length) {
+                var dropdownMenu = parentDropdown.find('.dropdown-menu');
+                
+                // Expand the parent dropdown
+                parentDropdown.addClass('active');
+                if (dropdownMenu.length) {
+                    dropdownMenu.addClass('show');
+                }
+            }
+        });
+    }
+    
+    // Run auto-expand on page load
+    autoExpandActiveDropdowns();
+    
+    // Handle dropdown menu toggles
+    var dropdownItems = $('#headerNavbarNav .nav-item.dropdown > a');
+    
+    dropdownItems.each(function() {
+        $(this).off('click.dropdown').on('click.dropdown', function(e) {
+            e.preventDefault();
+            
+            var parentItem = $(this).parent();
+            var dropdownMenu = parentItem.find('.dropdown-menu');
+            
+            if (dropdownMenu.length) {
+                // Toggle active state on parent item
+                parentItem.toggleClass('active');
+                
+                // Toggle show state on dropdown menu
+                dropdownMenu.toggleClass('show');
+                
+                // Optional: Close other open dropdowns (accordion behavior)
+                var otherDropdowns = $('#headerNavbarNav .nav-item.dropdown');
+                otherDropdowns.each(function() {
+                    if (this !== parentItem[0]) {
+                        $(this).removeClass('active');
+                        var otherMenu = $(this).find('.dropdown-menu');
+                        if (otherMenu.length) {
+                            otherMenu.removeClass('show');
+                        }
+                    }
+                });
+            }
+        });
+    });
+    
+    // Close all dropdowns when menu is closed (but preserve auto-expanded state)
+    function closeAllDropdowns() {
+        var activeDropdowns = $('#headerNavbarNav .nav-item.dropdown.active');
+        activeDropdowns.each(function() {
+            $(this).removeClass('active');
+            var menu = $(this).find('.dropdown-menu');
+            if (menu.length) {
+                menu.removeClass('show');
+            }
+        });
+    }
+    
+    function handleMenuToggle() {
+        // When menu is opened, auto-expand dropdowns with active items
+        setTimeout(function() {
+            autoExpandActiveDropdowns();
+        }, 100); // Small delay to ensure menu animation completes
+    }
+    
+    var closeMenuBtn = $('#closeMenuBtn');
+    if (closeMenuBtn.length) {
+        closeMenuBtn.off('click.dropdown').on('click.dropdown', closeAllDropdowns);
+    }
+    
+    // Re-expand dropdowns when menu is opened
+    var menuToggleBtn = $('#desktopMenuToggle');
+    if (menuToggleBtn.length) {
+        menuToggleBtn.off('click.dropdown').on('click.dropdown', handleMenuToggle);
+    }
+    
+    // Close dropdowns when clicking outside
+    $(document).off('click.dropdownOutside').on('click.dropdownOutside', function(e) {
+        var navbar = $('#headerNavbarNav');
+        var menuToggle = $('#desktopMenuToggle');
+        
+        if (navbar.length && !navbar.is(e.target) && navbar.has(e.target).length === 0 && 
+            !menuToggle.is(e.target) && menuToggle.has(e.target).length === 0) {
+            closeAllDropdowns();
+        }
+    });
 }

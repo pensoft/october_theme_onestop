@@ -1,0 +1,601 @@
+.content_flyer,
+.content_press,
+.content_video,
+.content_newsletter,
+.content_logo{
+    display: flex;
+    .breakpoint-large-down({
+        justify-content: center;
+    });
+
+}
+
+.newsletters{
+    .date{
+        color: #8C99A0;
+        font-size: 14px;
+    }
+    .title{
+        color: #283841;
+        font-size: 18px;
+    }
+}
+
+.card-container{
+    position: relative;
+    .media_label{
+        font-size: 19px;
+        font-weight: 500;
+        color: #ffffff;
+        position: absolute;
+        bottom: 10px;
+        left: 20px;
+        .breakpoint-large-down({
+            left: 20%;
+        });
+    }
+}
+
+.media-center{
+
+
+    .card_image_container{
+        border-radius: 7px;
+        margin: 0 auto;
+        width: 227px;
+        height: 164px;
+        max-width: 100%;
+        transition: all ease-in-out 0.3s;
+        overflow: hidden;
+
+        .card_icon{
+            display: flex;
+            height: 196px;
+            border-radius: 7px;
+            background-size: 40%!important;
+            transition: all ease-in-out 0.3s;
+        }
+
+    }
+
+
+    .media_item{
+        .card_bg{
+            border-radius: 7px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all ease-in-out 0.3s;
+
+
+            background: url("../../assets/images/Logo-Media centre.png") center no-repeat;
+            background-size: cover;
+            &:hover{
+                transform: scale(1.15);
+                & > .card_icon{
+                    transform: scale(0.85);
+                }
+            }
+        }
+
+    }
+
+
+}
+
+// Mixin for download dropdown functionality
+.download-dropdown-mixin() {
+    text-align: center;
+    position: relative;
+    overflow: visible;
+    
+    .image-wrapper {
+        position: relative;
+        display: inline-block;
+        overflow: visible;
+        z-index: 1;
+        
+        &::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, rgba(30, 81, 61, 0.14) 0%, rgba(30, 81, 61, 0.70) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: 7px;
+            pointer-events: none;
+        }
+        
+        // Trigger hover on the wrapper
+        &:hover {
+            &::after {
+                opacity: 1;
+            }
+            
+            .download-dropdown,
+            .single-download .download-btn {
+                opacity: 1;
+                visibility: visible;
+            }
+        }
+    }
+    
+    .single-download {
+        position: relative;
+        display: block;
+        text-decoration: none;
+    }
+    
+    img {
+        width: 300px;
+        height: 350px;
+        object-fit: cover;
+        display: block;
+        margin: 0 auto;
+        transition: all 0.3s ease;
+    }
+    
+    .download-btn {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #3CBB54;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 500;
+        opacity: 1;
+        visibility: visible;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 4px 12px rgba(60, 187, 84, 0.3);
+        cursor: pointer;
+        z-index: 10;
+        
+        .download-icon {
+            width: 16px;
+            height: 16px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M12 15.575L6.7 10.275L8.1 8.875L11 11.775V3H13V11.775L15.9 8.875L17.3 10.275L12 15.575ZM6 21C5.45 21 4.979 20.804 4.587 20.412C4.195 20.02 3.999 19.549 3.999 19V15H5.999V19H18V15H20V19C20 19.55 19.804 20.021 19.412 20.413C19.02 20.805 18.549 21.001 18 21H6Z'/%3E%3C/svg%3E") center no-repeat;
+            background-size: contain;
+        }
+        
+        &:hover {
+            background: #2FA045;
+            box-shadow: 0 6px 16px rgba(60, 187, 84, 0.4);
+        }
+    }
+    
+    // Dropdown functionality
+    .download-dropdown {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        z-index: 10;
+        
+        .download-btn-main {
+            background: #3CBB54;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(60, 187, 84, 0.3);
+            cursor: pointer;
+            position: relative;
+            user-select: none;
+            
+            .download-icon {
+                width: 16px;
+                height: 16px;
+                background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M12 15.575L6.7 10.275L8.1 8.875L11 11.775V3H13V11.775L15.9 8.875L17.3 10.275L12 15.575ZM6 21C5.45 21 4.979 20.804 4.587 20.412C4.195 20.02 3.999 19.549 3.999 19V15H5.999V19H18V15H20V19C20 19.55 19.804 20.021 19.412 20.413C19.02 20.805 18.549 21.001 18 21H6Z'/%3E%3C/svg%3E") center no-repeat;
+                background-size: contain;
+            }
+            
+            .dropdown-arrow {
+                width: 12px;
+                height: 12px;
+                background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M12 15L6 9h12l-6 6z'/%3E%3C/svg%3E") center no-repeat;
+                background-size: contain;
+                margin-left: 4px;
+            }
+            
+            &:hover {
+                background: #2FA045;
+            }
+        }
+        
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 999999;
+            padding: 6px;
+            min-width: 180px;
+            width: auto;
+            max-width: 200px;
+            
+            .dropdown-item {
+                display: block;
+                padding: 10px 0;
+                color: white;
+                background: #3CBB54;
+                text-decoration: none;
+                font-size: 13px;
+                font-weight: 500;
+                border-radius: 6px;
+                margin-bottom: 3px;
+                transition: all 0.2s ease;
+                text-align: center;
+                cursor: pointer;
+                white-space: nowrap;
+                
+                &:last-child {
+                    margin-bottom: 0;
+                }
+                
+                &:hover {
+                    background: #2FA045;
+                    color: white;
+                    text-decoration: none;
+                }
+                
+                &:focus {
+                    outline: none;
+                    background: #2FA045;
+                }
+            }
+        }
+        
+        &.dropdown-open .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+        }
+    }
+}
+
+.flyer-container,
+.logo-container,
+.presentation-container,
+.newsletter-container {
+    .download-dropdown-mixin();
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 357px;
+    max-width: 100%;
+    height: 253px;
+    margin: 0 auto 20px auto;
+    border-radius: 7px;
+    overflow: visible;
+    position: relative;
+
+    // Item name tooltip in bottom left corner
+    &::before {
+        content: attr(data-item-name);
+        position: absolute;
+        bottom: 10px;
+        left: 10px;
+        color: #FFF;
+        font-family: Satoshi;
+        font-size: 25px;
+        font-style: normal;
+        font-weight: 700;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        z-index: 15;
+        max-width: 200px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        pointer-events: none;
+    }
+    
+    &:hover::before,
+    &.name-tooltip-active::before {
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    &.white{
+        background-color: @blue-color;
+    }
+
+    a {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        border-radius: 7px;
+        overflow: hidden;
+    }
+
+    // Override mixin image dimensions for newsletters
+    .image-wrapper img {
+        width: 357px !important;
+        height: 253px !important;
+        object-fit: cover;
+        border-radius: 7px;
+        transition: all 0.3s ease;
+    }
+
+    // Ensure proper dropdown behavior for newsletters
+    .download-dropdown {
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    .download-btn {
+        opacity: 0 !important;
+        visibility: hidden !important;
+    }
+
+    .image-wrapper:hover {
+        .download-dropdown,
+        .download-btn {
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+    }
+
+    img {
+        width: 357px;
+        height: 253px;
+        object-fit: cover;
+        border-radius: 7px;
+        transition: all 0.5s ease-in-out;
+        position: relative;
+        z-index: 0;
+    }
+
+    .button_su{
+        &.download{
+            .button_su_inner{
+                width: unset;
+                height: unset;
+            }
+        }
+    }
+}
+
+.links{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .breakpoint-large-down({
+        justify-content: space-evenly;
+        margin-bottom: 50px;
+    });
+    form{
+        width: fit-content;
+    }
+    button{
+        //padding: 10px 30px 10px 30px;
+        border-radius: 7px;
+        font-size: 18px;
+        background: @yellow-color;
+        border: none;
+
+
+    }
+    .button_su{
+        margin: 0 3px;
+        i{
+            background: url("../../assets/images/download.svg") center no-repeat;
+            background-size: contain;
+            width: 15px;
+            height: 14px;
+            margin-right: 6px;
+        }
+    }
+}
+
+
+
+.press-relies-item{
+    width: 90%;
+    background-color: @white-color;
+    border: 1px solid #B9D7DB;
+    margin: 0 auto 20px auto;
+    border-radius: 7px;
+    padding: 30px;
+    position: relative;
+
+    .breakpoint-large-down({
+        width: auto;
+    });
+
+    .card-title{
+        font-size: 25px;
+    }
+
+    .date{
+        width: 133px;
+        height: 33px;
+        white-space: nowrap;
+        font-size: 14px;
+        background: transparent linear-gradient(254deg, #25BDD2 0%, #2D7252 100%) 0% 0% no-repeat padding-box;
+        border-radius: 20px;
+        opacity: 0.86;
+        color: white;
+        text-align: center;
+        padding: 3px 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+
+    body{
+        font-size: 16px;
+        p{
+            font-size: 16px;
+        }
+    }
+
+    .button_su{
+        margin-right: 10px;
+    }
+}
+
+
+
+.flyer_image_container{
+    width: auto;
+    height: auto;
+    text-align: left;
+    img{
+        border: 1px solid #c1c1c1;
+    }
+}
+
+
+
+.video-title{
+    color: @dark-color;
+
+    font-weight: bold;
+    font-size: 20px;
+    margin-top: 20px!important;
+    margin-bottom: 20px!important;
+}
+
+.videos{
+
+    iframe, video{
+        width: 357px;
+        max-width: 100%;
+        height: 253px;
+        background-color: black;
+        margin: 0 auto 20px auto;
+        box-shadow: 0px 0px 20px #1B869426;
+        border-radius: 7px;
+        display: flex;
+        align-self: center;
+    }
+
+    .card_title{
+        text-align: center;
+    }
+
+}
+
+.go-back{
+    display: flex;
+    justify-content: start;
+    width: fit-content;
+    margin-bottom: 20px;
+    margin-left: 10px;
+    a {
+        width: fit-content;
+        font-size: 17px;
+        font-weight: 500;
+        color: @link-color;
+        position: relative;
+        display: flex;
+        align-items: center;
+        padding-left: 15px;
+        transition: all 0.3s ease-in-out;
+        &::before{
+            display: flex;
+            align-items: center;
+            position: absolute;
+            content: "";
+            background: url("../../assets/images/arrow-media.svg") center center no-repeat;
+            background-size: 10px !important;
+            width: 10px !important;
+            height: 8px !important;
+            left: 0;
+            transform: rotate(90deg);
+        }
+        &:hover{
+            &::before{
+                left: -2px;
+            }
+        }
+    }
+}
+
+.project-materials-container {
+    .col-md-4, .col-xs-12 {
+        overflow: visible !important;
+    }
+}
+
+.container-fluid, .container, .row {
+    &:has(.download-dropdown) {
+        overflow: visible !important;
+    }
+}
+
+[class*="col-"] {
+    &:has(.download-dropdown) {
+        overflow: visible !important;
+    }
+}
+
+// External Resources Page ----------------------------------
+.external-resources {
+
+    .external-links-list {
+        list-style: disc outside;
+        margin-left: 27px;
+
+        li {
+            margin-bottom: 15px;
+
+            a {
+                font-size: 18px;
+                font-weight: 500;
+                color: @link-color;
+                text-decoration: underline;
+                text-underline-position: from-font;
+
+                &:hover {
+                    color: darken(@link-color, 10%);
+                }
+            }
+        }
+    }
+}
+
+
+.date{
+    padding-left: 20px;
+    color: #8C99A0;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.title{
+    padding-left: 20px;
+    color: #283841;
+    font-size: 18px;
+    margin-bottom: 10px;
+
+}
