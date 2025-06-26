@@ -7,7 +7,10 @@
     .breakpoint-large-down({
         justify-content: center;
     });
+}
 
+.coming-soon{
+    width: 100%;
 }
 
 .newsletters{
@@ -37,8 +40,6 @@
 }
 
 .media-center{
-
-
     .card_image_container{
         border-radius: 7px;
         margin: 0 auto;
@@ -95,6 +96,10 @@
         display: inline-block;
         overflow: visible;
         z-index: 1;
+
+        img{
+            object-fit: contain !important;
+        }
         
         &::after {
             content: '';
@@ -182,7 +187,7 @@
         opacity: 0;
         visibility: hidden;
         transition: all 0.3s ease;
-        z-index: 10;
+        z-index: 999999;
         
         .download-btn-main {
             background: #3CBB54;
@@ -199,6 +204,7 @@
             cursor: pointer;
             position: relative;
             user-select: none;
+            z-index: 1000000;
             
             .download-icon {
                 width: 16px;
@@ -231,7 +237,7 @@
             opacity: 0;
             visibility: hidden;
             transition: all 0.3s ease;
-            z-index: 999999;
+            z-index: 9999999;
             padding: 6px;
             min-width: 180px;
             width: auto;
@@ -300,17 +306,17 @@
         left: 10px;
         color: #FFF;
         font-family: Satoshi;
-        font-size: 25px;
+        font-size: 20px;
         font-style: normal;
         font-weight: 700;
         opacity: 0;
         visibility: hidden;
         transition: all 0.3s ease;
-        z-index: 15;
-        max-width: 200px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        z-index: 5;
+        max-width: 280px;
+        line-height: 1.2;
+        word-wrap: break-word;
+        hyphens: auto;
         pointer-events: none;
     }
     
@@ -318,6 +324,12 @@
     &.name-tooltip-active::before {
         opacity: 1;
         visibility: visible;
+    }
+    
+    // Hide name text when dropdown is open
+    &:has(.download-dropdown.dropdown-open)::before {
+        opacity: 0;
+        visibility: hidden;
     }
     
     &.white{
@@ -502,7 +514,10 @@
     .card_title{
         text-align: center;
     }
-
+    .video-title{
+        color: #0B2712;
+        padding-left: 20px;
+    }
 }
 
 .go-back{
@@ -557,6 +572,28 @@
     &:has(.download-dropdown) {
         overflow: visible !important;
     }
+}
+
+// Ensure project materials page has proper overflow
+.page-content {
+    overflow: visible !important;
+    
+    .container {
+        overflow: visible !important;
+    }
+    
+    .row {
+        overflow: visible !important;
+    }
+    
+    [class*="col-"] {
+        overflow: visible !important;
+    }
+}
+
+// Ensure tab content allows overflow
+.tab-content {
+    overflow: visible !important;
 }
 
 // External Resources Page ----------------------------------

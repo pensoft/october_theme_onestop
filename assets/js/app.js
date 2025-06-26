@@ -962,99 +962,7 @@ function initPartnerContentTruncation() {
     });
 }
 
-function initLivingLabsMapTooltips() {
-    const mapContainer = document.querySelector('.living-labs-map');
-    if (!mapContainer) return;
 
-    const svg = mapContainer.querySelector('svg');
-    if (!svg) return;
-
-    // Country code mapping based on cx coordinates
-    const countryCodeMap = {
-        '578.5': 'RO', // Romania
-        '560.5': 'FI', // Finland 
-        '357.5': 'BE', // Belgium
-        '179.5': 'PT', // Portugal
-        '299.5': 'GB'  // UK
-    };
-
-    // Get partner data from global variable
-    const partnersData = window.livingLabsPartners || {};
-
-    // Create tooltip element
-    const tooltip = document.createElement('div');
-    tooltip.className = 'map-tooltip';
-    mapContainer.appendChild(tooltip);
-
-    // Get all circles in the SVG
-    const circles = svg.querySelectorAll('circle');
-
-    circles.forEach(circle => {
-        const cx = circle.getAttribute('cx');
-        const countryCode = countryCodeMap[cx];
-
-        if (countryCode && partnersData[countryCode]) {
-            const partners = partnersData[countryCode];
-            
-            // Add country code as data attribute
-            circle.setAttribute('data-country-code', countryCode);
-
-            // Add hover events
-            circle.addEventListener('mouseenter', function(e) {
-                // Clear previous content
-                tooltip.innerHTML = '';
-                
-                // Find the first partner with a logo
-                const partnerWithLogo = partners.find(partner => partner.logo);
-                
-                if (partnerWithLogo) {
-                    const logoImg = document.createElement('img');
-                    logoImg.src = partnerWithLogo.logo;
-                    logoImg.alt = partnerWithLogo.institution || '';
-                    
-                    tooltip.appendChild(logoImg);
-                }
-                
-                tooltip.classList.add('show');
-                updateTooltipPosition(e, tooltip, mapContainer);
-            });
-
-            circle.addEventListener('mousemove', function(e) {
-                updateTooltipPosition(e, tooltip, mapContainer);
-            });
-
-            circle.addEventListener('mouseleave', function() {
-                tooltip.classList.remove('show');
-            });
-
-            // Add click event to open partner URL
-            circle.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                // Find the first partner with a URL
-                const partnerWithUrl = partners.find(partner => partner.url);
-                
-                if (partnerWithUrl && partnerWithUrl.url) {
-                    window.open(partnerWithUrl.url, '_blank');
-                }
-            });
-        }
-    });
-}
-
-function updateTooltipPosition(event, tooltip, container) {
-    const rect = container.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-    
-    tooltip.style.left = x + 'px';
-    tooltip.style.top = (y - 10) + 'px';
-}
-
-// Initialize living labs map tooltips when DOM is ready
-document.addEventListener('DOMContentLoaded', function() {
-    initLivingLabsMapTooltips();
-});
 
 /**
  * Initialize news category tabs functionality
@@ -1213,25 +1121,68 @@ function initProjectMaterialsDropdowns() {
         
         var $dropdown = $(this).closest('.download-dropdown');
         var $allDropdowns = $('.download-dropdown');
+        var $dropdownMenu = $dropdown.find('.dropdown-menu');
         
         // Close all other dropdowns
         $allDropdowns.not($dropdown).removeClass('dropdown-open');
         
         // Toggle current dropdown
         $dropdown.toggleClass('dropdown-open');
+        
+        // Ensure dropdown menu has the highest z-index when opened
+        if ($dropdown.hasClass('dropdown-open')) {
+            $dropdownMenu.css('z-index', '99999999');
+            
+            // Position dropdown to avoid overflow
+            setTimeout(function() {
+                var $menu = $dropdown.find('.dropdown-menu');
+                var menuOffset = $menu.offset();
+                var menuWidth = $menu.outerWidth();
+                var menuHeight = $menu.outerHeight();
+                var windowWidth = $(window).width();
+                var windowHeight = $(window).height();
+                
+                // Adjust horizontal position if menu goes off-screen
+                if (menuOffset && menuOffset.left + menuWidth > windowWidth) {
+                    $menu.css({
+                        'left': 'auto',
+                        'right': '0',
+                        'transform': 'none'
+                    });
+                } else if (menuOffset && menuOffset.left < 0) {
+                    $menu.css({
+                        'left': '0',
+                        'right': 'auto',
+                        'transform': 'none'
+                    });
+                }
+                
+                // Adjust vertical position if menu goes off-screen
+                if (menuOffset && menuOffset.top + menuHeight > windowHeight) {
+                    $menu.css('top', 'auto');
+                    $menu.css('bottom', 'calc(100% + 8px)');
+                }
+            }, 10);
+        } else {
+            // Reset z-index when closed
+            $dropdownMenu.css('z-index', '9999999');
+        }
     });
     
     // Close dropdowns when clicking outside
     $(document).off('click.projectDropdownOutside').on('click.projectDropdownOutside', function(e) {
         if (!$(e.target).closest('.download-dropdown').length) {
             $('.download-dropdown').removeClass('dropdown-open');
+            $('.download-dropdown .dropdown-menu').css('z-index', '9999999');
         }
     });
     
     // Handle dropdown item clicks
     $(document).off('click.projectDropdownItem').on('click.projectDropdownItem', '.download-dropdown .dropdown-item', function(e) {
         // Close dropdown after item is clicked
-        $(this).closest('.download-dropdown').removeClass('dropdown-open');
+        var $dropdown = $(this).closest('.download-dropdown');
+        $dropdown.removeClass('dropdown-open');
+        $dropdown.find('.dropdown-menu').css('z-index', '9999999');
     });
 }
 

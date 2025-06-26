@@ -2,15 +2,14 @@
   Reusable download dropdown partial
   
   Parameters:
-  - item: The media item object (logo, flyer, presentation)
-  - imageField: Name of the image field (e.g., 'logo_image', 'flyer_image', 'presentation_image')
-  - filesField: Name of the files field (can be array of files or individual files)
-  - itemType: Type of item for download filename ('logo', 'flyer', 'presentation')
+  - item: The media item object
+  - imageField: Name of the image field
+  - itemType: Type of item for download filename
 #}
 
 {% set availableFiles = [] %}
 
-{# Handle different file structure patterns #}
+{# Handle logo formats and language versions #}
 {% if itemType == 'logo' %}
     {# Logo has separate format fields #}
     {% if item.file_jpg %}{% set availableFiles = availableFiles|merge([{'file': item.file_jpg, 'format': 'JPG'}]) %}{% endif %}
@@ -18,18 +17,8 @@
     {% if item.file_svg %}{% set availableFiles = availableFiles|merge([{'file': item.file_svg, 'format': 'SVG'}]) %}{% endif %}
     {% if item.file_pdf %}{% set availableFiles = availableFiles|merge([{'file': item.file_pdf, 'format': 'PDF'}]) %}{% endif %}
     {% if item.file_zip %}{% set availableFiles = availableFiles|merge([{'file': item.file_zip, 'format': 'ZIP'}]) %}{% endif %}
-{% elseif itemType == 'newsletter' %}
-    {# Newsletter has file_lang_versions (attachMany) or fallback to file #}
-    {% if item.file_lang_versions.count() > 0 %}
-        {% for version in item.file_lang_versions %}
-            {% set language = version.title ? version.title : (version.description ? version.description : version.file_name) %}
-            {% set availableFiles = availableFiles|merge([{'file': version, 'format': language|title}]) %}
-        {% endfor %}
-    {% elseif item.file %}
-        {% set availableFiles = availableFiles|merge([{'file': item.file, 'format': 'Download'}]) %}
-    {% endif %}
 {% else %}
-    {# Flyer and presentation have file_lang_versions #}
+    {# Use language versions for other item types #}
     {% if item.file_lang_versions.count() > 0 %}
         {% for version in item.file_lang_versions %}
             {% set language = version.title ? version.title : (version.description ? version.description : version.file_name) %}
@@ -43,42 +32,24 @@
 <div class="image-wrapper">
     <img src="{{ attribute(item, imageField).getPath() }}" alt="{{ item.title ?? item.name }}" class="img-responsive">
     
-    {% if availableFiles|length > 1 %}
-        <!-- Multiple format dropdown -->
-        <div class="download-dropdown">
-            <div class="download-btn-main">
-                <i class="download-icon"></i>
-                Download
-                <i class="dropdown-arrow"></i>
-            </div>
-            <div class="dropdown-menu">
-                {% for fileData in availableFiles %}
-                    {% set filename = item.title ~ '_' ~ fileData.format %}
-                    {% if itemType == 'logo' %}
-                        {% set filename = item.name ~ '.' ~ fileData.format|lower %}
-                    {% elseif itemType == 'newsletter' %}
-                        {% set filename = item.name ~ '_' ~ fileData.format %}
-                    {% endif %}
-                    <a href="{{ fileData.file.getPath() }}" download="{{ filename }}" class="dropdown-item">
-                        {{ fileData.format }}
-                    </a>
-                {% endfor %}
-            </div>
+    <!-- Always show dropdown -->
+    <div class="download-dropdown">
+        <div class="download-btn-main">
+            <i class="download-icon"></i>
+            Download
+            <i class="dropdown-arrow"></i>
         </div>
-    {% elseif availableFiles|length == 1 %}
-        <!-- Single download button -->
-        {% set fileData = availableFiles[0] %}
-        {% set filename = item.title %}
-        {% if itemType == 'logo' %}
-            {% set filename = item.name ~ '.' ~ fileData.format|lower %}
-        {% elseif itemType == 'newsletter' %}
-            {% set filename = item.name %}
-        {% endif %}
-        <a href="{{ fileData.file.getPath() }}" download="{{ filename }}" title="{{ item.title ?? item.name }}" class="single-download">
-            <div class="download-btn">
-                <i class="download-icon"></i>
-                Download
-            </div>
-        </a>
-    {% endif %}
+                 <div class="dropdown-menu">
+             {% for fileData in availableFiles %}
+                 {% if itemType == 'logo' %}
+                     {% set filename = item.name ~ '.' ~ fileData.format|lower %}
+                 {% else %}
+                     {% set filename = item.title ~ '_' ~ fileData.format %}
+                 {% endif %}
+                 <a href="{{ fileData.file.getPath() }}" download="{{ filename }}" class="dropdown-item">
+                     {{ fileData.format }}
+                 </a>
+             {% endfor %}
+         </div>
+    </div>
 </div> 

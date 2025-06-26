@@ -29,7 +29,7 @@ function onStart(){
 		{% set records = mediaNewslettersList %}
 		{% set displayColumn = mediaNewslettersList.displayColumn %}
 		{% set noRecordsMessage = mediaNewslettersList.noRecordsMessage %}
-		{% set detailsPage = mediaNewslettersList.detailsPage %}
+		{% set detailsPage = mediaNewslettersList.detailsPage %}    
 		{% set detailsKeyColumn = mediaNewslettersList.detailsKeyColumn %}
 		{% set detailsUrlParameter = mediaNewslettersList.detailsUrlParameter %}
 
@@ -51,5 +51,7 @@ function onStart(){
             {% endspaceless %}
             {% endfor %}
         </div>
+        {% else %}
+        <h2 class="center-xs coming-soon">Coming soon!</h2>
         {% endif %}
 </div>

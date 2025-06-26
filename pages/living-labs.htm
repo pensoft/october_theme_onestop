@@ -21,33 +21,61 @@ description_limit = 0
 ==
 <?php
 use Pensoft\Partners\Models\Partners as Partner;
+use RainLab\Location\Models\Country;
+
 function onStart(){
     $this['living_labs'] = Partner::where('type', 2)->get();
     
-    // Prepare partner data for JavaScript
+    // Country name mapping
+    $countryNames = [
+        'RO' => 'Romania',
+        'FI' => 'Finland',
+        'BE' => 'Belgium', 
+        'PT' => 'Portugal',
+        'GB' => 'United Kingdom'
+    ];
+    
+    // Get country names from database if available
+    if (class_exists('RainLab\Location\Models\Country')) {
+        $countries = Country::whereIn('code', array_keys($countryNames))->get();
+        foreach ($countries as $country) {
+            $countryNames[$country->code] = $country->name;
+        }
+    }
+    
+    // Prepare enhanced partner data for JavaScript
     $partnersData = [];
     foreach ($this['living_labs'] as $partner) {
         $countryCodes = is_array($partner->country_code) ? $partner->country_code : (json_decode($partner->country_code, true) ?: []);
         foreach ($countryCodes as $countryCode) {
             if (!isset($partnersData[$countryCode])) {
-                $partnersData[$countryCode] = [];
+                $partnersData[$countryCode] = [
+                    'countryName' => $countryNames[$countryCode] ?? $countryCode,
+                    'partners' => []
+                ];
             }
-            $partnersData[$countryCode][] = [
+            $partnersData[$countryCode]['partners'][] = [
+                'id' => $partner->id,
                 'institution' => $partner->instituion,
-                'logo' => $partner->cover ? $partner->cover->getThumb(100, 60, 'auto') : null,
-                'url' => $partner->instituion_url
+                'description' => strip_tags($partner->content),
+                'logo' => $partner->cover ? $partner->cover->getThumb(120, 80, 'auto') : null,
+                'url' => $partner->instituion_url,
+                'email' => $partner->email
             ];
         }
     }
+    
     $this['partnersData'] = $partnersData;
+    $this['countryNames'] = $countryNames;
 }
 ?>
 ==
 {% component 'siteSearchInclude' %}
 
 <script>
-// Make partner data available to JavaScript
+// Make enhanced partner data available to JavaScript
 window.livingLabsPartners = {{ partnersData|json_encode|raw }};
+window.countryNames = {{ countryNames|json_encode|raw }};
 </script>
 
 <div class="container-fluid living-labs-page">
@@ -57,6 +85,7 @@ window.livingLabsPartners = {{ partnersData|json_encode|raw }};
 
     <div class="container map">
         {% partial 'components/living-labs-map' %}
+        {% partial 'components/living-labs-popup' %}
     </div>
 
     <div class="container">

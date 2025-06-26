@@ -1,0 +1,39 @@
+{# Living Labs Map Popup Partial #}
+<div class="map-popup" id="living-labs-popup" style="display: none;">
+    <div class="popup-header">
+        <button class="popup-close" onclick="closeLivingLabsPopup()">&times;</button>
+    </div>
+    <div class="popup-content">
+        <div class="popup-country">
+            <h3 class="country-name" id="popup-country-name"></h3>
+        </div>
+        <div class="popup-partners" id="popup-partners-list">
+            {# Pre-rendered partner content for each country #}
+            {% for countryCode, countryData in partnersData %}
+                <div class="country-partners" data-country="{{ countryCode }}" style="display: none;">
+                    {% for partner in countryData.partners %}
+                        <div class="partner-item">
+                            {% if partner.logo %}
+                                <div class="partner-logo">
+                                    <img src="{{ partner.logo }}" alt="{{ partner.institution }}" loading="lazy">
+                                </div>
+                            {% endif %}
+                            <div class="partner-info">
+                                <h4 class="partner-name">{{ partner.institution }}</h4>
+                                {% if partner.description %}
+                                    <div class="partner-description">{{ partner.description }}</div>
+                                {% endif %}
+                                {% if partner.url %}
+                                    <a href="{{ partner.url }}" target="_blank" class="partner-link">
+                                        Visit Website
+                                        <i class="icon-external-link"></i>
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div> 
