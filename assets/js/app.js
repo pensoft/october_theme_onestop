@@ -165,6 +165,9 @@ $(document).ready(function() {
     // Initialize project materials dropdown functionality
     initProjectMaterialsDropdowns();
     
+    // Rename library category tabs with proper capitalization
+    renameLibraryCategoryTabs();
+    
     // Search button functionality
     $('#searchToggle').on('click', function(e) {
         e.preventDefault();
@@ -1343,4 +1346,32 @@ function initHamburgerMenuDropdowns() {
             closeAllDropdowns();
         }
     });
+}
+
+/**
+ * Rename library category tabs with proper capitalization
+ * Updates the text content of library tabs to match desired formatting
+ */
+function renameLibraryCategoryTabs() {
+    var $libraryTabs = $('#mylibraryForm');
+    
+    if ($libraryTabs.length) {
+        // Define the mapping of data-type to proper text
+        var tabLabels = {
+            '0': 'All documents',
+            '4': 'Deliverables & milestones',
+            '2': 'Relevant publications',
+            '3': 'OneSTOP publications'
+        };
+        
+        // Update each tab's text content
+        $libraryTabs.find('a').each(function() {
+            var $tab = $(this);
+            var dataType = $tab.data('type');
+            
+            if (tabLabels[dataType]) {
+                $tab.text(tabLabels[dataType]);
+            }
+        });
+    }
 }

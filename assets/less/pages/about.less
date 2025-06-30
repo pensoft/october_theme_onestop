@@ -246,6 +246,12 @@
                 left: 0;
                 transform: translateY(-50%) translateX(-25%);
             }
+
+            &.position-bottom-right {
+                bottom: 3%;
+                right: 0;
+                transform: translateY(-50%) translateX(25%);
+            }
             
             .breakpoint-large-down ({
                 max-width: 140px;
@@ -266,6 +272,10 @@
                 
                 &.position-left {
                     transform: translateY(-50%) translateX(-15%);
+                }
+
+                &.position-bottom-right {
+                    transform: translateY(-50%) translateX(15%);
                 }
             });
         }

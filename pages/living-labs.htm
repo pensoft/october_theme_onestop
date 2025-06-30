@@ -35,6 +35,15 @@ function onStart(){
         'GB' => 'United Kingdom'
     ];
     
+    // City name mapping for living labs
+    $cityNames = [
+        'RO' => 'Constanta',
+        'FI' => 'Uusimaa',
+        'BE' => 'Brussels',
+        'PT' => 'Porto',
+        'GB' => 'Coventry'
+    ];
+    
     // Get country names from database if available
     if (class_exists('RainLab\Location\Models\Country')) {
         $countries = Country::whereIn('code', array_keys($countryNames))->get();
@@ -67,6 +76,7 @@ function onStart(){
     
     $this['partnersData'] = $partnersData;
     $this['countryNames'] = $countryNames;
+    $this['cityNames'] = $cityNames;
 }
 ?>
 ==
@@ -76,6 +86,7 @@ function onStart(){
 // Make enhanced partner data available to JavaScript
 window.livingLabsPartners = {{ partnersData|json_encode|raw }};
 window.countryNames = {{ countryNames|json_encode|raw }};
+window.cityNames = {{ cityNames|json_encode|raw }};
 </script>
 
 <div class="container-fluid living-labs-page">
