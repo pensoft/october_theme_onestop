@@ -137,6 +137,9 @@ $(document).ready(function() {
     // Initialize partners popup open/close
     initPartnersPopup();
     
+    // Initialize advisory board popup functionality
+    initAdvisoryBoardPopups();
+    
     // Initialize partner layout wrapping for larger screens
     if(width >= 1024 && $('#partners .key_0').length){
         // First column: items 0, 2, 4, 6, etc. (even numbers)
@@ -1426,4 +1429,38 @@ function renameLibraryCategoryTabs() {
             }
         });
     }
+}
+
+/**
+ * Advisory Board Profile Popup functionality
+ * Handles opening and closing of advisory board profile popups
+ * Following the same pattern as partners popup
+ */
+function initAdvisoryBoardPopups() {
+    // Handle read biography button clicks
+    $(document).on('click', '.read-biography-btn', function(e) {
+        e.preventDefault();
+        var profileId = $(this).data('profile-id');
+        var popup = $('#advisory-popup-' + profileId);
+        
+        if (popup.length) {
+            $('body').addClass('modal-open');
+            popup.addClass('open').attr('aria-hidden', 'false');
+        }
+    });
+    
+    // Close interactions using data attribute (following partners pattern)
+    $(document).off('click.advisoryClose').on('click.advisoryClose', '[data-close-advisory-popup]', function(e) {
+        e.preventDefault();
+        var popup = $(this).closest('.advisory-profile-popup');
+        popup.removeClass('open').attr('aria-hidden', 'true');
+        $('body').removeClass('modal-open');
+    });
+    
+    // Handle escape key to close popup
+    $(document).off('keydown.advisoryEsc').on('keydown.advisoryEsc', function(e) {
+        if (e.key === 'Escape') {
+            $('.advisory-profile-popup.open [data-close-advisory-popup]').first().trigger('click');
+        }
+    });
 }

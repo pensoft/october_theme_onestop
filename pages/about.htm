@@ -36,9 +36,13 @@ function onStart(){
     use Pensoft\Accordions\Models\Item;
     use Pensoft\Accordions\Models\Category;
     use Pensoft\Partners\Models\Partners as Partner;
+    use Pensoft\Cardprofiles\Models\Profiles as Profile;
+    use Pensoft\Cardprofiles\Models\Category as CategoryProfile;
 
     $this['work_packages_title'] = Category::where('id', 1)->first();
+
     $this['work_packages_records'] = Item::where('category_id', 1)->get();
+
     $this['partners'] = Partner::where('type', 3)
         ->with(['cardprofiles' => function($q){
             $q->whereHas('category', function($cq){
@@ -46,6 +50,11 @@ function onStart(){
             })->orderBy('sort_order');
         }])
         ->get();
+
+    $this['advisory_board_profiles'] = Profile::whereHas('category', function($q){
+        $q->where('slug', 'advisory-board');
+    })->orderBy('sort_order')->get();
+
 }
 ?>
 ==
@@ -138,7 +147,58 @@ function onStart(){
     <div class="container">
         <div class="row">
             <div class="col-xs-12">
-                <h1>Advisory board</h1>
+                <div class="advisory-board-profiles">
+                    {% for profile in advisory_board_profiles %}
+                    <div class="row advisory-profile-card {% if loop.index0 % 2 == 0 %}left-layout{% else %}right-layout{% endif %}">
+                        {% if loop.index0 % 2 == 0 %}
+                        <!-- Left layout: Image on left, content on right -->
+                        <div class="col-lg-3 col-md-4 col-xs-12 profile-image-container">
+                            <div class="profile-image">
+                                {% if profile.avatar %}
+                                <img src="{{ profile.avatar.path }}" alt="{{ profile.names }}" />
+                                {% else %}
+                                <div class="profile-placeholder">
+                                    <i class="icon-user"></i>
+                                </div>
+                                {% endif %}
+                            </div>
+                            <button class="read-biography-btn" data-profile-id="{{ profile.id }}">Read biography</button>
+                        </div>
+                        <div class="col-lg-9 col-md-8 col-xs-12 profile-content">
+                            <div class="quote-mark">
+                                <img src="/themes/pensoft-onestop/assets/images/quote.svg" alt="Quote" />
+                            </div>
+                            <div class="quote-text">{{ profile.content|raw }}</div>
+                            <div class="profile-name">{{ profile.names }}</div>
+                        </div>
+                        {% else %}
+                        <!-- Right layout: Content on left, image on right -->
+                        <div class="col-lg-9 col-md-8 col-xs-12 profile-content">
+                            <div class="quote-mark">
+                                <img src="/themes/pensoft-onestop/assets/images/quote.svg" alt="Quote" />
+                            </div>
+                            <div class="quote-text">{{ profile.content|raw }}</div>
+                            <div class="profile-name">{{ profile.names }}</div>
+                        </div>
+                        <div class="col-lg-3 col-md-4 col-xs-12 profile-image-container">
+                            <div class="profile-image">
+                                {% if profile.avatar %}
+                                <img src="{{ profile.avatar.path }}" alt="{{ profile.names }}" />
+                                {% else %}
+                                <div class="profile-placeholder">
+                                    <i class="icon-user"></i>
+                                </div>
+                                {% endif %}
+                            </div>
+                            <button class="read-biography-btn" data-profile-id="{{ profile.id }}">Read biography</button>
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Advisory Board Profile Popup -->
+                    {% partial 'components/advisory-popup' profile=profile %}
+                    {% endfor %}
+                </div>
             </div>
         </div>
     </div>

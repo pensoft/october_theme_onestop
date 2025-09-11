@@ -1,0 +1,33 @@
+{% set profile = profile %}
+<div class="advisory-profile-popup" id="advisory-popup-{{ profile.id }}" aria-hidden="true">
+    <div class="advisory-popup-backdrop" data-close-advisory-popup></div>
+    <div class="advisory-popup-dialog" role="dialog" aria-modal="true">
+        <button type="button" class="advisory-popup-close" aria-label="Close" data-close-advisory-popup>
+            <img src="{{ 'assets/images/close-x.svg'|theme }}" alt="Close">
+        </button>
+
+        <div class="advisory-popup-content">
+            <div class="advisory-popup-left">
+                <div class="advisory-popup-avatar">
+                    {% if profile.avatar %}
+                        <img src="{{ profile.avatar.path }}" alt="{{ profile.names }}" />
+                    {% else %}
+                        <div class="avatar-placeholder">
+                            <i class="icon-user"></i>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="advisory-popup-name">
+                    <h3>{{ profile.names }}</h3>
+                </div>
+            </div>
+            
+            <div class="advisory-popup-right">
+                <div class="advisory-popup-section">
+                    <h4>Biography</h4>
+                    <div class="advisory-popup-bio">{{ profile.content|raw }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
