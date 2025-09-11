@@ -39,7 +39,13 @@ function onStart(){
 
     $this['work_packages_title'] = Category::where('id', 1)->first();
     $this['work_packages_records'] = Item::where('category_id', 1)->get();
-    $this['partners'] = Partner::where('type', 3)->get();
+    $this['partners'] = Partner::where('type', 3)
+        ->with(['cardprofiles' => function($q){
+            $q->whereHas('category', function($cq){
+                $cq->where('slug', 'partners');
+            })->orderBy('sort_order');
+        }])
+        ->get();
 }
 ?>
 ==
@@ -51,6 +57,7 @@ function onStart(){
             <a href="javascript:void(0)" class="tab-link active" data-tab="about">About</a>
             <a href="javascript:void(0)" class="tab-link" data-tab="work-packages">Work packages</a>
             <a href="javascript:void(0)" class="tab-link" data-tab="partners">Partners</a>
+            <a href="javascript:void(0)" class="tab-link" data-tab="advisory-board">Advisory board</a>
         </div>
     </div>
 </div>
@@ -99,17 +106,13 @@ function onStart(){
         <div class="row">
             {% for partner in partners %}
             <div class="col-xs-12 key_{{ loop.index0 }}">
-                <div class="partner-record">
+                <div class="partner-record" data-partner-id="{{ partner.id }}">
                     <div class="row header-row">
                         <div class="col-xs-4 img-container">
                             <img src="{{ partner.cover.path }}" alt="{{ partner.title }}">
                         </div>
                         <div class="col-xs-8">
-                            {% if partner.instituion_url %}
-                                <a href="{{ partner.instituion_url }}" target="_blank">{{ partner.instituion }}</a>
-                            {% else %}
-                                {{ partner.instituion }}
-                            {% endif %}
+                            {{ partner.instituion }}
                         </div>
                     </div>
                     <div class="partner-content">
@@ -124,8 +127,19 @@ function onStart(){
                         </a>
                     </div>
                 </div>
+                {% partial 'components/partners-popup' partner=partner %}
             </div>
             {% endfor %}
+        </div>
+    </div>
+</div>
+
+<div id="advisory-board" class="tab-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <h1>Advisory board</h1>
+            </div>
         </div>
     </div>
 </div>

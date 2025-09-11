@@ -1,0 +1,83 @@
+{% set p = partner %}
+<div class="partner-popup" id="partner-popup-{{ p.id }}" aria-hidden="true">
+    <div class="partner-popup-backdrop" data-close-popup></div>
+    <div class="partner-popup-dialog" role="dialog" aria-modal="true">
+        <button type="button" class="partner-popup-close" aria-label="Close" data-close-popup>
+            <img src="{{ 'assets/images/close-x.svg'|theme }}" alt="Close">
+        </button>
+
+        <div class="partner-popup-header">
+            <div class="partner-popup-logo">
+                {% if p.cover and p.cover.path %}
+                    <img src="{{ p.cover.path }}" alt="{{ p.instituion }}">
+                {% else %}
+                    <div class="logo-placeholder">{{ p.instituion|slice(0,3)|upper }}</div>
+                {% endif %}
+            </div>
+            <div class="partner-popup-title">
+                <h3>{{ p.instituion }}</h3>
+            </div>
+        </div>
+
+        <div class="partner-popup-section">
+            <h4>{{ 'Institutional description'|_ }}</h4>
+            <div class="readmore-block" data-lines="3">
+                <div class="readmore-content">
+                    {{ p.content|raw }}
+                </div>
+                <button class="readmore-toggle" data-expanded-text="Read less" data-collapsed-text="Read more">
+                    <span class="readmore-text">Read more</span>
+                    <img class="readmore-arrow" src="{{ 'assets/images/readmore-arrow-down.svg'|theme }}" alt="">
+                </button>
+            </div>
+        </div>
+
+        {% if p.cardprofiles.count %}
+        <div class="partner-popup-section">
+            <h4>{{ 'Team members'|_ }}</h4>
+            <div class="partner-popup-members">
+                {% for member in p.cardprofiles %}
+                <div class="member-item">
+                    <div class="member-avatar">
+                        {% if member.avatar %}
+                            <img src="{{ member.avatar.path }}" alt="{{ member.names }}">
+                        {% else %}
+                            <div class="avatar-placeholder"></div>
+                        {% endif %}
+                    </div>
+                    <div class="member-info">
+                        <div class="member-name">{{ member.names }}</div>
+                    </div>
+                    {% if member.content %}
+                        <button class="member-bio-toggle" data-member-id="{{ member.id }}">
+                            <span>Biography</span>
+                            <img src="{{ 'assets/images/readmore-arrow-down.svg'|theme }}" alt="">
+                        </button>
+                    {% endif %}
+                </div>
+                {% if member.content %}
+                    <div class="member-bio" id="member-bio-{{ member.id }}" style="display: none;">
+                        {{ member.content|raw }}
+                    </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        {% if p.add_description %}
+        <div class="partner-popup-section">
+            <h4>{{ 'Relevant publications'|_ }}</h4>
+            <div class="readmore-block" data-lines="3">
+                <div class="readmore-content">
+                    {{ p.add_description|raw }}
+                </div>
+                <button class="readmore-toggle" data-expanded-text="Read less" data-collapsed-text="Read more">
+                    <span class="readmore-text">Read more</span>
+                    <img class="readmore-arrow" src="{{ 'assets/images/readmore-arrow-down.svg'|theme }}" alt="">
+                </button>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>

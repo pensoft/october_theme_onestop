@@ -132,8 +132,10 @@ $(document).ready(function() {
     // Initialize accordion functionality
     initAccordion();
     
-    // Initialize partner content truncation
+    // Popup replaces inline expansion
     initPartnerContentTruncation();
+    // Initialize partners popup open/close
+    initPartnersPopup();
     
     // Initialize partner layout wrapping for larger screens
     if(width >= 1024 && $('#partners .key_0').length){
@@ -915,52 +917,102 @@ function initPartnerContentTruncation() {
         var maxLength = 255;
         
         if (fullText && fullText.length > maxLength) {
-            // Find the last space before the 255 character limit to avoid breaking words
             var truncatedText = fullText.substring(0, maxLength);
             var lastSpaceIndex = truncatedText.lastIndexOf(' ');
-            
             if (lastSpaceIndex > 0) {
                 truncatedText = truncatedText.substring(0, lastSpaceIndex);
             }
-            
-            // Add ellipsis to indicate there's more content
             truncatedText += '...';
-            
-            // Set the truncated content
             $truncatedContent.html(truncatedText);
-            
-            // Show truncated content initially and show button
             $truncatedContent.show();
             $fullContent.hide();
             $button.show();
         } else {
-            // Content is short enough, show full content and hide button
             $truncatedContent.html(fullText);
             $truncatedContent.show();
             $fullContent.hide();
             $button.hide();
         }
     });
-    
-    // Handle read more/less toggle with smooth animation
-    $('.read-more-partner').off('click').on('click', function(e) {
+
+    // Open popup instead of toggling inline content
+    $(document).off('click.readMorePartner').on('click.readMorePartner', '.read-more-partner', function(e){
         e.preventDefault();
+        var id = $(this).closest('.partner-record').data('partner-id');
+        var $popup = $('#partner-popup-' + id);
+        if($popup.length){
+            $('body').addClass('modal-open');
+            $popup.addClass('open').attr('aria-hidden','false');
+        }
+    });
+}
+
+// Simple popup open/close for partners
+function initPartnersPopup(){
+    // Open on click of record
+    $(document).off('click.partnerOpen').on('click.partnerOpen', '.partner-record', function(e){
+        // Avoid opening when clicking links inside
+        if($(e.target).closest('a, button, summary, details').length){ return; }
+        var id = $(this).data('partner-id');
+        var $popup = $('#partner-popup-' + id);
+        if($popup.length){
+            $('body').addClass('modal-open');
+            $popup.addClass('open').attr('aria-hidden','false');
+            
+            // Initialize read more functionality for this popup
+            initPopupReadMore($popup);
+        }
+    });
+
+    // Close interactions
+    $(document).off('click.partnerClose').on('click.partnerClose', '[data-close-popup]', function(){
+        var $popup = $(this).closest('.partner-popup');
+        $popup.removeClass('open').attr('aria-hidden','true');
+        $('body').removeClass('modal-open');
+    });
+
+    $(document).off('keydown.partnerEsc').on('keydown.partnerEsc', function(e){
+        if(e.key === 'Escape'){
+            $('.partner-popup.open [data-close-popup]').first().trigger('click');
+        }
+    });
+}
+
+// Read more functionality for popup content
+function initPopupReadMore($popup) {
+    // Handle readmore toggles
+    $popup.off('click.readmore').on('click.readmore', '.readmore-toggle', function(e) {
+        e.preventDefault();
+        var $toggle = $(this);
+        var $block = $toggle.closest('.readmore-block');
+        var $text = $toggle.find('.readmore-text');
         
-        var $button = $(this);
-        var $partnerContent = $button.closest('.partner-content');
-        var $truncatedContent = $partnerContent.find('.partner-description-truncated');
-        var $fullContent = $partnerContent.find('.partner-description-full');
-        
-        if ($fullContent.is(':visible')) {
-            // Currently showing full content, switch to truncated
-            $fullContent.hide();
-            $truncatedContent.show();
-            $button.text('Read more').removeClass('expanded');
+        if ($block.hasClass('expanded')) {
+            $block.removeClass('expanded');
+            $text.text($toggle.data('collapsed-text') || 'Read more');
         } else {
-            // Currently showing truncated content, switch to full
-            $truncatedContent.hide();
-            $fullContent.show();
-            $button.text('Read less').addClass('expanded');
+            $block.addClass('expanded');
+            $text.text($toggle.data('expanded-text') || 'Read less');
+        }
+    });
+    
+    // Handle member biography toggles
+    $popup.off('click.memberBio').on('click.memberBio', '.member-bio-toggle', function(e) {
+        e.preventDefault();
+        var $toggle = $(this);
+        var memberId = $toggle.data('member-id');
+        var $bio = $('#member-bio-' + memberId);
+        
+        if ($bio.is(':visible')) {
+            $bio.slideUp(300);
+            $toggle.removeClass('expanded');
+        } else {
+            // Close other open bios first
+            $popup.find('.member-bio:visible').slideUp(300);
+            $popup.find('.member-bio-toggle.expanded').removeClass('expanded');
+            
+            $bio.slideDown(300);
+            $toggle.addClass('expanded');
         }
     });
 }
