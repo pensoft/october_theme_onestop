@@ -32,24 +32,36 @@
 <div class="image-wrapper">
     <img src="{{ attribute(item, imageField).getPath() }}" alt="{{ item.title ?? item.name }}" class="img-responsive">
     
-    <!-- Always show dropdown -->
-    <div class="download-dropdown">
-        <div class="download-btn-main">
-            <i class="download-icon"></i>
-            Download
-            <i class="dropdown-arrow"></i>
+    {% if availableFiles|length > 0 %}
+        <!-- Show dropdown when files are available -->
+        <div class="download-dropdown">
+            <div class="download-btn-main">
+                <i class="download-icon"></i>
+                Download
+                <i class="dropdown-arrow"></i>
+            </div>
+            <div class="dropdown-menu">
+                {% for fileData in availableFiles %}
+                    {% if itemType == 'logo' %}
+                        {% set filename = item.name ~ '.' ~ fileData.format|lower %}
+                    {% else %}
+                        {% set filename = item.title ~ '_' ~ fileData.format %}
+                    {% endif %}
+                    <a href="{{ fileData.file.getPath() }}" download="{{ filename }}" class="dropdown-item">
+                        {{ fileData.format }}
+                    </a>
+                {% endfor %}
+            </div>
         </div>
-                 <div class="dropdown-menu">
-             {% for fileData in availableFiles %}
-                 {% if itemType == 'logo' %}
-                     {% set filename = item.name ~ '.' ~ fileData.format|lower %}
-                 {% else %}
-                     {% set filename = item.title ~ '_' ~ fileData.format %}
-                 {% endif %}
-                 <a href="{{ fileData.file.getPath() }}" download="{{ filename }}" class="dropdown-item">
-                     {{ fileData.format }}
-                 </a>
-             {% endfor %}
-         </div>
-    </div>
+    {% elseif itemType == 'newsletter' %}
+        <!-- Show Read button for newsletters with no files -->
+        {% if item.url %}
+            <div class="read-button">
+                <a href="{{ item.url }}" target="_blank" class="read-btn-main">
+                    <i class="read-icon"></i>
+                    Read more
+                </a>
+            </div>
+        {% endif %}
+    {% endif %}
 </div> 
