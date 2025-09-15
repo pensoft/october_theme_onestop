@@ -13,11 +13,26 @@ no_records_message = "Items will follow soon. Keep posted!"
 redirect_to_download_page = 1
 milestones_filter = 1
 
+[jumbotron rio-library]
+jumbotron = "rio-library"
+title = 0
+background = "transperant"
+templates = "template1"
+description_limit = 0
+
 ==
-<h1 class="underline">Library</h1>
+==
+
+<div class="container-fluid library-page">
+    <div class="explore-rio">
+        {% component 'rio-library' %}
+    </div>
+
     <div class="container mb-2">
         {% component 'LibraryPage' %}
     </div>
+</div>
+
 <script type="text/javascript">
     initButtonStyle();
-</script>
+</script>    

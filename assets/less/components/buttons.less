@@ -401,6 +401,30 @@ button:not(:disabled) {
         }
     }
 }
+// RIO button styling
+.btn-rio {
+    background: url(../../assets/images/rio-icon.svg) center no-repeat !important;
+    background-size: 70% !important;
+    background-color: #3CBB54 !important;
+    border-color: #3CBB54 !important;
+    border-radius: 6px !important;
+    color: @white-color;
+    box-shadow: 0px 1px 2px 0px rgba(198, 228, 246, 0.05);
+    padding: 14px 20px;
+    min-width: 129px;
+    font-size: 14px;
+    font-family: 'Satoshi Regular';
+    min-height: 40px;
+    max-width: 280px;
+    
+    &:hover{
+        background-color: darken(#3CBB54, 10%) !important;
+        border-color: darken(#3CBB54, 10%) !important;
+    }
+    .breakpoint-large-down({
+        background-size: 40% !important;
+    });
+}
 
 .su_button_circle{
     border-radius: 1000px;
