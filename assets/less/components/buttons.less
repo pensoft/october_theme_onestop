@@ -401,6 +401,16 @@ button:not(:disabled) {
         }
     }
 }
+
+.library-buttons{
+    a{
+        margin-right: 10px;
+        .breakpoint-large-down({
+            margin-right: 0;
+            margin-bottom: 10px;
+        });
+    }
+}
 // RIO button styling
 .btn-rio {
     background: url(../../assets/images/rio-icon.svg) center no-repeat !important;
@@ -424,6 +434,54 @@ button:not(:disabled) {
     .breakpoint-large-down({
         background-size: 40% !important;
     });
+}
+
+.btn-zenodo {
+    background-color: #3CBB54 !important;
+    border-color: #3CBB54 !important;
+    border-radius: 6px !important;
+    color: @white-color;
+    padding: 10px 20px;
+    justify-content: center;
+    align-items: center;
+    gap: 0px;
+    position: relative;
+    display: inline-flex;
+    text-decoration: none;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+
+    .btn-icon {
+        width: 22px;
+        height: 22px;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+
+    &:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(32, 166, 131, 0.3);
+    }
+
+    &::before {
+        content: '';
+        width: 22px;
+        height: 22px;
+        background-image: url("../../assets/images/zenodo-white.svg");
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        margin-right: 2px;
+        display: inline-block;
+    }
+
+    &:hover{
+        background-color: darken(#3CBB54, 10%) !important;
+        border-color: darken(#3CBB54, 10%) !important;
+    }
 }
 
 .su_button_circle{
