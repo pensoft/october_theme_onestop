@@ -941,11 +941,14 @@ function initPartnerContentTruncation() {
     // Open popup instead of toggling inline content
     $(document).off('click.readMorePartner').on('click.readMorePartner', '.read-more-partner', function(e){
         e.preventDefault();
+        e.stopPropagation();
         var id = $(this).closest('.partner-record').data('partner-id');
         var $popup = $('#partner-popup-' + id);
         if($popup.length){
             $('body').addClass('modal-open');
             $popup.addClass('open').attr('aria-hidden','false');
+            // Ensure popup internal interactions are initialized when opened via the link
+            initPopupReadMore($popup);
         }
     });
 }
@@ -956,6 +959,7 @@ function initPartnersPopup(){
     $(document).off('click.partnerOpen').on('click.partnerOpen', '.partner-record', function(e){
         // Avoid opening when clicking links inside
         if($(e.target).closest('a, button, summary, details').length){ return; }
+        e.stopPropagation();
         var id = $(this).data('partner-id');
         var $popup = $('#partner-popup-' + id);
         if($popup.length){
@@ -968,7 +972,9 @@ function initPartnersPopup(){
     });
 
     // Close interactions
-    $(document).off('click.partnerClose').on('click.partnerClose', '[data-close-popup]', function(){
+    $(document).off('click.partnerClose').on('click.partnerClose', '[data-close-popup]', function(e){
+        e.preventDefault();
+        e.stopPropagation();
         var $popup = $(this).closest('.partner-popup');
         $popup.removeClass('open').attr('aria-hidden','true');
         $('body').removeClass('modal-open');
@@ -1004,7 +1010,7 @@ function initPopupReadMore($popup) {
         e.preventDefault();
         var $toggle = $(this);
         var memberId = $toggle.data('member-id');
-        var $bio = $('#member-bio-' + memberId);
+        var $bio = $popup.find('#member-bio-' + memberId);
         
         if ($bio.is(':visible')) {
             $bio.slideUp(300);
