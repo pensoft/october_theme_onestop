@@ -33,6 +33,14 @@ title = 0
 background = "transperant"
 templates = "template3"
 description_limit = 0
+
+[jumbotron home-video-introduction]
+jumbotron = "home-video-introduction"
+title = 0
+background = "transperant"
+templates = "template3"
+description_limit = 0
+
 ==
 <?php
 use Pensoft\Articles\Models\Article;
@@ -54,6 +62,10 @@ function onStart(){
 <!-- Hero Into -->
 <div class="container-fluid intro-section">
     {% component 'hero-menu' %}
+</div>
+
+<div class="container-fluid video-intro">
+    {% component 'home-video-introduction' %}
 </div>
 
 <!-- News -->
