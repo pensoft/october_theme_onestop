@@ -224,6 +224,10 @@ class TranslationManager {
                         <span class="flag-icon flag-icon-${currentLanguage.flag}"></span>
                         <span class="language-text">${currentLanguage.name}</span>
                         <div class="dropdown-arrow"></div>
+                        <div class="language-tooltip">
+                            <div class="language-tooltip-arrow"></div>
+                            <div class="language-tooltip-content">Automatic translation. May contain errors.</div>
+                        </div>
                     </div>
                     <div class="language-options">${optionsHTML}</div>
                 </div>`;
