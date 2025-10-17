@@ -102,20 +102,7 @@ description_limit = 0
         <div class="row">
             <div class="col-md-7 col-xs-12">
                 <div class="hero-content">
-<div class="hero-content">
-	<div class="hero-text">
-
-		<h1 class="hero-title">OneBiosecurity
-			<br>Systems and
-			<br>Technology for People,
-			<br>Places and Pathways</h1>
-
-		<p class="hero-description">OneSTOP is pioneering a joined-up approach to minimise the introduction, establishment, spread and impact of terrestrial invasive alien species</p>
-		<div class="hero-cta">
-			<a class="btn btn-primary" href="https://onestop-project.eu/about">Learn more</a>
-			<button class="btn btn-primary" id="watchVideoBtn">Watch video</button>
-		</div></div></div>
-
+                    {% component 'hero-text' %}
                 </div>
             </div>
             <div class="col-md-5 col-xs-12 outer-circle-container">
@@ -143,23 +130,3 @@ description_limit = 0
     {% endif %}
 </div>
 {% endif %}
-
-<!-- Video Popup Modal -->
-<div class="video-popup" id="videoPopup" aria-hidden="true">
-    <div class="video-popup-backdrop" data-close-video></div>
-    <div class="video-popup-dialog" role="dialog" aria-modal="true">
-        <button type="button" class="video-popup-close" aria-label="Close video" data-close-video>
-            <img src="{{ 'assets/images/close-x.svg'|theme }}" alt="Close">
-        </button>
-        <div class="video-popup-content">
-            <div class="video-wrapper">
-                <iframe id="videoIframe"
-                        src=""
-                        frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowfullscreen>
-                </iframe>
-            </div>
-        </div>
-    </div>
-</div>
