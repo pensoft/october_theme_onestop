@@ -139,7 +139,10 @@ $(document).ready(function() {
     
     // Initialize advisory board popup functionality
     initAdvisoryBoardPopups();
-    
+
+    // Initialize video popup functionality
+    initVideoPopup();
+
     // Initialize partner layout wrapping for larger screens
     if(width >= 1024 && $('#partners .key_0').length){
         // First column: items 0, 2, 4, 6, etc. (even numbers)
@@ -1448,13 +1451,13 @@ function initAdvisoryBoardPopups() {
         e.preventDefault();
         var profileId = $(this).data('profile-id');
         var popup = $('#advisory-popup-' + profileId);
-        
+
         if (popup.length) {
             $('body').addClass('modal-open');
             popup.addClass('open').attr('aria-hidden', 'false');
         }
     });
-    
+
     // Close interactions using data attribute (following partners pattern)
     $(document).off('click.advisoryClose').on('click.advisoryClose', '[data-close-advisory-popup]', function(e) {
         e.preventDefault();
@@ -1462,11 +1465,67 @@ function initAdvisoryBoardPopups() {
         popup.removeClass('open').attr('aria-hidden', 'true');
         $('body').removeClass('modal-open');
     });
-    
+
     // Handle escape key to close popup
     $(document).off('keydown.advisoryEsc').on('keydown.advisoryEsc', function(e) {
         if (e.key === 'Escape') {
             $('.advisory-profile-popup.open [data-close-advisory-popup]').first().trigger('click');
         }
+    });
+}
+
+/**
+ * Video Popup functionality
+ * Handles opening and closing of the YouTube video popup with smooth animations
+ */
+function initVideoPopup() {
+    var $videoPopup = $('#videoPopup');
+    var $videoIframe = $('#videoIframe');
+    var videoUrl = 'https://www.youtube.com/embed/Bl6EYpWDlFg?autoplay=1&rel=0&modestbranding=1';
+
+    // Open video popup
+    $('#watchVideoBtn').on('click', function(e) {
+        e.preventDefault();
+
+        // Set the video URL to start playback
+        $videoIframe.attr('src', videoUrl);
+
+        // Open the popup
+        $('body').addClass('modal-open');
+        $videoPopup.removeClass('closing').addClass('open').attr('aria-hidden', 'false');
+    });
+
+    // Close video popup function
+    function closeVideoPopup() {
+        // Add closing animation class
+        $videoPopup.addClass('closing');
+
+        // Wait for animation to complete before hiding
+        setTimeout(function() {
+            $videoPopup.removeClass('open closing').attr('aria-hidden', 'true');
+            $('body').removeClass('modal-open');
+
+            // Stop video playback by clearing the iframe src
+            $videoIframe.attr('src', '');
+        }, 300); // Match the CSS animation duration
+    }
+
+    // Close button and backdrop click handlers
+    $(document).off('click.videoClose').on('click.videoClose', '[data-close-video]', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        closeVideoPopup();
+    });
+
+    // Close on escape key
+    $(document).off('keydown.videoEsc').on('keydown.videoEsc', function(e) {
+        if (e.key === 'Escape' && $videoPopup.hasClass('open')) {
+            closeVideoPopup();
+        }
+    });
+
+    // Prevent closing when clicking inside the dialog
+    $('.video-popup-dialog').on('click', function(e) {
+        e.stopPropagation();
     });
 }
