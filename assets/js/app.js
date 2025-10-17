@@ -1481,11 +1481,13 @@ function initAdvisoryBoardPopups() {
 function initVideoPopup() {
     var $videoPopup = $('#videoPopup');
     var $videoIframe = $('#videoIframe');
-    var videoUrl = 'https://www.youtube.com/embed/Bl6EYpWDlFg?autoplay=1&rel=0&modestbranding=1';
 
     // Open video popup
     $('#watchVideoBtn').on('click', function(e) {
         e.preventDefault();
+
+        // Get video URL from data attribute
+        var videoUrl = $videoIframe.data('video-url');
 
         // Set the video URL to start playback
         $videoIframe.attr('src', videoUrl);
@@ -1510,6 +1512,13 @@ function initVideoPopup() {
         }, 300); // Match the CSS animation duration
     }
 
+    // Close button click handler (must come before dialog handler)
+    $(document).off('click.videoCloseBtn').on('click.videoCloseBtn', '.video-popup-close', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        closeVideoPopup();
+    });
+
     // Close button and backdrop click handlers
     $(document).off('click.videoClose').on('click.videoClose', '[data-close-video]', function(e) {
         e.preventDefault();
@@ -1524,8 +1533,10 @@ function initVideoPopup() {
         }
     });
 
-    // Prevent closing when clicking inside the dialog
+    // Prevent closing when clicking inside the dialog (but allow close button)
     $('.video-popup-dialog').on('click', function(e) {
-        e.stopPropagation();
+        if (!$(e.target).closest('.video-popup-close').length) {
+            e.stopPropagation();
+        }
     });
 }
