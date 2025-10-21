@@ -26,7 +26,6 @@ jumbotron = "prioritisation-intro"
 templates = "prioritisation-intro" 
 description_limit = 0
 
-
 [jumbotron dissemination-intro]
 jumbotron = "dissemination-intro"
 templates = "dissemination-intro" 
@@ -39,7 +38,7 @@ description_limit = 0
 
 ==
 <nav class="navbar fixed" id="headernavbar" {% if user %} style="margin-top:69px;"{% endif %}>
-    <div class="container">
+    <div class="container container-responsive">
         <a href="{{'home'|page}}" class="navbar-brand">
             <img src="{{ this.theme.site_logo.getPath() }}" alt="{{ this.theme.site_name }}">
         </a>
@@ -81,8 +80,8 @@ description_limit = 0
                 </div>
             </div>
         </div>
-        <div id="search" class="search" style="display: none;">
-            <div class="container">
+        <div id="search" class="srearch" style="display: none;">
+            <div class="containe">
                 <form class="input-group align-items-start" action="{{ url('search')}}" method="get">
                     <input class="form-control search_input" style="color: #000;" name="q" type="text" autocomplete="on" placeholder="Search here...">
                     <button class="btn btn-link pr p-search big text-grey-search-btn" type="submit"></button>

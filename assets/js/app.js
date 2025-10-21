@@ -958,6 +958,20 @@ function initPartnerContentTruncation() {
 
 // Simple popup open/close for partners
 function initPartnersPopup(){
+    // Add accessibility attributes to partner records
+    $('.partner-record').each(function() {
+        var $card = $(this);
+        var partnerName = $card.find('.col-xs-8').first().text().trim();
+
+        // Make card focusable and add ARIA attributes
+        $card.attr({
+            'tabindex': '0',
+            'role': 'button',
+            'aria-label': 'View details for ' + partnerName,
+            'aria-expanded': 'false'
+        });
+    });
+
     // Open on click of record
     $(document).off('click.partnerOpen').on('click.partnerOpen', '.partner-record', function(e){
         // Avoid opening when clicking links inside
@@ -968,9 +982,19 @@ function initPartnersPopup(){
         if($popup.length){
             $('body').addClass('modal-open');
             $popup.addClass('open').attr('aria-hidden','false');
-            
+            $(this).attr('aria-expanded', 'true');
+
             // Initialize read more functionality for this popup
             initPopupReadMore($popup);
+        }
+    });
+
+    // Keyboard support (Enter and Space keys)
+    $(document).off('keydown.partnerKeyboard').on('keydown.partnerKeyboard', '.partner-record', function(e){
+        // Check for Enter or Space key
+        if(e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            $(this).trigger('click');
         }
     });
 
@@ -979,6 +1003,11 @@ function initPartnersPopup(){
         e.preventDefault();
         e.stopPropagation();
         var $popup = $(this).closest('.partner-popup');
+        var popupId = $popup.attr('id').replace('partner-popup-', '');
+
+        // Reset aria-expanded on the partner card
+        $('.partner-record[data-partner-id="' + popupId + '"]').attr('aria-expanded', 'false');
+
         $popup.removeClass('open').attr('aria-hidden','true');
         $('body').removeClass('modal-open');
     });
@@ -992,13 +1021,29 @@ function initPartnersPopup(){
 
 // Read more functionality for popup content
 function initPopupReadMore($popup) {
+    // Check each readmore block to see if content actually overflows
+    $popup.find('.readmore-block').each(function() {
+        var $block = $(this);
+        var $content = $block.find('.readmore-content');
+        var $toggle = $block.find('.readmore-toggle');
+
+        // Check if content overflows (scrollHeight > clientHeight means content is truncated)
+        if ($content[0] && $content[0].scrollHeight > $content[0].clientHeight) {
+            // Content overflows - show the read more button
+            $toggle.show();
+        } else {
+            // Content fits within 3 lines - hide the read more button
+            $toggle.hide();
+        }
+    });
+
     // Handle readmore toggles
     $popup.off('click.readmore').on('click.readmore', '.readmore-toggle', function(e) {
         e.preventDefault();
         var $toggle = $(this);
         var $block = $toggle.closest('.readmore-block');
         var $text = $toggle.find('.readmore-text');
-        
+
         if ($block.hasClass('expanded')) {
             $block.removeClass('expanded');
             $text.text($toggle.data('collapsed-text') || 'Read more');

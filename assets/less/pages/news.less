@@ -404,9 +404,17 @@ nav:not(.navbar){
 		margin-top: 50px;
 		margin-bottom: 35px !important;
 		padding-bottom: 0;
+        .breakpoint-large-down({
+            flex-direction: row !important;
+            margin-bottom: 0;
+        });
 		
 		h2 {
 			margin-bottom: 0;
+            padding-left: 15px;
+            .breakpoint-large-down({
+                padding-left: 0px;
+            });
 		}
 		
 		.news-arrows {
@@ -702,8 +710,8 @@ nav:not(.navbar){
 
 	.news-carousel{
 		position: relative;
-		padding-left: 5%;
-		margin-left: 2%;
+		// padding-left: 5%;
+		// margin-left: 2%;
 		overflow: hidden;
 		max-width: 95%;
 		
