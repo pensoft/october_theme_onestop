@@ -24,7 +24,7 @@ description_limit = 0
 jumbotron = "subscriber"
 title = 0
 background = "transperant"
-templates = "template3"
+templates = "template2"
 description_limit = 0
 
 [jumbotron easin]
@@ -65,39 +65,42 @@ function onStart(){
 </div>
 
 <div class="container-fluid video-intro">
-    {% component 'home-video-introduction' %}
+    {% component 'home-video-introduction' %} 
 </div>
 
 <!-- News -->
 {% if highlights.count %}
 <div class="container-fluid highlights-news">
-    <div class="container news-header">
+    <div class="container container-responsive news-header">
         <h2 class="display-1">Latest news</h2>
         <div class="news-arrows">
             <div class="trigger_prev_arrow"></div>
             <div class="trigger_next_arrow"></div>
         </div>
     </div>
-    <div class="news-carousel">
-        {% for highlight in highlights %}
-        <div class="home-news-highlights">
-            <div class="row news-item">
-                <div class="col-md-12 col-xs-12 home-news-cover">
-                    <a href="/news/{{highlight.slug}}">
-                        <img src="{{ highlight.cover.path}}" alt="{{ highlight.title }}">
-                        <div class="btn read-more-btn btn-primary">Read more</div>
-                    </a>
-                </div>
-                <div class="col-md-12 col-xs-12 news-content">
-                    <div class="news-date">{{ highlight.published_at|date('d.m.Y') }}</div>
-                    <a href="/news/{{highlight.slug}}">
-                        <div class="news-title">{{ highlight.title|length > 100 ? highlight.title|slice(0, 100)|replace({"&nbsp;": " ", ".": ". "}) ~ '...' : highlight.title|replace({"&nbsp;": " ", ".": ". "})  }}</div>
-                    </a>
+    <div class="container container-responsive">
+        <div class="news-carousel">
+            {% for highlight in highlights %}
+            <div class="home-news-highlights">
+                <div class="row news-item">
+                    <div class="col-md-12 col-xs-12 home-news-cover">
+                        <a href="/news/{{highlight.slug}}">
+                            <img src="{{ highlight.cover.path}}" alt="{{ highlight.title }}">
+                            <div class="btn read-more-btn btn-primary">Read more</div>
+                        </a>
+                    </div>
+                    <div class="col-md-12 col-xs-12 news-content">
+                        <div class="news-date">{{ highlight.published_at|date('d.m.Y') }}</div>
+                        <a href="/news/{{highlight.slug}}">
+                            <div class="news-title">{{ highlight.title|length > 100 ? highlight.title|slice(0, 100)|replace({"&nbsp;": " ", ".": ". "}) ~ '...' : highlight.title|replace({"&nbsp;": " ", ".": ". "})  }}</div>
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
-        {% endfor %}
+            {% endfor %}
+        </div>        
     </div>
+
     <div class="col-xs-12 center-xs mt-1">
         <a href="/news" class="btn btn-primary">View all</a>
     </div>
@@ -152,5 +155,7 @@ function onStart(){
 
 <!-- Subscribe Section -->
 <div class="container-fluid subscriber-section">
-    {% component 'subscriber' %}
+    <div class="container container-responsive">
+        {% component 'subscriber' %}
+    </div>
 </div>
