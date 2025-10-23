@@ -33,7 +33,7 @@ description_limit = 0
                 </div>
                 <div class="col-xs-12 col-md-8 col-sm-6">
                     <div class="footer-menu-wrapper">
-                        <nav class="footer-navigation">
+                        <nav class="footer-navigation" aria-label="Footer navigation">
                             {% component 'footer_menu' %}
                         </nav>
                     </div>
@@ -42,22 +42,22 @@ description_limit = 0
                     <div class="footer-social">
                         <div class="social-icons">
                             {% if enable_facebook and facebook_url %}
-                            <a href="{{facebook_url}}" target="_blank" class="pr p-secondary p-facebook normal" target="_blank"></a>
+                            <a href="{{facebook_url}}" target="_blank" class="pr p-secondary p-facebook normal" aria-label="Facebook (opens in new tab)"></a>
                             {% endif %}
                             {% if enable_twitter and twitter_url %}
-                            <a href="{{twitter_url}}" target="_blank" class="pr p-secondary p-twitter normal" target="_blank"></a>
+                            <a href="{{twitter_url}}" target="_blank" class="pr p-secondary p-twitter normal" aria-label="Twitter (opens in new tab)"></a>
                             {% endif %}
                             {% if enable_linkedin and linkedin_url %}
-                            <a  href="{{linkedin_url}}" target="_blank" class="pr p-secondary p-linkedin normal" target="_blank"></a>
+                            <a href="{{linkedin_url}}" target="_blank" class="pr p-secondary p-linkedin normal" aria-label="LinkedIn (opens in new tab)"></a>
                             {% endif %}
                             {% if enable_youtube and youtube_url %}
-                            <a  href="{{youtube_url}}" target="_blank" class="pr p-secondary p-youtube normal" target="_blank"></a>
+                            <a href="{{youtube_url}}" target="_blank" class="pr p-secondary p-youtube normal" aria-label="YouTube (opens in new tab)"></a>
                             {% endif %}
                             {% if enable_instagram and instagram_url %}
-                            <a  href="{{instagram_url}}" target="_blank" class="pr p-secondary p-instagram normal" target="_blank"></a>
+                            <a href="{{instagram_url}}" target="_blank" class="pr p-secondary p-instagram normal" aria-label="Instagram (opens in new tab)"></a>
                             {% endif %}
                             {% if enable_bluesky and bluesky_url %}
-                            <a  href="{{bluesky_url}}" target="_blank" class="pr p-secondary p-bluesky normal" target="_blank"></a>
+                            <a href="{{bluesky_url}}" target="_blank" class="pr p-secondary p-bluesky normal" aria-label="BlueSky (opens in new tab)"></a>
                             {% endif %}
                         </div>
                     </div>
@@ -70,7 +70,7 @@ description_limit = 0
                             {% if footer_funds_flag %}
                             <div class="col-xs-12 col-md-2">
                                 <div class="eu-flag">
-                                    <img class="text mr-0 mr-lg-1" style="height:38px;" src="{{ footer_funds_flag }}"/>
+                                    <img class="text mr-0 mr-lg-1" style="height:38px;" src="{{ footer_funds_flag }}" alt="EU flag"/>
                                 </div>
                             </div>
                             {% endif %}
@@ -106,7 +106,7 @@ description_limit = 0
                 <div class="col-xs-12">
                     <div class="powered-by">
                         <span>Designed and powered by</span>
-                        <a href="https://pensoft.net/" target="_blank">
+                        <a href="https://pensoft.net/" target="_blank" aria-label="Pensoft (opens in new tab)">
                             <img class="pensoft-logo" src="{{ 'assets/images/pensoft-logo.svg'|theme }}" alt="Pensoft Logo" />
                         </a>
                     </div>

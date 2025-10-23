@@ -37,22 +37,22 @@ templates = "socio-political-intro"
 description_limit = 0
 
 ==
-<nav class="navbar fixed" id="headernavbar" {% if user %} style="margin-top:69px;"{% endif %}>
+<nav class="navbar fixed" id="headernavbar" aria-label="Main navigation" {% if user %} style="margin-top:69px;"{% endif %}>
     <div class="container container-responsive">
         <a href="{{'home'|page}}" class="navbar-brand">
             <img src="{{ this.theme.site_logo.getPath() }}" alt="{{ this.theme.site_name }}">
         </a>
 
-        <button id="desktopMenuToggle" aria-label="Toggle navigation">
-            <span></span>
-            <span></span>
-            <span></span>
+        <button type="button" id="desktopMenuToggle" aria-label="Toggle navigation">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
         </button>
     </div>
     
     <div class="navbar-collapse" id="headerNavbarNav">
-        <button id="closeMenuBtn" aria-label="Close navigation">
-            <span>&times;</span>
+        <button type="button" id="closeMenuBtn" aria-label="Close navigation">
+            <span aria-hidden="true">&times;</span>
         </button>
 
         {% component 'menu' %}
@@ -61,31 +61,32 @@ description_limit = 0
             
             <div class="social-icons">
                 {% if enable_linkedin and linkedin_url %}
-                <a href="{{ linkedin_url }}" class="social-icon linkedin" aria-label="LinkedIn" target="_blank"></a>
+                <a href="{{ linkedin_url }}" class="social-icon linkedin" aria-label="LinkedIn (opens in new tab)" target="_blank"></a>
                 {% endif %}
                 {% if enable_bluesky and bluesky_url %}
-                <a href="{{ bluesky_url }}" class="social-icon bluesky" aria-label="BlueSky" target="_blank"></a>
+                <a href="{{ bluesky_url }}" class="social-icon bluesky" aria-label="BlueSky (opens in new tab)" target="_blank"></a>
                 {% endif %}
                 {% if enable_youtube and youtube_url %}
-                <a  href="{{youtube_url}}" target="_blank" class="social-icon pr p-secondary p-youtube normal" target="_blank"></a>
+                <a href="{{youtube_url}}" target="_blank" class="social-icon pr p-secondary p-youtube normal" aria-label="YouTube (opens in new tab)"></a>
                 {% endif %}
             </div>
             
             <div class="bottom-row">
                 <div id="google_translate_element"></div>
                 <div class="search-container">
-                    <a class="btn btn-primary search-btn" id="searchToggle">
-                        <span class="search-icon"></span> Search
-                    </a>
+                    <button type="button" class="btn btn-primary search-btn" id="searchToggle" aria-label="Search">
+                        <span class="search-icon" aria-hidden="true"></span> Search
+                    </button>
                 </div>
             </div>
         </div>
         <div id="search" class="srearch" style="display: none;">
             <div class="containe">
-                <form class="input-group align-items-start" action="{{ url('search')}}" method="get">
-                    <input class="form-control search_input" style="color: #000;" name="q" type="text" autocomplete="on" placeholder="Search here...">
-                    <button class="btn btn-link pr p-search big text-grey-search-btn" type="submit"></button>
-                    <div class="close-search" onclick="hideSearchForm();">&#10006;</div>
+                <form class="input-group align-items-start" role="search" action="{{ url('search')}}" method="get">
+                    <label for="searchInput" class="sr-only">Search</label>
+                    <input id="searchInput" class="form-control search_input" style="color: #000;" name="q" type="text" autocomplete="on" placeholder="Search here...">
+                    <button class="btn btn-link pr p-search big text-grey-search-btn" type="submit" aria-label="Submit search"></button>
+                    <button type="button" class="close-search" onclick="hideSearchForm();" aria-label="Close search">&#10006;</button>
                 </form>
             </div>
         </div>
@@ -137,7 +138,7 @@ description_limit = 0
     <div class="video-popup-dialog" role="dialog" aria-modal="true">
         <div class="video-popup-content">
             <div class="video-wrapper">
-                <button class="video-popup-close" data-close-video aria-label="Close video">
+                <button type="button" class="video-popup-close" data-close-video aria-label="Close video">
                     <img src="{{ 'assets/images/close-video.svg'|theme }}" alt="Close">
                 </button>
                 <iframe id="videoIframe"

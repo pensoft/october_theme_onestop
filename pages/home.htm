@@ -74,8 +74,8 @@ function onStart(){
     <div class="container container-responsive news-header">
         <h2 class="display-1">Latest news</h2>
         <div class="news-arrows">
-            <div class="trigger_prev_arrow"></div>
-            <div class="trigger_next_arrow"></div>
+            <button type="button" class="trigger_prev_arrow" aria-label="Previous news"></button>
+            <button type="button" class="trigger_next_arrow" aria-label="Next news"></button>
         </div>
     </div>
     <div class="container container-responsive">
@@ -102,7 +102,7 @@ function onStart(){
     </div>
 
     <div class="col-xs-12 center-xs mt-1">
-        <a href="/news" class="btn btn-primary">View all</a>
+        <button type="button" class="btn btn-primary" onclick="window.location.href='/news'" aria-label="View all news">View all</button>
     </div>
 </div>
 {% endif %}
@@ -118,23 +118,23 @@ function onStart(){
         <div class="row middle-xs between-xs">
             <div class="col-xs-12 center-xs consortium_partners">
                 <div class="carousel-container">
-                    <div class="trigger_prev_consortium">
-                        <span class="arrow-icon"></span>
-                    </div>
+                    <button type="button" class="trigger_prev_consortium" aria-label="Previous partner">
+                        <span class="arrow-icon" aria-hidden="true"></span>
+                    </button>
                     <div id="slick">
                         {% for c in consortium_partners %}
                         <div class="slide">
                             <div class="partner_logo">
-                                <a href="{{ c.instituion_url }}" class="consortium-link" target="_blank">
+                                <a href="{{ c.instituion_url }}" class="consortium-link" target="_blank" aria-label="{{ c.instituion }} (opens in new tab)">
                                     <img alt="{{ c.instituion }}" src="{{c.cover.thumb(auto,90,{'mode':'crop'})}}">
                                 </a>
                             </div>
                         </div>
                         {% endfor %}
                     </div>
-                    <div class="trigger_next_consortium">
-                        <span class="arrow-icon"></span>
-                    </div>
+                    <button type="button" class="trigger_next_consortium" aria-label="Next partner">
+                        <span class="arrow-icon" aria-hidden="true"></span>
+                    </button>
                 </div>
             </div>
         </div>

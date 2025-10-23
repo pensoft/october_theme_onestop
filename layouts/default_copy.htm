@@ -16,7 +16,7 @@ include_css = 1
 update_selector = "#gdpr-reload"
 ==
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <meta charset="utf-8">
@@ -62,10 +62,10 @@ update_selector = "#gdpr-reload"
 		</header>
 
 		<!-- Content -->
-		<section id="layout-content" class="{{this.page.id}}">
+		<main id="layout-content" class="{{this.page.id}}">
 			{% page %}
 			{% component 'googleTracker' %}
-		</section>
+		</main>
 	</div>
     {% if this.theme.enable_footer %}
     <!-- Footer -->

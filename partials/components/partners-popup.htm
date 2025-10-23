@@ -25,9 +25,9 @@
                 <div class="readmore-content">
                     {{ p.content|raw }}
                 </div>
-                <button class="readmore-toggle" data-expanded-text="Read less" data-collapsed-text="Read more">
+                <button type="button" class="readmore-toggle" data-expanded-text="Read less" data-collapsed-text="Read more" aria-expanded="false">
                     <span class="readmore-text">Read more</span>
-                    <img class="readmore-arrow" src="{{ 'assets/images/readmore-arrow-down.svg'|theme }}" alt="">
+                    <img class="readmore-arrow" src="{{ 'assets/images/readmore-arrow-down.svg'|theme }}" alt="" aria-hidden="true">
                 </button>
             </div>
         </div>
@@ -49,9 +49,9 @@
                         <div class="member-name">{{ member.names }}</div>
                     </div>
                     {% if member.content %}
-                        <button class="member-bio-toggle" data-member-id="{{ member.id }}">
+                        <button type="button" class="member-bio-toggle" data-member-id="{{ member.id }}" aria-expanded="false">
                             <span>Biography</span>
-                            <img src="{{ 'assets/images/readmore-arrow-down.svg'|theme }}" alt="">
+                            <img src="{{ 'assets/images/readmore-arrow-down.svg'|theme }}" alt="" aria-hidden="true">
                         </button>
                     {% endif %}
                 </div>
@@ -72,9 +72,9 @@
                 <div class="readmore-content">
                     {{ p.add_description|raw }}
                 </div>
-                <button class="readmore-toggle" data-expanded-text="Read less" data-collapsed-text="Read more">
+                <button type="button" class="readmore-toggle" data-expanded-text="Read less" data-collapsed-text="Read more">
                     <span class="readmore-text">Read more</span>
-                    <img class="readmore-arrow" src="{{ 'assets/images/readmore-arrow-down.svg'|theme }}" alt="">
+                    <img class="readmore-arrow" src="{{ 'assets/images/readmore-arrow-down.svg'|theme }}" alt="" aria-hidden="true">
                 </button>
             </div>
         </div>

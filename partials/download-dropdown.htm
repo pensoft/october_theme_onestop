@@ -57,10 +57,10 @@
         <!-- Show Read button for newsletters with no files -->
         {% if item.url %}
             <div class="read-button">
-                <a href="{{ item.url }}" target="_blank" class="read-btn-main">
-                    <i class="read-icon"></i>
+                <button type="button" class="read-btn-main" onclick="window.open('{{ item.url }}', '_blank'); return false;" aria-label="Read the newsletter (opens in new tab)">
+                    <i class="read-icon" aria-hidden="true"></i>
                     Read the newsletter
-                </a>
+                </button>
             </div>
         {% endif %}
     {% endif %}

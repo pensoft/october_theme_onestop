@@ -1,7 +1,7 @@
 {# Living Labs Map Popup Partial #}
 <div class="map-popup" id="living-labs-popup" style="display: none;">
     <div class="popup-header">
-        <button class="popup-close" onclick="closeLivingLabsPopup()">&times;</button>
+        <button type="button" class="popup-close" onclick="closeLivingLabsPopup()" aria-label="Close">&times;</button>
     </div>
     <div class="popup-content">
         <div class="popup-country">
@@ -11,7 +11,7 @@
             {# Single partner content will be populated by JavaScript #}
             <div class="partner-item">
                 <div class="partner-logo" id="partner-logo-container" style="display: none;">
-                    <img id="partner-logo" src="" alt="" loading="lazy">
+                    <img id="partner-logo" src="" alt="Partner logo" loading="lazy">
                 </div>
                 <div class="partner-info">
                     <h4 class="partner-name" id="partner-name"></h4>

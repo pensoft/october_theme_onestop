@@ -62,11 +62,11 @@ function onStart(){
 
 <div class="container-fuild about-tabs">
     <div class="container">
-        <div class="tabs-navigation row">
-            <a href="javascript:void(0)" class="tab-link active" data-tab="about">About</a>
-            <a href="javascript:void(0)" class="tab-link" data-tab="work-packages">Work packages</a>
-            <a href="javascript:void(0)" class="tab-link" data-tab="partners">Partners</a>
-            <a href="javascript:void(0)" class="tab-link" data-tab="advisory-board">Advisory board</a>
+        <div class="tabs-navigation row" role="tablist">
+            <button type="button" class="tab-link active" data-tab="about" role="tab" aria-selected="true" aria-controls="about">About</button>
+            <button type="button" class="tab-link" data-tab="work-packages" role="tab" aria-selected="false" aria-controls="work-packages">Work packages</button>
+            <button type="button" class="tab-link" data-tab="partners" role="tab" aria-selected="false" aria-controls="partners">Partners</button>
+            <button type="button" class="tab-link" data-tab="advisory-board" role="tab" aria-selected="false" aria-controls="advisory-board">Advisory board</button>
         </div>
     </div>
 </div>
@@ -101,7 +101,7 @@ function onStart(){
                         <p>{{ item.body|raw }}</p>
                     </div>
                     <div class="col-xs-12">
-                        <a href="javascript:void(0)" class="read-more-wp">Read more</a>
+                        <button type="button" class="read-more-wp" aria-label="Read more about {{ item.title }}">Read more</button>
                     </div>
                 </div>
             </div>
@@ -131,9 +131,9 @@ function onStart(){
                         <div class="partner-description-full" style="display: none;" data-full-content="{{ partner.content|raw|e }}">
                             {{ partner.content|raw }}
                         </div>
-                        <a href="javascript:void(0)" class="read-more-partner">
+                        <button type="button" class="read-more-partner" aria-label="Read more about {{ partner.instituion }}">
                             Read more
-                        </a>
+                        </button>
                     </div>
                 </div>
                 {% partial 'components/partners-popup' partner=partner %}
@@ -158,11 +158,11 @@ function onStart(){
                                 <img src="{{ profile.avatar.path }}" alt="{{ profile.names }}" />
                                 {% else %}
                                 <div class="profile-placeholder">
-                                    <i class="icon-user"></i>
+                                    <i class="icon-user" aria-hidden="true"></i>
                                 </div>
                                 {% endif %}
                             </div>
-                            <button class="read-biography-btn" data-profile-id="{{ profile.id }}">Read biography</button>
+                            <button type="button" class="read-biography-btn" data-profile-id="{{ profile.id }}" aria-label="Read biography of {{ profile.names }}">Read biography</button>
                         </div>
                         <div class="col-lg-9 col-md-8 col-xs-12 profile-content">
                             <div class="quote-mark">
@@ -186,11 +186,11 @@ function onStart(){
                                 <img src="{{ profile.avatar.path }}" alt="{{ profile.names }}" />
                                 {% else %}
                                 <div class="profile-placeholder">
-                                    <i class="icon-user"></i>
+                                    <i class="icon-user" aria-hidden="true"></i>
                                 </div>
                                 {% endif %}
                             </div>
-                            <button class="read-biography-btn" data-profile-id="{{ profile.id }}">Read biography</button>
+                            <button type="button" class="read-biography-btn" data-profile-id="{{ profile.id }}" aria-label="Read biography of {{ profile.names }}">Read biography</button>
                         </div>
                         {% endif %}
                     </div>

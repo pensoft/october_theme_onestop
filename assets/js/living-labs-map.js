@@ -208,25 +208,25 @@
         // Set partner actions
         if (partnerActions) {
             let actionsHtml = '';
-            
+
             if (partner.url) {
                 actionsHtml += `
-                    <a href="${partner.url}" target="_blank" class="btn btn-primary btn-website">
-                        <span class="btn-icon icon-external-link"></span>
+                    <button type="button" class="btn btn-primary btn-website" onclick="window.open('${partner.url}', '_blank'); return false;" aria-label="Visit website (opens in new tab)">
+                        <span class="btn-icon icon-external-link" aria-hidden="true"></span>
                         Visit website
-                    </a>
+                    </button>
                 `;
             }
-            
+
             if (partner.email) {
                 actionsHtml += `
-                    <a href="mailto:${partner.email}" class="btn btn-primary btn-contact">
-                        <span class="btn-icon icon-mail-send"></span>
+                    <button type="button" class="btn btn-primary btn-contact" onclick="window.location.href='mailto:${partner.email}'; return false;" aria-label="Contact partner">
+                        <span class="btn-icon icon-mail-send" aria-hidden="true"></span>
                         Contact
-                    </a>
+                    </button>
                 `;
             }
-            
+
             partnerActions.innerHTML = actionsHtml;
         }
     }

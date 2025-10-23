@@ -6,6 +6,7 @@
         data-request-redirect="/login"
 		>
 	<div class="field">
+		<label for="userRestoreEmail">Email Address</label>
 		<input name="email" type="email" id="userRestoreEmail" placeholder="Enter your email">
 	</div>
 
@@ -22,7 +23,7 @@
 	</div>
 
 	<div class="text-center">
-		<a class="btn btn-link" href="/login">Return to login</a>
+		<button type="button" class="btn btn-link" onclick="window.location.href='/login'" aria-label="Return to login page">Return to login</button>
 
 	</div>
 </form>
