@@ -1,8 +1,6 @@
-<a
-    href="javascript:;"
-    onclick="$('#accountDeactivateForm').toggle()">
+<button type="button" onclick="$('#accountDeactivateForm').toggle()" aria-expanded="false" aria-controls="accountDeactivateForm">
     Deactivate account
-</a>
+</button>
 
 <div id="accountDeactivateForm" style="display: none">
     {{ form_ajax('onDeactivate') }}
@@ -19,10 +17,8 @@
         <button type="submit" class="btn btn-danger">
             Confirm Deactivate Account
         </button>
-        <a
-            href="javascript:;"
-            onclick="$('#accountDeactivateForm').toggle()">
+        <button type="button" onclick="$('#accountDeactivateForm').toggle()" aria-expanded="true" aria-controls="accountDeactivateForm" class="btn btn-link">
             I changed my mind
-        </a>
+        </button>
     {{ form_close() }}
 </div>

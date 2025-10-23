@@ -4,6 +4,7 @@
         <div class="ui form">
             <div class="fields">
                 <div class="field">
+                    <label for="userSigninLogin">{{ loginAttributeLabel|capitalize }}</label>
                     <input
                         name="login"
                         type="text"
@@ -11,6 +12,7 @@
                         placeholder="Enter your {{ loginAttributeLabel|lower }}" />
                 </div>
                 <div class="field">
+                    <label for="userSigninPassword">Password</label>
                     <input
                         name="password"
                         type="password"
