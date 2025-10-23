@@ -19,7 +19,7 @@ function onStart()
             <h3 class="card-title"><a href="{{url}}">{{title}}</a></h3>
             {% if allow_share == 'yes' %}
                 <div class="share-btn" aria-describedby="social-tooltip">
-                    <span id="share-{{slug}}" class="pr big p-share1"></span>
+                    <span id="share-{{slug}}" class="pr big p-share1" aria-hidden="true"></span>
                 </div>
             {% endif %}
         </div>

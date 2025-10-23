@@ -30,17 +30,17 @@ function onStart(){
 
 <div class="container-fluid page-tabs">
     <div class="container mb-0 pb-0">
-        <div class="tabs-navigation row">
-            <a href="javascript:void(0)" class="tab-link active" data-tab="brand-kit">Brand kit</a>
-            <a href="javascript:void(0)" class="tab-link" data-tab="promotional-materials">Promotional materials</a>
-            <a href="javascript:void(0)" class="tab-link" data-tab="technical-materials">Technical materials</a>
+        <div class="tabs-navigation row" role="tablist">
+            <button type="button" class="tab-link active" data-tab="brand-kit" role="tab" aria-selected="true" aria-controls="brand-kit">Brand kit</button>
+            <button type="button" class="tab-link" data-tab="promotional-materials" role="tab" aria-selected="false" aria-controls="promotional-materials">Promotional materials</button>
+            <button type="button" class="tab-link" data-tab="technical-materials" role="tab" aria-selected="false" aria-controls="technical-materials">Technical materials</button>
         </div>
     </div>
 </div>
 
 <div class="container-fluid page-content">
         <!-- Brand Kit Tab Content -->
-        <div id="brand-kit" class="container tab-content active">
+        <div id="brand-kit" class="container tab-content active" role="tabpanel" aria-labelledby="brand-kit">
             {% if logos.count() %}
             <div class="row">
                 {% for logo in logos %}
@@ -57,7 +57,7 @@ function onStart(){
         </div>
 
         <!-- Promotional Materials Tab Content -->
-        <div id="promotional-materials" class="container tab-content">
+        <div id="promotional-materials" class="container tab-content" role="tabpanel" aria-labelledby="promotional-materials">
             {% if flyers.count() %}
             <div class="row">
                 {% for flyer in flyers %}
@@ -74,7 +74,7 @@ function onStart(){
         </div>
 
         <!-- Technical Materials Tab Content -->
-        <div id="technical-materials" class="container tab-content">
+        <div id="technical-materials" class="container tab-content" role="tabpanel" aria-labelledby="technical-materials">
             {% if presentations.count() %}
             <div class="row">
                 {% for presentation in presentations %}

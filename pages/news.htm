@@ -148,8 +148,8 @@ $this['related'] = $related;
                     <div class="share-section">
                         <div class="share_container">
                             <span class="share_label">Share</span>
-                            <a href="https://www.bluesky.com/sharer/sharer.php?u={{page_url}}&amp;src=sdkpreparse" target="_blank" class="pr p-bluesky small"><i class="fa fa-bluesky"></i></a>
-                            <a href="https://www.linkedin.com/sharing/share-offsite/?url={{page_url}}" target="_blank" class="pr p-linkedin small"><i class="fa fa-linkedin"></i></a>
+                            <a href="https://www.bluesky.com/sharer/sharer.php?u={{page_url}}&amp;src=sdkpreparse" target="_blank" class="pr p-bluesky small" aria-label="Share on Bluesky (opens in new tab)"><i class="fa fa-bluesky" aria-hidden="true"></i></a>
+                            <a href="https://www.linkedin.com/sharing/share-offsite/?url={{page_url}}" target="_blank" class="pr p-linkedin small" aria-label="Share on LinkedIn (opens in new tab)"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
                         </div>
                     </div>
                     {% endif %}
@@ -192,10 +192,10 @@ $this['related'] = $related;
 
     <!-- Category Tabs -->
     <div class="news-category-tabs">
-        <div class="tabs-navigation">
-            <a href="/news" class="tab-link{% if categoryId == 'all' %} active{% endif %}" data-category="all">All news</a>
+        <div class="tabs-navigation" role="tablist">
+            <a href="/news" class="tab-link{% if categoryId == 'all' %} active{% endif %}" data-category="all" role="tab" aria-selected="{% if categoryId == 'all' %}true{% else %}false{% endif %}">All news</a>
             {% for category in categories %}
-                <a href="/news?categoryId={{category.id}}" class="tab-link{% if categoryId == category.id %} active{% endif %}" data-category="{{category.id}}">{{category.name}}</a>
+                <a href="/news?categoryId={{category.id}}" class="tab-link{% if categoryId == category.id %} active{% endif %}" data-category="{{category.id}}" role="tab" aria-selected="{% if categoryId == category.id %}true{% else %}false{% endif %}">{{category.name}}</a>
             {% endfor %}
         </div>
     </div>
