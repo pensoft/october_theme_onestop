@@ -515,10 +515,16 @@ $(document).ready(function() {
             infinite: false,  // Change to false to prevent infinite scrolling
             slidesToShow: 3,  // Show 3 full items
             speed: 1000,
-            slidesToScroll: 1,
+            slidesToScroll: 3,
             arrows: true, // Enable arrows but they will be hidden with CSS
             dots: false,
             responsive: [
+                {
+                    breakpoint: 1200,
+                    settings: {
+                        slidesToScroll: 2
+                    }
+                },
                 {
                     breakpoint: 768,
                     settings: {
