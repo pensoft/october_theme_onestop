@@ -436,7 +436,7 @@ $(document).ready(function() {
     
             // Default settings for mobile
             slidesToShow: 1,
-            slidesToScroll: 1,
+            slidesToScroll: 3,
             variableWidth: true,
             
             responsive: [
@@ -452,7 +452,7 @@ $(document).ready(function() {
                     breakpoint: 1200, // Extra large devices
                     settings: {
                         slidesToShow: 4,
-                        slidesToScroll: 1,
+                        slidesToScroll: 3,
                         variableWidth: true
                     }
                 }
