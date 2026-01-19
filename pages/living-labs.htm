@@ -69,7 +69,8 @@ function onStart(){
                 'description' => strip_tags($partner->content),
                 'logo' => $partner->cover ? $partner->cover->getThumb(120, 80, 'auto') : null,
                 'url' => $partner->instituion_url,
-                'email' => $partner->email
+                'email' => $partner->email,
+                'background' => $partner->background ? $partner->background->getPath() : null
             ];
         }
     }
@@ -82,12 +83,6 @@ function onStart(){
 ==
 {% component 'siteSearchInclude' %}
 
-<script>
-// Make enhanced partner data available to JavaScript
-window.livingLabsPartners = {{ partnersData|json_encode|raw }};
-window.countryNames = {{ countryNames|json_encode|raw }};
-window.cityNames = {{ cityNames|json_encode|raw }};
-</script>
 
 <div class="container-fluid living-labs-page">
     <div class="container">
@@ -102,5 +97,18 @@ window.cityNames = {{ cityNames|json_encode|raw }};
     <div class="container">
         {% component 'living-labs-outro' %}
     </div>
+
+    <div class="container related-news">
+        <h2 class="display-1">Related News</h2>
+
+    </div>
 </div>
 
+<script>
+// Theme URL for JavaScript asset paths
+window.themeUrl = "{{ 'assets' | theme | replace({'assets': ''}) }}".slice(0, -1);
+// Make enhanced partner data available to JavaScript
+window.livingLabsPartners = {{ partnersData|json_encode|raw }};
+window.countryNames = {{ countryNames|json_encode|raw }};
+window.cityNames = {{ cityNames|json_encode|raw }};
+</script>

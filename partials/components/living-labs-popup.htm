@@ -1,26 +1,27 @@
-{# Living Labs Map Popup Partial #}
+{# Living Labs Map Popup Partial - Redesigned #}
 <div class="map-popup" id="living-labs-popup" style="display: none;">
-    <div class="popup-header">
-        <button type="button" class="popup-close" onclick="closeLivingLabsPopup()" aria-label="Close">&times;</button>
+    {# Background Image Section (shows placeholder color if no image) #}
+    <div class="popup-background" id="popup-background">
+        <img id="popup-background-img" src="" alt="Living Lab Background">
     </div>
+
+    {# Close Button (top right, over background) #}
+    <button type="button" class="popup-close" onclick="closeLivingLabsPopup()" aria-label="Close">&times;</button>
+
+    {# Content Section (white bottom area) #}
     <div class="popup-content">
-        <div class="popup-country">
-            <h3 class="country-name" id="popup-country-name"></h3>
+        {# Logo Box (centered, overlapping background) #}
+        <div class="popup-logo-box">
+            <img id="popup-logo" src="{{ 'assets/images/livinglabs-onestop.svg' | theme }}" alt="Living Lab Logo">
         </div>
-        <div class="popup-partner" id="popup-partner-content">
-            {# Single partner content will be populated by JavaScript #}
-            <div class="partner-item">
-                <div class="partner-logo" id="partner-logo-container" style="display: none;">
-                    <img id="partner-logo" src="" alt="Partner logo" loading="lazy">
-                </div>
-                <div class="partner-info">
-                    <h4 class="partner-name" id="partner-name"></h4>
-                    <div class="partner-description" id="partner-description"></div>
-                    <div class="partner-actions" id="partner-actions">
-                        {# Action buttons will be populated by JavaScript #}
-                    </div>
-                </div>
-            </div>
-        </div>
+
+        {# Country Name #}
+        <h3 class="popup-country-name" id="popup-country-name"></h3>
+
+        {# Contact (institution name) #}
+        <p class="popup-contact" id="popup-contact"></p>
+
+        {# Find Out More Button #}
+        <a href="#" class="btn-find-out" id="popup-find-out-btn" target="_blank">Find out more</a>
     </div>
-</div> 
+</div>

@@ -1,21 +1,10 @@
 /**
  * Living Labs Map Interactive Functionality
- * Handles click-based popups and hover tooltips for the living labs map
+ * Handles click-based popups for the living labs map
  */
 
 (function() {
     'use strict';
-
-    // Country code mapping based on actual path data
-    const COUNTRY_PATH_MAP = {
-        'M628 539.75C632.832 539.75 636.75 535.832 636.75 531C636.75 526.168 632.832 522.25 628 522.25C623.168 522.25 619.25 526.168 619.25 531C619.25 535.832 623.168 539.75 628 539.75Z': 'RO', // Romania (Constanta)
-        'M357.5 466.25C362.332 466.25 366.25 462.332 366.25 457.5C366.25 452.668 362.332 448.75 357.5 448.75C352.668 448.75 348.75 452.668 348.75 457.5C348.75 462.332 352.668 466.25 357.5 466.25Z': 'BE', // Belgium (Brussels)
-        'M196 586.75C200.832 586.75 204.75 582.832 204.75 578C204.75 573.168 200.832 569.25 196 569.25C191.168 569.25 187.25 573.168 187.25 578C187.25 582.832 191.168 586.75 196 586.75Z': 'PT', // Portugal (Porto)
-        'M299.5 425.25C304.332 425.25 308.25 421.332 308.25 416.5C308.25 411.668 304.332 407.75 299.5 407.75C294.668 407.75 290.75 411.668 290.75 416.5C290.75 421.332 294.668 425.25 299.5 425.25Z': 'GB', // United Kingdom (Coventry)
-        'M536 284.75C540.832 284.75 544.75 280.832 544.75 276C544.75 271.168 540.832 267.25 536 267.25C531.168 267.25 527.25 271.168 527.25 276C527.25 280.832 531.168 284.75 536 284.75Z': 'FI'  // Finland (Uusimaa)
-    };
-
-    let tooltip = null;
 
     /**
      * Initialize the living labs map functionality
@@ -34,109 +23,54 @@
         const popup = document.getElementById('living-labs-popup');
         if (!popup) return;
 
-        // Create tooltip element
-        createTooltip();
+        // Get all circle markers (dots) with data-country attribute
+        const markers = svg.querySelectorAll('circle.living-lab-marker[data-country]');
 
-        // Get all paths in the SVG that match our living labs paths
-        const paths = svg.querySelectorAll('path');
+        // Shared handler function for setting up click events
+        function setupClickEvents(elements) {
+            elements.forEach(element => {
+                const countryCode = element.getAttribute('data-country');
 
-        paths.forEach(path => {
-            const pathData = path.getAttribute('d');
-            const countryCode = COUNTRY_PATH_MAP[pathData];
+                if (countryCode && partnersData[countryCode]) {
+                    const countryData = partnersData[countryCode];
+                    const locationName = `${cityNames[countryCode]}, ${countryNames[countryCode]}`;
 
-            if (countryCode && partnersData[countryCode]) {
-                const countryData = partnersData[countryCode];
-                const locationName = `${cityNames[countryCode]}, ${countryNames[countryCode]}`;
+                    // Add event listener for click
+                    element.addEventListener('click', () => {
+                        showLivingLabsPopup(countryCode, countryData, locationName);
+                    });
 
-                // Add event listeners for hover
-                path.addEventListener('mouseenter', (event) => {
-                    showTooltip(event, locationName);
+                    // Add cursor pointer style
+                    element.style.cursor = 'pointer';
+                }
+            });
+        }
+
+        // Setup hover effects on dot markers to highlight corresponding image circles
+        function setupDotHoverEffects() {
+            markers.forEach(marker => {
+                const countryCode = marker.getAttribute('data-country');
+                if (!countryCode) return;
+
+                // Find the corresponding image circle
+                const imageCircle = svg.querySelector(`circle.living-lab-image[data-country="${countryCode}"]`);
+                if (!imageCircle) return;
+
+                marker.addEventListener('mouseenter', () => {
+                    imageCircle.classList.add('is-highlighted');
                 });
 
-                path.addEventListener('mousemove', updateTooltipPosition);
-
-                path.addEventListener('mouseleave', hideTooltip);
-
-                // Add event listener for click
-                path.addEventListener('click', () => {
-                    showLivingLabsPopup(countryCode, countryData, locationName);
+                marker.addEventListener('mouseleave', () => {
+                    imageCircle.classList.remove('is-highlighted');
                 });
-
-                // Add cursor pointer style
-                path.style.cursor = 'pointer';
-            }
-        });
-    }
-
-    /**
-     * Create tooltip element
-     */
-    function createTooltip() {
-        tooltip = document.createElement('div');
-        tooltip.className = 'map-tooltip';
-        document.body.appendChild(tooltip);
-    }
-
-    /**
-     * Show tooltip with country name
-     * @param {Event} event - Mouse event
-     * @param {string} locationName - Name of the location (city, country)
-     */
-    function showTooltip(event, locationName) {
-        if (!tooltip) return;
-        
-        tooltip.textContent = locationName;
-        updateTooltipPosition(event);
-        
-        // Add show class with a small delay for smooth animation
-        setTimeout(() => {
-            tooltip.classList.add('show');
-        }, 10);
-    }
-
-    /**
-     * Hide tooltip
-     */
-    function hideTooltip() {
-        if (!tooltip) return;
-        tooltip.classList.remove('show');
-    }
-
-    /**
-     * Update tooltip position based on mouse position
-     * @param {Event} event - Mouse event
-     */
-    function updateTooltipPosition(event) {
-        if (!tooltip) return;
-        
-        // Get mouse position relative to the page (including scroll)
-        const mouseX = event.pageX;
-        const mouseY = event.pageY;
-        
-        // Get tooltip dimensions
-        const tooltipRect = tooltip.getBoundingClientRect();
-        const viewportWidth = window.innerWidth;
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        
-        // Calculate position
-        let left = mouseX - (tooltipRect.width / 2);
-        let top = mouseY - tooltipRect.height - 15; // 15px offset above cursor
-        
-        // Prevent tooltip from going off screen horizontally
-        if (left < 10) {
-            left = 10;
-        } else if (left + tooltipRect.width > viewportWidth - 10) {
-            left = viewportWidth - tooltipRect.width - 10;
+            });
         }
-        
-        // Prevent tooltip from going off screen vertically
-        // Check against viewport bounds considering scroll
-        if (top - scrollTop < 10) {
-            top = mouseY + 15; // Show below cursor if no space above
-        }
-        
-        tooltip.style.left = left + 'px';
-        tooltip.style.top = top + 'px';
+
+        // Apply click handlers to marker dots only
+        setupClickEvents(markers);
+
+        // Apply hover effects to dots (highlights corresponding image circles)
+        setupDotHoverEffects();
     }
 
     /**
@@ -147,23 +81,19 @@
      */
     function showLivingLabsPopup(countryCode, countryData, locationName) {
         const popup = document.getElementById('living-labs-popup');
-        const countryNameEl = document.getElementById('popup-country-name');
-        
-        if (!popup || !countryNameEl) return;
 
-        // Set location name (city, country)
-        countryNameEl.textContent = locationName || countryCode;
+        if (!popup) return;
 
         // Get the first partner (since we're showing only one)
         const firstPartner = countryData.partners && countryData.partners[0];
         if (!firstPartner) return;
 
-        // Populate partner information
-        populatePartnerInfo(firstPartner);
+        // Populate partner information with location name and country code
+        populatePartnerInfo(firstPartner, locationName, countryCode);
 
         // Show popup
         popup.style.display = 'block';
-        
+
         // Add event listeners for closing popup
         setTimeout(() => {
             document.addEventListener('click', handlePopupOutsideClick);
@@ -174,60 +104,59 @@
     /**
      * Populate the partner information in the popup
      * @param {Object} partner - The partner data object
+     * @param {string} locationName - The location display name (city, country)
+     * @param {string} countryCode - The country code (e.g., 'PT', 'BE')
      */
-    function populatePartnerInfo(partner) {
-        // Get all the elements
-        const partnerName = document.getElementById('partner-name');
-        const partnerDescription = document.getElementById('partner-description');
-        const partnerActions = document.getElementById('partner-actions');
-        const partnerLogoContainer = document.getElementById('partner-logo-container');
-        const partnerLogo = document.getElementById('partner-logo');
+    function populatePartnerInfo(partner, locationName, countryCode) {
+        const backgroundImg = document.getElementById('popup-background-img');
+        const countryName = document.getElementById('popup-country-name');
+        const contact = document.getElementById('popup-contact');
+        const findOutBtn = document.getElementById('popup-find-out-btn');
+        const logoImg = document.getElementById('popup-logo');
 
-        // Set partner name
-        if (partnerName) {
-            partnerName.textContent = partner.institution || '';
+        // Country-specific logo mapping
+        const countryLogos = {
+            'PT': 'assets/images/libing-lab-portugal.svg',
+            'BE': 'assets/images/living-lab-belgium.svg',
+            'FI': 'assets/images/living-lab-finland.svg',
+            'GB': 'assets/images/living-lab-uk.svg',
+            'RO': 'assets/images/living-lab-romania.svg'
+        };
+
+        // Update logo based on country code
+        if (logoImg && countryCode && countryLogos[countryCode] && window.themeUrl) {
+            logoImg.src = window.themeUrl + '/' + countryLogos[countryCode];
         }
 
-        // Set partner description
-        if (partnerDescription) {
-            partnerDescription.textContent = partner.description || '';
-            partnerDescription.style.display = partner.description ? 'block' : 'none';
-        }
-
-        // Set partner logo
-        if (partnerLogo && partnerLogoContainer) {
-            if (partner.logo) {
-                partnerLogo.src = partner.logo;
-                partnerLogo.alt = partner.institution || '';
-                partnerLogoContainer.style.display = 'block';
+        // Background image (placeholder color shows via CSS when no image)
+        if (backgroundImg) {
+            if (partner.background) {
+                backgroundImg.src = partner.background;
+                backgroundImg.style.display = 'block';
             } else {
-                partnerLogoContainer.style.display = 'none';
+                backgroundImg.src = '';
+                backgroundImg.style.display = 'none';
             }
         }
 
-        // Set partner actions
-        if (partnerActions) {
-            let actionsHtml = '';
+        // Country name
+        if (countryName) {
+            countryName.textContent = locationName || '';
+        }
 
+        // Contact (institution)
+        if (contact) {
+            contact.textContent = partner.institution ? `Contact: ${partner.institution}` : '';
+        }
+
+        // Find out more button
+        if (findOutBtn) {
             if (partner.url) {
-                actionsHtml += `
-                    <button type="button" class="btn btn-primary btn-website" onclick="window.open('${partner.url}', '_blank'); return false;" aria-label="Visit website (opens in new tab)">
-                        <span class="btn-icon icon-external-link" aria-hidden="true"></span>
-                        Visit website
-                    </button>
-                `;
+                findOutBtn.href = partner.url;
+                findOutBtn.style.display = 'inline-flex';
+            } else {
+                findOutBtn.style.display = 'none';
             }
-
-            if (partner.email) {
-                actionsHtml += `
-                    <button type="button" class="btn btn-primary btn-contact" onclick="window.location.href='mailto:${partner.email}'; return false;" aria-label="Contact partner">
-                        <span class="btn-icon icon-mail-send" aria-hidden="true"></span>
-                        Contact
-                    </button>
-                `;
-            }
-
-            partnerActions.innerHTML = actionsHtml;
         }
     }
 
