@@ -80,15 +80,15 @@ description_limit = 0
                 </div>
             </div>
         </div>
-        <div id="search" class="srearch" style="display: none;">
-            <div class="containe">
-                <form class="input-group align-items-start" role="search" action="{{ url('search')}}" method="get">
-                    <label for="searchInput" class="sr-only">Search</label>
-                    <input id="searchInput" class="form-control search_input" style="color: #000;" name="q" type="text" autocomplete="on" placeholder="Search here...">
-                    <button class="btn btn-link pr p-search big text-grey-search-btn" type="submit" aria-label="Submit search"></button>
-                    <button type="button" class="close-search" onclick="hideSearchForm();" aria-label="Close search">&#10006;</button>
-                </form>
-            </div>
+    </div>
+    <div id="search" class="search" style="display: none;">
+        <div class="container">
+            <form class="input-group align-items-start" role="search" action="{{ url('search')}}" method="get">
+                <label for="searchInput" class="sr-only" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0;">Search</label>
+                <input id="searchInput" class="form-control search_input" style="color: #000;" name="q" type="text" autocomplete="on" placeholder="Search here...">
+                <button class="btn btn-link pr p-search big text-grey-search-btn" type="submit" aria-label="Submit search"></button>
+                <button type="button" class="close-search" onclick="hideSearchForm();" aria-label="Close search">&#10006;</button>
+            </form>
         </div>
     </div>
 </nav>
