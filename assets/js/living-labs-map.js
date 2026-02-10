@@ -23,8 +23,10 @@
         const popup = document.getElementById('living-labs-popup');
         if (!popup) return;
 
-        // Get all circle markers (dots) with data-country attribute
-        const markers = svg.querySelectorAll('circle.living-lab-marker[data-country]');
+        // Get all markers (dots) and image circles with data-country attribute
+        // Markers can be circle or ellipse elements
+        const markers = svg.querySelectorAll('.living-lab-marker[data-country]');
+        const imageCircles = svg.querySelectorAll('.living-lab-image[data-country]');
 
         // Shared handler function for setting up click events
         function setupClickEvents(elements) {
@@ -53,7 +55,7 @@
                 if (!countryCode) return;
 
                 // Find the corresponding image circle
-                const imageCircle = svg.querySelector(`circle.living-lab-image[data-country="${countryCode}"]`);
+                const imageCircle = svg.querySelector(`.living-lab-image[data-country="${countryCode}"]`);
                 if (!imageCircle) return;
 
                 marker.addEventListener('mouseenter', () => {
@@ -66,8 +68,9 @@
             });
         }
 
-        // Apply click handlers to marker dots only
+        // Apply click handlers to marker dots and image circles
         setupClickEvents(markers);
+        setupClickEvents(imageCircles);
 
         // Apply hover effects to dots (highlights corresponding image circles)
         setupDotHoverEffects();

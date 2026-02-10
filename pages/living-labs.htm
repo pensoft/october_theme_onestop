@@ -18,6 +18,7 @@ templates = "template2"
 description_limit = 0
 
 [siteSearchInclude]
+
 ==
 <?php
 use Pensoft\Partners\Models\Partners as Partner;
@@ -90,53 +91,93 @@ function onStart(){
               ->orWhereRaw('LOWER(keywords) LIKE ?', ['%livinglab%']);
         })
         ->orderBy('published_at', 'desc')
-        ->limit(3)
+        ->limit(10)
         ->get();
 }
 ?>
 ==
+
 {% component 'siteSearchInclude' %}
 
-
 <div class="container-fluid living-labs-page">
-    <div class="container">
-        {% component 'living-labs-intro' %}
-    </div>
-
-    <div class="container map">
-        {% partial 'components/living-labs-map' %}
-        {% partial 'components/living-labs-popup' %}
-    </div>
-
-    <div class="container">
-        {% component 'living-labs-outro' %}
+    <div class="container container-1600">
+        <div class="row">
+            <div class="col-md-6 col-xs-12 content">
+                <div class="col-md-12">
+                    {% component 'living-labs-intro' %}
+                </div>
+            </div>
+            <div class="col-md-6 col-xs-12">
+                <div class="map living-labs-map">
+                    {% partial 'components/living-labs-map' %}
+                    {% partial 'components/living-labs-popup' %}
+                </div>
+            </div>
+        </div>
     </div>
 
     {% if related_articles|length > 0 %}
-    <div class="container related-news">
-        <h2 class="display-1">Related News</h2>
-
-        <div class="row news-list">
-            {% for article in related_articles %}
-            <div class="col-md-4 col-xs-12 center-xs center-md">
-                <div class="row news-item">
-                    <div class="col-md-12 col-xs-12 home-news-cover">
-                        <a class="news-item-link" href="/news/{{ article.slug }}">
-                            <img src="{{ article.cover.path }}" alt="{{ article.title }}">
-                            <div class="btn read-more-btn btn-primary">Read more</div>
-                        </a>
-                    </div>
-                    <div class="col-md-12 col-xs-12 news-content">
-                        <div class="news-date">{{ article.published_at|date('d.m.Y') }}</div>
-                        <a href="/news/{{ article.slug }}">
-                            <div class="news-title">{{ article.title|length > 100 ? article.title|slice(0, 100) ~ '...' : article.title }}</div>
-                        </a>
+    {% if related_articles|length >= 4 %}
+    <div class="container-fluid highlights-news related-news-carousel">
+        <div class="container container-1600 news-header">
+            <h2 class="display-1">Latest News</h2>
+            <div class="news-arrows">
+                <button type="button" class="trigger_prev_arrow" aria-label="Previous news"></button>
+                <button type="button" class="trigger_next_arrow" aria-label="Next news"></button>
+            </div>
+        </div>
+        <div class="container container-1600">
+            <div class="news-carousel">
+                {% for article in related_articles %}
+                <div class="home-news-highlights">
+                    <div class="row news-item">
+                        <div class="col-md-12 col-xs-12 home-news-cover">
+                            <a href="/news/{{ article.slug }}">
+                                <img src="{{ article.cover.path }}" alt="{{ article.title }}">
+                                <div class="btn read-more-btn btn-primary">Read more</div>
+                            </a>
+                        </div>
+                        <div class="col-md-12 col-xs-12 news-content">
+                            <div class="news-date">{{ article.published_at|date('d.m.Y') }}</div>
+                            <a href="/news/{{ article.slug }}">
+                                <div class="news-title">{{ article.title|length > 100 ? article.title|slice(0, 100) ~ '...' : article.title }}</div>
+                            </a>
+                        </div>
                     </div>
                 </div>
+                {% endfor %}
             </div>
-            {% endfor %}
         </div>
     </div>
+    {% else %}
+    <div class="container-fluid highlights-news related-news-static">
+        <div class="container-1600">
+            <h2 class="display-1">Latest News</h2>
+        </div>
+        <div class="container-1600">
+            <div class="news-static-grid">
+                {% for article in related_articles %}
+                <div class="home-news-highlights">
+                    <div class="row news-item">
+                        <div class="col-md-12 col-xs-12 home-news-cover">
+                            <a href="/news/{{ article.slug }}">
+                                <img src="{{ article.cover.path }}" alt="{{ article.title }}">
+                                <div class="btn read-more-btn btn-primary">Read more</div>
+                            </a>
+                        </div>
+                        <div class="col-md-12 col-xs-12 news-content">
+                            <div class="news-date">{{ article.published_at|date('d.m.Y') }}</div>
+                            <a href="/news/{{ article.slug }}">
+                                <div class="news-title">{{ article.title|length > 100 ? article.title|slice(0, 100) ~ '...' : article.title }}</div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
     {% endif %}
 </div>
 
