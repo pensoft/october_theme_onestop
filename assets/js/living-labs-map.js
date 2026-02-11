@@ -114,6 +114,7 @@
         const backgroundImg = document.getElementById('popup-background-img');
         const countryName = document.getElementById('popup-country-name');
         const contact = document.getElementById('popup-contact');
+        const description = document.getElementById('popup-description');
         const findOutBtn = document.getElementById('popup-find-out-btn');
         const logoImg = document.getElementById('popup-logo');
 
@@ -150,6 +151,11 @@
         // Contact (institution)
         if (contact) {
             contact.textContent = partner.institution ? `Contact: ${partner.institution}` : '';
+        }
+
+        // Description (partner content)
+        if (description) {
+            description.textContent = partner.description || '';
         }
 
         // Find out more button
