@@ -1476,7 +1476,8 @@ function renameLibraryCategoryTabs() {
             '0': 'All documents',
             '4': 'Deliverables & milestones',
             '2': 'Relevant publications',
-            '3': 'OneSTOP publications'
+            '3': 'OneSTOP publications',
+            '6': 'Policy briefs'
         };
         
         // Update each tab's text content
