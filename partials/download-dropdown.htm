@@ -51,6 +51,11 @@
                         {{ fileData.format }}
                     </a>
                 {% endfor %}
+                {% if itemType == 'presentation' and item.url %}
+                    <a href="{{ item.url }}" target="_blank" rel="noopener noreferrer" class="dropdown-item">
+                        Zenodo
+                    </a>
+                {% endif %}
             </div>
         </div>
     {% elseif itemType == 'newsletter' %}
@@ -63,5 +68,18 @@
                 </button>
             </div>
         {% endif %}
+    {% elseif itemType == 'presentation' and item.url %}
+        <div class="download-dropdown">
+            <div class="download-btn-main">
+                <i class="download-icon"></i>
+                Download
+                <i class="dropdown-arrow"></i>
+            </div>
+            <div class="dropdown-menu">
+                <a href="{{ item.url }}" target="_blank" rel="noopener noreferrer" class="dropdown-item">
+                    Zenodo
+                </a>
+            </div>
+        </div>
     {% endif %}
 </div> 
