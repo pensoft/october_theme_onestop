@@ -21,7 +21,7 @@ use Pensoft\Media\Models\Videos;
 use System\Models\File;
 
 function onStart(){
-	$this['mediaVideosList'] =  Videos::where('pensoft_media_videos.parent_id', null)->get();
+	$this['mediaVideosList'] =  Videos::where('pensoft_media_videos.parent_id', null)->orderBy('sort_order')->get();
 if(get('download')){
 $file = File::find((int)get('download'));
 $file_name = $file->getLocalPath();
