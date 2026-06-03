@@ -1154,6 +1154,10 @@ function restructureLibraryCards() {
         
         // Get document type from existing label
         var docType = $typeLabel.find('.doc_type').text() || 'Document';
+        // Visual relabel: show "Technical brief(s)" as "Policy brief(s)" (display only)
+        docType = docType.replace(/technical brief/gi, function (match) {
+            return match.charAt(0) === 'T' ? 'Policy brief' : 'policy brief';
+        });
         
         // Clear the row and rebuild structure
         $row.empty();
