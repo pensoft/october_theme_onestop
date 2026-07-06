@@ -81,6 +81,15 @@ function onStart(){
     $this['countryNames'] = $countryNames;
     $this['cityNames'] = $cityNames;
 
+    // Current cover/background image per country, used by the map circles so they
+    // stay in sync with whatever image is set on the partner (instead of a baked-in one)
+    $countryImages = [];
+    foreach ($partnersData as $countryCode => $data) {
+        $firstPartner = $data['partners'][0] ?? null;
+        $countryImages[$countryCode] = $firstPartner['background'] ?? $firstPartner['logo'] ?? '';
+    }
+    $this['countryImages'] = $countryImages;
+
     // Fetch related news articles with "living labs" keywords
     $this['related_articles'] = Article::news()
         ->where('published', true)
@@ -109,9 +118,17 @@ function onStart(){
             </div>
             <div class="col-md-6 col-xs-12">
                 <div class="map living-labs-map">
-                    {% partial 'components/living-labs-map' %}
+                    {% partial 'components/living-labs-map' countryImages=countryImages %}
                     {% partial 'components/living-labs-popup' %}
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container container-1600">
+        <div class="row">
+            <div class="col-xs-12 content">
+                {% component 'living-labs-outro' %}
             </div>
         </div>
     </div>
