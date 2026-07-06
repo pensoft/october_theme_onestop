@@ -1,0 +1,100 @@
+// Webinar first-visit popup — mirrors the advisory/video popup pattern
+.webinar-popup {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+
+    &.open {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .webinar-popup-backdrop {
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+    }
+
+    .webinar-popup-dialog {
+        position: relative;
+        width: 50%;
+        max-width: 640px;
+        max-height: 85vh;
+        margin: auto;
+        overflow: auto;
+        background: #ffffff;
+        border-radius: 10px;
+        padding: 40px;
+
+        .breakpoint-large-down({
+            width: 90vw;
+            max-height: 80vh;
+            padding: 28px 24px;
+            border-radius: 8px;
+        });
+
+        @media (max-width: 480px) {
+            width: 95vw;
+            max-width: calc(100vw - 8px);
+            max-height: 90vh;
+            padding: 24px 18px;
+        }
+    }
+
+    .webinar-popup-close {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        background: transparent;
+        border: none;
+        width: 31.422px;
+        height: 31.422px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+
+        img {
+            width: 22.234px;
+            height: 22.234px;
+            filter: opacity(0.6);
+        }
+
+        &:hover img {
+            filter: opacity(1);
+        }
+
+        .breakpoint-large-down({
+            top: 8px;
+            right: 8px;
+            width: 28px;
+            height: 28px;
+
+            img {
+                width: 20px;
+                height: 20px;
+            }
+        });
+    }
+
+    .webinar-popup-content {
+        margin-top: 10px;
+    }
+
+    .webinar-popup-title {
+        color: @heading-text-color;
+        margin: 0 0 20px;
+        padding-right: 24px;
+    }
+
+    .webinar-popup-text {
+        color: @body-text-color;
+        margin: 0 0 28px;
+    }
+
+    .webinar-popup-register {
+        display: inline-block;
+    }
+}

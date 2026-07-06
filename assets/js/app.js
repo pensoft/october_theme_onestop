@@ -143,6 +143,9 @@ $(document).ready(function() {
     // Initialize video popup functionality
     initVideoPopup();
 
+    // Initialize the first-visit webinar popup
+    initWebinarPopup();
+
     // Initialize partner layout wrapping for larger screens
     if(width >= 1024 && $('#partners .key_0').length){
         // First column: items 0, 2, 4, 6, etc. (even numbers)
@@ -1593,6 +1596,66 @@ function initVideoPopup() {
     $('.video-popup-dialog').on('click', function(e) {
         if (!$(e.target).closest('.video-popup-close').length) {
             e.stopPropagation();
+        }
+    });
+}
+
+/**
+ * Webinar Popup functionality
+ * Shows the webinar announcement popup once, only on a visitor's first visit.
+ * Uses localStorage so it never reappears for the same browser after being seen.
+ */
+function initWebinarPopup() {
+    var $webinarPopup = $('#webinarPopup');
+    if (!$webinarPopup.length) {
+        return;
+    }
+
+    var STORAGE_KEY = 'onestop_webinar_popup_seen';
+    var alreadySeen = false;
+
+    // localStorage can throw (private mode / disabled) — fail open by showing once.
+    try {
+        alreadySeen = window.localStorage.getItem(STORAGE_KEY) === '1';
+    } catch (err) {
+        alreadySeen = false;
+    }
+
+    if (alreadySeen) {
+        return;
+    }
+
+    function markSeen() {
+        try {
+            window.localStorage.setItem(STORAGE_KEY, '1');
+        } catch (err) {
+            // Ignore storage failures — the popup simply may show again next visit.
+        }
+    }
+
+    function closeWebinarPopup() {
+        $webinarPopup.removeClass('open').attr('aria-hidden', 'true');
+        $('body').removeClass('modal-open');
+    }
+
+    // Open shortly after load so the page has settled first.
+    setTimeout(function() {
+        $('body').addClass('modal-open');
+        $webinarPopup.addClass('open').attr('aria-hidden', 'false');
+        markSeen();
+    }, 800);
+
+    // Close on backdrop / close button
+    $(document).off('click.webinarClose').on('click.webinarClose', '[data-close-webinar]', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        closeWebinarPopup();
+    });
+
+    // Close on escape key
+    $(document).off('keydown.webinarEsc').on('keydown.webinarEsc', function(e) {
+        if (e.key === 'Escape' && $webinarPopup.hasClass('open')) {
+            closeWebinarPopup();
         }
     });
 }
