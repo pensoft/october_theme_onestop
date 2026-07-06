@@ -18,10 +18,24 @@ pageNumber = "{{ :page }}"
 ==
 <?php
 use Pensoft\Media\Models\Videos;
+use Pensoft\Media\Models\VideosCategory;
 use System\Models\File;
 
 function onStart(){
-	$this['mediaVideosList'] =  Videos::where('pensoft_media_videos.parent_id', null)->orderBy('sort_order')->get();
+	$this['categories'] = VideosCategory::orderBy('sort_order')->get();
+
+	$categoryId = input('categoryId', 'all');
+	if ($categoryId !== 'all' && !is_numeric($categoryId)) {
+		return Redirect::to('/videos');
+	}
+	$this['categoryId'] = $categoryId;
+
+	$videosQuery = Videos::where('pensoft_media_videos.parent_id', null);
+	if ($categoryId !== 'all') {
+		$videosQuery->where('category_id', $categoryId);
+	}
+	$this['mediaVideosList'] = $videosQuery->orderBy('sort_order')->get();
+
 if(get('download')){
 $file = File::find((int)get('download'));
 $file_name = $file->getLocalPath();
@@ -68,6 +82,17 @@ return Response::download($pathToFile, $fileName, $headers);
 {% set records = mediaVideosList %}
 
 <div class="container">
+    {% if categories|length > 0 %}
+    <div class="videos-category-tabs">
+        <div class="tabs-navigation" role="tablist">
+            <a href="/videos" class="tab-link{% if categoryId == 'all' %} active{% endif %}" data-category="all" role="tab" aria-selected="{% if categoryId == 'all' %}true{% else %}false{% endif %}">All videos</a>
+            {% for category in categories %}
+                <a href="/videos?categoryId={{ category.id }}" class="tab-link{% if categoryId == category.id %} active{% endif %}" data-category="{{ category.id }}" role="tab" aria-selected="{% if categoryId == category.id %}true{% else %}false{% endif %}">{{ category.name }}</a>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
     {% if records.count() %}
     <div class="row">
         {% for record in records %}

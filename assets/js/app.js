@@ -801,11 +801,20 @@ function initTabs() {
     
     // Handle tab click events
     $('.tab-link').on('click', function(e) {
-        e.preventDefault();
-        
         // Get the tab id from data attribute
         var tabId = $(this).data('tab');
-        
+
+        // Server-side category tabs (e.g. the videos/news category filters) also use the
+        // `tab-link` class but carry `data-category` and a real href / their own handler
+        // instead of `data-tab`. They are NOT in-page content tabs, so let the browser
+        // follow their link natively rather than calling preventDefault() and pushing a
+        // bogus "#undefined" hash (which left the URL as ...#undefined and never filtered).
+        if (!tabId) {
+            return;
+        }
+
+        e.preventDefault();
+
         // Remove active class from all tabs and add to clicked tab
         $('.tab-link').removeClass('active');
         $(this).addClass('active');
