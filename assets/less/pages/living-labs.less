@@ -174,7 +174,14 @@
         // reads far better left-aligned.
         text-align: left;
 
-        // Richtext children rendered from the backend `content` field
+        // Richtext children rendered from the backend `content` field.
+        // NB: the editor wraps list items in <p>, so `.living-labs-page p`
+        // (text-align: center) re-centers them — override on the elements.
+        p,
+        li {
+            text-align: left;
+        }
+
         p {
             margin: 0 0 10px;
 

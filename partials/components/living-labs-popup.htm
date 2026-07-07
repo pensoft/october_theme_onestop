@@ -4,7 +4,11 @@
    environment, whereas partial HTML deploys immediately. Keep them here so the
    richtext popup renders correctly regardless of the CSS build. #}
 <style>
-    #living-labs-popup .popup-description { text-align: left; }
+    /* Override .living-labs-page p { text-align: center } which otherwise
+       re-centers every <p> the richtext editor wraps around list items. */
+    #living-labs-popup .popup-description,
+    #living-labs-popup .popup-description p,
+    #living-labs-popup .popup-description li { text-align: left; }
     #living-labs-popup .popup-description p { margin: 0 0 10px; }
     #living-labs-popup .popup-description p:last-child { margin-bottom: 0; }
     #living-labs-popup .popup-description ul,
