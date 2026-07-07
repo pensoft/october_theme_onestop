@@ -68,11 +68,17 @@ function onStart(){
             $partnersData[$countryCode]['partners'][] = [
                 'id' => $partner->id,
                 'institution' => $partner->instituion,
-                'description' => strip_tags($partner->content),
+                // Keep the raw richtext HTML; the popup renders it via innerHTML.
+                'description' => $partner->content,
                 'logo' => $partner->cover ? $partner->cover->getThumb(120, 80, 'auto') : null,
                 'url' => $partner->instituion_url,
                 'email' => $partner->email,
-                'background' => $partner->background ? $partner->background->getPath() : null
+                'background' => $partner->background ? $partner->background->getPath() : null,
+                // Square, properly-sized crop for the map circles (rendered ~68px,
+                // so 240px keeps them crisp on high-DPI screens).
+                'circle_image' => $partner->background
+                    ? $partner->background->getThumb(240, 240, ['mode' => 'crop'])
+                    : ($partner->cover ? $partner->cover->getThumb(240, 240, ['mode' => 'crop']) : null)
             ];
         }
     }
@@ -86,7 +92,7 @@ function onStart(){
     $countryImages = [];
     foreach ($partnersData as $countryCode => $data) {
         $firstPartner = $data['partners'][0] ?? null;
-        $countryImages[$countryCode] = $firstPartner['background'] ?? $firstPartner['logo'] ?? '';
+        $countryImages[$countryCode] = $firstPartner['circle_image'] ?? $firstPartner['logo'] ?? '';
     }
     $this['countryImages'] = $countryImages;
 
@@ -125,7 +131,7 @@ function onStart(){
         </div>
     </div>
 
-    <div class="container container-1600">
+    <div class="container container-1600 living-labs-outro-wrap">
         <div class="row">
             <div class="col-xs-12 content">
                 {% component 'living-labs-outro' %}

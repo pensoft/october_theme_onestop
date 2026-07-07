@@ -170,6 +170,27 @@
         line-height: 150%;
         letter-spacing: -0.28px;
         margin: 0 0 24px;
+
+        // Richtext children rendered from the backend `content` field
+        p {
+            margin: 0 0 10px;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+
+        ul,
+        ol {
+            margin: 0 0 10px;
+            padding-left: 18px;
+            text-align: start;
+        }
+
+        a {
+            color: #3CBB54;
+            text-decoration: underline;
+        }
     }
 
     .btn-find-out {
@@ -196,13 +217,26 @@
     }
 }
 
-.related-news-carousel {
-    margin-top: 40px;
+// Tighten the gap between the outro jumbotron (last block) and Latest News.
+// The outro sits in a .container (padding-bottom: 50px) and the Latest News
+// header is itself a .container (padding-top: 50px); drop the outro's bottom
+// padding and the news section's top margin so they sit closer.
+.living-labs-outro-wrap {
+    padding-bottom: 0;
+}
+
+.related-news-carousel,
+.related-news-static {
+    margin-top: 0;
+
+    // Latest News header/body is a .container with padding-top: 50px; trim it here.
+    .news-header,
+    .container-1600:first-child {
+        padding-top: 20px;
+    }
 }
 
 .related-news-static {
-    margin-top: 40px;
-
     h2.display-1 {
         text-align: center;
     }

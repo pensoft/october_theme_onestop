@@ -153,9 +153,9 @@
             contact.textContent = partner.institution ? `Contact: ${partner.institution}` : '';
         }
 
-        // Description (partner content)
+        // Description (partner content — richtext HTML from the backend)
         if (description) {
-            description.textContent = partner.description || '';
+            description.innerHTML = partner.description || '';
         }
 
         // Find out more button
