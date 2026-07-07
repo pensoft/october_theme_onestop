@@ -1,4 +1,21 @@
 {# Living Labs Map Popup Partial - Redesigned #}
+{# NOTE: these description/list styles are inlined here (not in living-labs.less)
+   on purpose — the compiled LESS was not refreshing reliably in the served
+   environment, whereas partial HTML deploys immediately. Keep them here so the
+   richtext popup renders correctly regardless of the CSS build. #}
+<style>
+    #living-labs-popup .popup-description { text-align: left; }
+    #living-labs-popup .popup-description p { margin: 0 0 10px; }
+    #living-labs-popup .popup-description p:last-child { margin-bottom: 0; }
+    #living-labs-popup .popup-description ul,
+    #living-labs-popup .popup-description ol { margin: 0 0 10px; padding-left: 20px; }
+    #living-labs-popup .popup-description li > p { margin: 0; }
+    #living-labs-popup .popup-description ul ul,
+    #living-labs-popup .popup-description ul ol,
+    #living-labs-popup .popup-description ol ul,
+    #living-labs-popup .popup-description ol ol { margin: 4px 0 0; }
+    #living-labs-popup .popup-description a { color: #3CBB54; text-decoration: underline; }
+</style>
 <div class="map-popup" id="living-labs-popup" style="display: none;">
     {# Background Image Section (shows placeholder color if no image) #}
     <div class="popup-background" id="popup-background">
