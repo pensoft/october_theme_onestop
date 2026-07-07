@@ -170,6 +170,9 @@
         line-height: 150%;
         letter-spacing: -0.28px;
         margin: 0 0 24px;
+        // The popup content is centered; the richtext (esp. bulleted lists)
+        // reads far better left-aligned.
+        text-align: left;
 
         // Richtext children rendered from the backend `content` field
         p {
@@ -183,8 +186,19 @@
         ul,
         ol {
             margin: 0 0 10px;
-            padding-left: 18px;
-            text-align: start;
+            padding-left: 20px;
+
+            // The editor wraps each <li> in a <p>; collapse that spacing so
+            // list items sit tight against their bullets.
+            li > p {
+                margin: 0;
+            }
+
+            // Nested lists (e.g. "Key risk factors") shouldn't double-space.
+            ul,
+            ol {
+                margin: 4px 0 0;
+            }
         }
 
         a {
