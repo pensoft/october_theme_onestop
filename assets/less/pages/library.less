@@ -106,9 +106,18 @@
             .text-ligth {
                 font-weight: 400;
                 color: #003c3c;
-                
+
+                // Brand green so DOI/URL links read as links instead of
+                // blending into the #003c3c body text around them.
                 a {
-                    color: #003c3c;
+                    color: #3cbb54;
+                    text-decoration: underline;
+
+                    &:hover,
+                    &:focus {
+                        color: darken(#3cbb54, 12%);
+                        text-decoration: underline;
+                    }
                 }
             }
             

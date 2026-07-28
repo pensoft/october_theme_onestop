@@ -43,11 +43,19 @@ description_limit = 0
             <img src="{{ this.theme.site_logo.getPath() }}" alt="{{ this.theme.site_name }}">
         </a>
 
-        <button type="button" id="desktopMenuToggle" aria-label="Toggle navigation">
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-        </button>
+        <div class="navbar-actions">
+            <div class="search-container">
+                <button type="button" class="search-btn" id="searchToggle" aria-label="Search">
+                    <span class="search-icon" aria-hidden="true"></span>
+                </button>
+            </div>
+
+            <button type="button" id="desktopMenuToggle" aria-label="Toggle navigation">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </button>
+        </div>
     </div>
     
     <div class="navbar-collapse" id="headerNavbarNav">
@@ -73,11 +81,6 @@ description_limit = 0
             
             <div class="bottom-row">
                 <div id="google_translate_element"></div>
-                <div class="search-container">
-                    <button type="button" class="btn btn-primary search-btn" id="searchToggle" aria-label="Search">
-                        <span class="search-icon" aria-hidden="true"></span> Search
-                    </button>
-                </div>
             </div>
         </div>
     </div>

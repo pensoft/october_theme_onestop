@@ -413,6 +413,14 @@
 		margin-bottom: 20px;
 	}
 
+	// Stacked on mobile the photo column butts straight up against the
+	// buttons above it — give it breathing room.
+	.row > .col-md-6:last-child{
+		.breakpoint-large-down({
+			margin-top: 25px;
+		});
+	}
+
     .btn-row{
         a {
             margin-right: 20px;

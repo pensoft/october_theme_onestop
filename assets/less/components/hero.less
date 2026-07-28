@@ -79,17 +79,30 @@
     .header-image-bar {
         width: 100%;
         height: 100%;
+        // Padding must eat into the 100% height, not add to it
+        box-sizing: border-box;
         display: flex;
         justify-content: center;
         align-items: end;
         padding-bottom: 40px;
         .breakpoint-large-down({
+            // Clear the fixed navbar, otherwise the title renders behind it
+            padding-top: 110px;
             padding-bottom: 10px;
         });
     }
 
-    .hero {
+    // The banner element carries both classes (`header-image ... hero`) —
+    // there is no nested `.hero`, so a descendant selector never matched and
+    // these pages fell back to the generic `.hero { height: 100vh }`.
+    &.hero {
         height: 300px;
+
+        .breakpoint-large-down({
+            // Navbar (~96px) + title + breathing room
+            height: 220px;
+            min-height: 220px !important;
+        });
     }
 }
 
@@ -309,13 +322,12 @@
 }
 
 .breakpoint-large-down({
-    .hero {
+    // Full-viewport hero belongs to the homepage only. Left unscoped it also
+    // stretched every inner-page banner to 100vh, leaving a screen-tall empty
+    // band between the header and the page text.
+    .header-image.home.hero {
         height: 100vh;
         min-height: 100vh;
-    }
-
-    .header-image.hero {
-        min-height: auto;
     }
 
     .header-image-bar {

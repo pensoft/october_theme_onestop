@@ -187,6 +187,22 @@ body.modal-open {
         });
     }
 
+    // Institutional description — always shown in full (no read-more clamp)
+    .partner-popup-description {
+        color: #1e513d;
+        font-size: 16px;
+        letter-spacing: -0.32px;
+        line-height: 1.4;
+
+        .breakpoint-large-down({
+            font-size: 15px;
+        });
+
+        @media (max-width: 480px) {
+            font-size: 14px;
+        }
+    }
+
     // Read more functionality
     .readmore-block {
         position: relative;

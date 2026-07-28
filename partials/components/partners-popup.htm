@@ -21,14 +21,9 @@
 
         <div class="partner-popup-section">
             <h4>{{ 'Institutional description'|_ }}</h4>
-            <div class="readmore-block" data-lines="3">
-                <div class="readmore-content">
-                    {{ p.content|raw }}
-                </div>
-                <button type="button" class="readmore-toggle" data-expanded-text="Read less" data-collapsed-text="Read more" aria-expanded="false">
-                    <span class="readmore-text">Read more</span>
-                    <img class="readmore-arrow" src="{{ 'assets/images/readmore-arrow-down.svg'|theme }}" alt="" aria-hidden="true">
-                </button>
+            {# Shown in full — no read-more clamp on the institutional description. #}
+            <div class="partner-popup-description">
+                {{ p.content|raw }}
             </div>
         </div>
 

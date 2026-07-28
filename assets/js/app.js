@@ -216,9 +216,10 @@ $(document).ready(function() {
             'visibility': 'visible'
         });
         
-        // Hide the toggle button
+        // Hide the toggle button and the search button beside it
         $(this).hide();
-        
+        $('#headernavbar .navbar-actions .search-container').hide();
+
         $('body').addClass('menu-open');
     });
     
@@ -234,9 +235,10 @@ $(document).ready(function() {
             'visibility': 'hidden'
         });
         
-        // Show the toggle button again
+        // Show the toggle button and search button again
         $('#desktopMenuToggle').show();
-        
+        $('#headernavbar .navbar-actions .search-container').show();
+
         $('body').removeClass('menu-open');
     });
 
@@ -261,9 +263,10 @@ $(document).ready(function() {
                 'visibility': 'hidden'
             });
             
-            // Show the toggle button again
+            // Show the toggle button and search button again
             $('#desktopMenuToggle').show();
-            
+            $('#headernavbar .navbar-actions .search-container').show();
+
             $('body').removeClass('menu-open');
         }
     });
@@ -439,7 +442,9 @@ $(document).ready(function() {
     
             // Default settings for mobile
             slidesToShow: 1,
-            slidesToScroll: 3,
+            // One at a time: scrolling 3 while showing 1 skipped two logos
+            // out of every three on phones.
+            slidesToScroll: 1,
             variableWidth: true,
             
             responsive: [
@@ -535,7 +540,12 @@ $(document).ready(function() {
                         dots: true,
                         // centerMode: true,
                         // centerPadding: '2%',
-                        slidesToShow: 1
+                        slidesToShow: 1,
+                        // Must be set explicitly: unspecified keys fall back to
+                        // the base config (3), which made mobile jump three
+                        // items at a time while showing only one.
+                        slidesToScroll: 1,
+                        speed: 500
                     }
                 }
             ]
