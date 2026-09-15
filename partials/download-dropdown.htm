@@ -46,23 +46,8 @@
                     </div>
                     <div class="dropdown-menu">
                         {% for fileData in availableFiles %}
-                            {# Friendly download URL /download/<id>/<slug-of-original-name>.<ext>, served by
-                               pages/download.htm with the original file name — keep in sync with downloadName() there #}
-                            {% set originalName = fileData.file.file_name %}
-                            {% set nameParts = originalName|split('.') %}
-                            {% set baseName = nameParts|length > 1 ? nameParts|slice(0, -1)|join('.') : originalName %}
-                            {% set extension = fileData.file.extension|lower %}
-                            {# Uploads stored with a hashed original name: use item title + file label instead #}
-                            {% if baseName matches '/^[0-9a-f]{16,}$/i' %}
-                                {% set fileLabel = fileData.file.title ?: fileData.file.description %}
-                                {% set readableName = ((item.title ?: item.name) ~ (fileLabel ? ' - ' ~ fileLabel : ''))|trim %}
-                                {% if readableName %}
-                                    {% set baseName = readableName %}
-                                    {% set originalName = baseName ~ (extension ? '.' ~ extension : '') %}
-                                {% endif %}
-                            {% endif %}
-                            {% set niceName = (baseName|slug ?: 'file') ~ (extension ? '.' ~ extension : '') %}
-                            <a href="{{ '/download/' ~ fileData.file.id ~ '/' ~ niceName }}" download="{{ originalName }}" class="dropdown-item">
+                            {# Friendly download URL + original file name (Pensoft.Library download_url / download_name) #}
+                            <a href="{{ download_url(fileData.file, item) }}" download="{{ download_name(fileData.file, item) }}" class="dropdown-item">
                                 {{ fileData.format }}
                             </a>
                         {% endfor %}
