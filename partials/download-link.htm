@@ -1,0 +1,31 @@
+{#-
+  Friendly download link parts for a media file, served by pages/project-materials-download.htm:
+    url:  /project-materials/download/<file id>/<slug of the original file name>.<ext>
+    name: the original file name (or, for uploads stored with a hashed name such as
+          685bfa1e19a1e798863423.png / "683d5023... (1).xlsx", item title + file label)
+  Keep in sync with downloadParts() in pages/project-materials-download.htm.
+
+  Parameters:
+  - file:   the System\Models\File attachment
+  - item:   the record the file is attached to (used for the hashed-name fallback)
+  - output: 'url' (default) or 'name'
+
+  Wrap the output in {% set %}...{% endset %} and print it with |trim|raw (it is escaped here).
+-#}
+{%- set originalName = file.file_name -%}
+{%- set nameParts = originalName|split('.') -%}
+{%- set baseName = nameParts|length > 1 ? nameParts|slice(0, -1)|join('.') : originalName -%}
+{%- set extension = file.extension|lower -%}
+{%- if baseName matches '/^[0-9a-f]{16,}( \\(\\d+\\))?$/i' -%}
+    {%- set fileLabel = file.title ?: file.description -%}
+    {%- set readableName = ((item.title ?: item.name) ~ (fileLabel ? ' - ' ~ fileLabel : ''))|trim -%}
+    {%- if readableName -%}
+        {%- set baseName = readableName -%}
+        {%- set originalName = baseName ~ (extension ? '.' ~ extension : '') -%}
+    {%- endif -%}
+{%- endif -%}
+{%- if output == 'name' -%}
+    {{- originalName -}}
+{%- else -%}
+    {{- '/project-materials/download/' ~ file.id ~ '/' ~ ((baseName|slug ?: 'file') ~ (extension ? '.' ~ extension : '')) -}}
+{%- endif -%}

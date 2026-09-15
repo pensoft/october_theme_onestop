@@ -46,8 +46,11 @@
                     </div>
                     <div class="dropdown-menu">
                         {% for fileData in availableFiles %}
-                            {# Friendly download URL + original file name (Pensoft.Library download_url / download_name) #}
-                            <a href="{{ download_url(fileData.file, item) }}" download="{{ download_name(fileData.file, item) }}" class="dropdown-item">
+                            {# Friendly download URL + original file name, served by the theme's
+                               pages/project-materials-download.htm (see partials/download-link.htm) #}
+                            {% set downloadUrl %}{% partial 'download-link' file=fileData.file item=item output='url' %}{% endset %}
+                            {% set downloadName %}{% partial 'download-link' file=fileData.file item=item output='name' %}{% endset %}
+                            <a href="{{ downloadUrl|trim|raw }}" download="{{ downloadName|trim|raw }}" class="dropdown-item">
                                 {{ fileData.format }}
                             </a>
                         {% endfor %}
