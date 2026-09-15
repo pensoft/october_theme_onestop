@@ -32,6 +32,10 @@ $this['categories'] = Category::orderBy('sort_order')->orderBy('created_at', 'de
 
     $this['categoryId'] = $categoryId;
 
+    // Friendly category paths — keep in sync with the rewrite rules in .htaccess
+    $categorySlugs = [1 => 'events', 2 => 'publications', 3 => 'press-releases', 4 => 'synergies', 5 => 'updates', 6 => 'blog'];
+    $this['categorySlugs'] = $categorySlugs;
+
     if ($categoryId === 'all') {
         $records = Article::news()->where('published_at', '<=', 'now')
                                   ->where('published', 'true')
@@ -47,7 +51,11 @@ $this['categories'] = Category::orderBy('sort_order')->orderBy('created_at', 'de
     }
 
     if ($categoryId !== 'all') {
-        $records->appends(['categoryId' => $categoryId]);
+        if (isset($categorySlugs[$categoryId])) {
+            $records->withPath(url('news/' . $categorySlugs[$categoryId]));
+        } else {
+            $records->appends(['categoryId' => $categoryId]);
+        }
     }
 
     $this['records'] = $records;
@@ -195,7 +203,7 @@ $this['related'] = $related;
         <div class="tabs-navigation" role="tablist">
             <a href="/news" class="tab-link{% if categoryId == 'all' %} active{% endif %}" data-category="all" role="tab" aria-selected="{% if categoryId == 'all' %}true{% else %}false{% endif %}">All news</a>
             {% for category in categories %}
-                <a href="/news?categoryId={{category.id}}" class="tab-link{% if categoryId == category.id %} active{% endif %}" data-category="{{category.id}}" role="tab" aria-selected="{% if categoryId == category.id %}true{% else %}false{% endif %}">{{category.name}}</a>
+                <a href="{{ categorySlugs[category.id] is defined ? '/news/' ~ categorySlugs[category.id] : '/news?categoryId=' ~ category.id }}" class="tab-link{% if categoryId == category.id %} active{% endif %}" data-category="{{category.id}}" role="tab" aria-selected="{% if categoryId == category.id %}true{% else %}false{% endif %}">{{category.name}}</a>
             {% endfor %}
         </div>
     </div>

@@ -1124,26 +1124,23 @@ function initNewsCategoryTabs() {
         // Add active class to clicked tab
         $(this).addClass('active');
         
-        // Get the category ID from data attribute
-        var categoryId = $(this).data('category');
-        
-        // Build the URL
-        var url = '/news';
-        if (categoryId !== 'all') {
-            url += '?categoryId=' + categoryId;
-        }
-        
-        // Navigate to the URL (this will reload the page with filtered content)
-        window.location.href = url;
+        $('.news-category-tabs .tab-link').attr('aria-selected', 'false');
+        $(this).attr('aria-selected', 'true');
+
+        // Follow the tab's server-rendered href (friendly paths like /news/events,
+        // see the rewrite rules in .htaccess) — this reloads the filtered list
+        window.location.href = $(this).attr('href');
     });
-    
-    // Update active state based on current URL parameters
-    var urlParams = new URLSearchParams(window.location.search);
-    var currentCategoryId = urlParams.get('categoryId') || 'all';
-    
-    // Set the correct active tab based on URL
-    $('.news-category-tabs .tab-link').removeClass('active');
-    $('.news-category-tabs .tab-link[data-category="' + currentCategoryId + '"]').addClass('active');
+
+    // The active tab is rendered server-side from the resolved categoryId, so it is
+    // correct for both /news/<slug> and /news?categoryId=N. Only fall back to URL
+    // detection if the server didn't mark any tab active.
+    if (!$('.news-category-tabs .tab-link.active').length) {
+        var path = window.location.pathname.replace(/\/+$/, '');
+        $('.news-category-tabs .tab-link').filter(function() {
+            return $(this).attr('href').replace(/\/+$/, '') === path;
+        }).addClass('active').attr('aria-selected', 'true');
+    }
 }
 
 /**

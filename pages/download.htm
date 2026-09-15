@@ -1,0 +1,80 @@
+url = "/download/:id|^[0-9]+$/:name?"
+title = "Download"
+is_hidden = 0
+robot_index = "noindex"
+robot_follow = "nofollow"
+==
+<?php
+use System\Models\File;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+
+// Friendly download URLs for the media materials (project-materials, newsletters):
+//   /download/<file id>/<slug of the original file name>.<ext>
+// The file is sent with its original file name. Keep downloadName() in sync with the
+// URL built in partials/download-dropdown.htm.
+
+// [base name, lowercase extension, file name to send]. Some uploads were stored with a
+// hashed original name (e.g. 685bfa1e19a1e798863423.png) — for those the name is built
+// from the item title plus the file's language/label instead.
+function downloadParts($file)
+{
+    $parts = explode('.', $file->file_name);
+    $base = count($parts) > 1 ? implode('.', array_slice($parts, 0, -1)) : $file->file_name;
+    $ext = strtolower($file->getExtension());
+    $sendName = $file->file_name;
+
+    if (preg_match('/^[0-9a-f]{16,}$/i', $base) && ($item = $file->attachment)) {
+        $label = $file->title ?: $file->description;
+        $readable = trim(($item->title ?: $item->name) . ($label ? ' - ' . $label : ''));
+
+        if ($readable !== '') {
+            $base = $readable;
+            $sendName = $base . ($ext ? '.' . $ext : '');
+        }
+    }
+
+    return [$base, $ext, $sendName];
+}
+
+function downloadName($file)
+{
+    [$base, $ext] = $this->downloadParts($file);
+
+    return (Str::slug($base) ?: 'file') . ($ext ? '.' . $ext : '');
+}
+
+function onStart()
+{
+    // Only public files attached to the media download fields, never arbitrary system files
+    $allowed = [
+        'pensoft\media\models\medialogos' => ['file_jpg', 'file_png', 'file_svg', 'file_eps', 'file_pdf', 'file_zip'],
+        'pensoft\media\models\flyers' => ['file', 'file_lang_versions'],
+        'pensoft\media\models\presentations' => ['file', 'file_lang_versions'],
+        'pensoft\media\models\newsletters' => ['file', 'file_lang_versions'],
+    ];
+
+    $file = File::find((int) $this->param('id'));
+    $fields = $file ? ($allowed[strtolower(ltrim($file->attachment_type, '\\'))] ?? []) : [];
+
+    if (!$file || !$file->isPublic() || !in_array($file->field, $fields, true)) {
+        $this->controller->setStatusCode(404);
+        return $this->controller->run('404');
+    }
+
+    $name = $this->downloadName($file);
+    if ($this->param('name') !== $name) {
+        return Redirect::to(url('/download/' . $file->id . '/' . $name), 301);
+    }
+
+    $fileName = str_replace(['/', '\\'], '_', $this->downloadParts($file)[2]);
+    $fallback = preg_replace('/[^\x20-\x7e]|[%"]/', '_', Str::ascii($fileName));
+
+    return Response::make($file->getContents(), 200, [
+        'Content-Type' => $file->getContentType(),
+        'Content-Disposition' => (new ResponseHeaderBag)->makeDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, $fileName, $fallback),
+        'Content-Length' => $file->file_size,
+        'X-Robots-Tag' => 'noindex, nofollow',
+    ]);
+}
+?>
+==

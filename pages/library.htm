@@ -1,4 +1,4 @@
-url = "/library"
+url = "/library/:p1?/:p2?/:p3?/:p4?/:p5?"
 layout = "default"
 title = "Library"
 is_hidden = 0
@@ -20,8 +20,101 @@ title = 0
 background = "transperant"
 templates = "template1"
 description_limit = 0
-
 ==
+<?php
+// Friendly library URLs — keep the slugs in sync with the rewrite rules in .htaccess:
+//   /library[/<type>][/sort/<field>-<dir>][/search/<query>]   (+ ?page=N)
+// .htaccess turns these paths into the type / Filter[sort] / search params the
+// LibraryPage component reads; this code 301s the old query-string URLs to them,
+// 404s unknown paths and rebuilds the pagination links on the friendly path.
+
+function libraryTypeSlugs()
+{
+    return [
+        1 => 'deliverables',
+        2 => 'relevant-publications',
+        3 => 'onestop-publications',
+        4 => 'deliverables-milestones',
+        5 => 'features',
+        6 => 'policy-briefs',
+        7 => 'graphical-summaries',
+    ];
+}
+
+function libraryUrl($type, $sort, $search)
+{
+    $type = is_scalar($type) ? (string) $type : '';
+    $sort = is_scalar($sort) ? (string) $sort : '';
+    $search = is_scalar($search) ? (string) $search : '';
+
+    $slugs = $this->libraryTypeSlugs();
+    $url = '/library';
+
+    if (isset($slugs[$type])) {
+        $url .= '/' . $slugs[$type];
+    }
+
+    // The component's default sort depends on the type, so leave it out of the URL
+    $defaultSort = in_array($type, ['1', '4'], true) ? 'title asc' : 'year desc';
+    if (preg_match('/^(title|year) (asc|desc)$/', $sort) && $sort !== $defaultSort) {
+        $url .= '/sort/' . str_replace(' ', '-', $sort);
+    }
+
+    // Apache rejects encoded slashes in paths, so fold them into spaces
+    $search = trim(str_replace('/', ' ', $search));
+    if ($search !== '') {
+        $url .= '/search/' . rawurlencode($search);
+    }
+
+    return url($url);
+}
+
+function onStart()
+{
+    $this['libraryTypeSlugs'] = $this->libraryTypeSlugs();
+
+    // Old query-string URLs (?type=&Filter[sort]=&search=) -> friendly path. Check the
+    // original request URI: the internal .htaccess rewrite never shows up there, and
+    // request() already merges path-derived params with explicit ones (explicit win).
+    if (request()->isMethod('get') && !request()->ajax()) {
+        parse_str((string) parse_url(request()->getRequestUri(), PHP_URL_QUERY), $query);
+
+        if (array_key_exists('type', $query) || array_key_exists('Filter', $query) || array_key_exists('search', $query)) {
+            $rest = array_diff_key($query, array_flip(['type', 'Filter', 'search']));
+            $url = $this->libraryUrl(request('type'), request('Filter.sort'), request('search'));
+
+            return Redirect::to($url . ($rest ? '?' . http_build_query($rest) : ''), 301);
+        }
+    }
+
+    // Only the shapes the .htaccess rules understand; anything else under /library is a 404
+    $types = implode('|', array_map('preg_quote', $this->libraryTypeSlugs()));
+    if (!preg_match('#^library(/(' . $types . '))?(/sort/(title|year)-(asc|desc))?(/search/[^/]+)?$#i', request()->decodedPath())) {
+        $this->controller->setStatusCode(404);
+        return $this->controller->run('404');
+    }
+}
+
+function onEnd()
+{
+    // The component appends the whole query string to its pagination links (including
+    // the params the rewrite injected), so rebuild the paginator on the friendly path
+    $records = $this['records'];
+
+    if ($records instanceof \Illuminate\Pagination\LengthAwarePaginator) {
+        $this['records'] = new \Illuminate\Pagination\LengthAwarePaginator(
+            $records->getCollection(),
+            $records->total(),
+            $records->perPage(),
+            $records->currentPage(),
+            [
+                'path' => $this->libraryUrl($this['currentType'], $this['currentSort'], $this['searchQuery']),
+                'query' => array_diff_key(request()->query(), array_flip(['type', 'Filter', 'search', 'page'])),
+            ]
+        );
+    }
+}
+?>
 ==
 
 <div class="container-fluid library-page library">
@@ -36,4 +129,33 @@ description_limit = 0
 
 <script type="text/javascript">
     initButtonStyle();
-</script>    
+
+    // Friendly library URLs: navigate to /library/<type>/sort/<field>-<dir>/search/<query>
+    // instead of submitting the filter form as ?type=&Filter[sort]=&search=.
+    // The plugin's def.js tab/sort/clear handlers all go through this submit.
+    $(function () {
+        var typeSlugs = {{ libraryTypeSlugs|json_encode|raw }};
+
+        $('#typeForm').on('submit', function (e) {
+            e.preventDefault();
+
+            var type = String($('#typeInput').val() || '0'),
+                sort = $('#sortSelect').val() || '',
+                search = $.trim(($('#library-search-input').val() || '').replace(/\//g, ' ')),
+                defaultSort = (type === '1' || type === '4') ? 'title asc' : 'year desc',
+                url = '/library';
+
+            if (typeSlugs[type]) {
+                url += '/' + typeSlugs[type];
+            }
+            if (sort && sort !== defaultSort) {
+                url += '/sort/' + sort.replace(' ', '-');
+            }
+            if (search) {
+                url += '/search/' + encodeURIComponent(search);
+            }
+
+            window.location.href = url;
+        });
+    });
+</script>

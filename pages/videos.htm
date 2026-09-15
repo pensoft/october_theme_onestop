@@ -1,4 +1,4 @@
-url = "/videos"
+url = "/videos/:category?"
 layout = "default"
 title = "Videos"
 is_hidden = 0
@@ -21,12 +21,46 @@ use Pensoft\Media\Models\Videos;
 use Pensoft\Media\Models\VideosCategory;
 use System\Models\File;
 
-function onStart(){
-	$this['categories'] = VideosCategory::orderBy('sort_order')->get();
+// Friendly category URLs: /videos/<slug>. Categories have no slug column and their ids
+// differ between installs, so known categories are matched by name; any other category
+// gets a slug of its name.
+function videoCategorySlug($category)
+{
+	$known = [
+		'introducingonestop' => 'introducing-onestop',
+		'webinars' => 'webinars',
+		'onestopvideos' => 'onestop-videos',
+	];
+	$key = preg_replace('/[^a-z0-9]/', '', strtolower($category->name));
 
-	$categoryId = input('categoryId', 'all');
-	if ($categoryId !== 'all' && !is_numeric($categoryId)) {
-		return Redirect::to('/videos');
+	return $known[$key] ?? (Str::slug($category->name) ?: 'category-' . $category->id);
+}
+
+function onStart(){
+	$this['categories'] = $categories = VideosCategory::orderBy('sort_order')->get();
+
+	$slugs = [];
+	foreach ($categories as $category) {
+		$slugs[$category->id] = $this->videoCategorySlug($category);
+	}
+	$this['categorySlugs'] = $slugs;
+
+	// Old query-string URLs (?categoryId=N) -> /videos/<slug>, keeping any other params
+	$legacyId = input('categoryId');
+	if ($legacyId !== null && request()->isMethod('get')) {
+		$rest = array_diff_key(request()->query(), ['categoryId' => true]);
+		$path = is_scalar($legacyId) && isset($slugs[$legacyId]) ? '/videos/' . $slugs[$legacyId] : '/videos';
+
+		return Redirect::to(url($path) . ($rest ? '?' . http_build_query($rest) : ''), 301);
+	}
+
+	$categoryId = 'all';
+	if ($slug = $this->param('category')) {
+		$categoryId = array_search(strtolower($slug), $slugs, true);
+		if ($categoryId === false) {
+			$this->controller->setStatusCode(404);
+			return $this->controller->run('404');
+		}
 	}
 	$this['categoryId'] = $categoryId;
 
@@ -87,7 +121,7 @@ return Response::download($pathToFile, $fileName, $headers);
         <div class="tabs-navigation" role="tablist">
             <a href="/videos" class="tab-link{% if categoryId == 'all' %} active{% endif %}" data-category="all" role="tab" aria-selected="{% if categoryId == 'all' %}true{% else %}false{% endif %}">All videos</a>
             {% for category in categories %}
-                <a href="/videos?categoryId={{ category.id }}" class="tab-link{% if categoryId == category.id %} active{% endif %}" data-category="{{ category.id }}" role="tab" aria-selected="{% if categoryId == category.id %}true{% else %}false{% endif %}">{{ category.name }}</a>
+                <a href="/videos/{{ categorySlugs[category.id] }}" class="tab-link{% if categoryId == category.id %} active{% endif %}" data-category="{{ category.id }}" role="tab" aria-selected="{% if categoryId == category.id %}true{% else %}false{% endif %}">{{ category.name }}</a>
             {% endfor %}
         </div>
     </div>
