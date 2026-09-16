@@ -50,9 +50,18 @@
                                pages/project-materials-download.htm (see partials/download-link.htm) #}
                             {% set downloadUrl %}{% partial 'download-link' file=fileData.file item=item output='url' %}{% endset %}
                             {% set downloadName %}{% partial 'download-link' file=fileData.file item=item output='name' %}{% endset %}
-                            <a href="{{ downloadUrl|trim|raw }}" download="{{ downloadName|trim|raw }}" class="dropdown-item">
-                                {{ fileData.format }}
-                            </a>
+                            {# PDFs are served inline (see pages/project-materials-download.htm): preview them
+                               in a new tab instead of downloading them #}
+                            {% set isPdf = fileData.file.extension|lower == 'pdf' %}
+                            {% if isPdf %}
+                                <a href="{{ downloadUrl|trim|raw }}" target="_blank" rel="noopener noreferrer" class="dropdown-item" aria-label="Preview {{ downloadName|trim }} (opens in a new tab)">
+                                    {{ fileData.format }}
+                                </a>
+                            {% else %}
+                                <a href="{{ downloadUrl|trim|raw }}" download="{{ downloadName|trim|raw }}" class="dropdown-item">
+                                    {{ fileData.format }}
+                                </a>
+                            {% endif %}
                         {% endfor %}
                     </div>
                 </div>

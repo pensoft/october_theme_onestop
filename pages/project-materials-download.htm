@@ -10,9 +10,11 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 // Friendly download URLs for the media materials (project-materials, newsletters):
 //   /project-materials/download/<file id>/<slug of the original file name>.<ext>
-// The file is sent with its original file name. Theme-only on purpose: independent of the
-// Pensoft.Library plugin's /download route. Keep downloadParts() in sync with the URL and
-// name built in partials/download-link.htm.
+// The file is sent with its original file name. PDFs are served inline so they open in the
+// browser's built-in preview (their links are opened in a new tab, see
+// partials/download-dropdown.htm); every other format is sent as an attachment. Theme-only on
+// purpose: independent of the Pensoft.Library plugin's /download route. Keep downloadParts() in
+// sync with the URL and name built in partials/download-link.htm.
 
 // [base name, lowercase extension, file name to send]. Uploads stored with a hashed original
 // name (685bfa1e19a1e798863423.png, "683d50234455f805118328 (1).xlsx") are named after the
@@ -67,13 +69,28 @@ function onStart()
         return Redirect::to(url('/project-materials/download/' . $file->id . '/' . $name), 301);
     }
 
-    $fileName = str_replace(['/', '\\'], '_', $this->downloadParts($file)[2]);
+    [, $extension, $sendName] = $this->downloadParts($file);
+
+    $fileName = str_replace(['/', '\\'], '_', $sendName);
     $fallback = preg_replace('/[^\x20-\x7e]|[%"]/', '_', Str::ascii($fileName));
 
-    return Response::download($file->getLocalPath(), $fileName, [
+    $headers = [
         'Content-Type' => $file->getContentType(),
         'X-Robots-Tag' => 'noindex, nofollow',
-    ])->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, $fileName, $fallback);
+    ];
+
+    // PDFs open in the browser's preview; every other format still downloads
+    $inline = $extension === 'pdf';
+
+    $response = $inline
+        ? Response::file($file->getLocalPath(), $headers)
+        : Response::download($file->getLocalPath(), $fileName, $headers);
+
+    return $response->setContentDisposition(
+        $inline ? ResponseHeaderBag::DISPOSITION_INLINE : ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+        $fileName,
+        $fallback
+    );
 }
 ?>
 ==
